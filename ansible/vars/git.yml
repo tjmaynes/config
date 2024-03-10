@@ -1,0 +1,49 @@
+---
+git_username: tjmaynes
+git_projects_dir: "{{ workspace_dir }}/{{ git_username }}"
+
+git_name: TJ Maynes
+git_email: tj@tjmaynes.com
+
+git_projects:
+  - dest: "tjmaynes.com"
+    repo_https: "https://github.com/tjmaynes/tjmaynes.com.git"
+    repo_ssh: "git@github.com:tjmaynes/tjmaynes.com.git"
+  - dest: "home-lab"
+    repo_https: "https://github.com/tjmaynes/home-lab.git"
+    repo_ssh: "git@github.com:tjmaynes/home-lab.git"
+  - dest: "gists"
+    repo_https: "https://github.com/tjmaynes/gists.git"
+    repo_ssh: "git@github.com:tjmaynes/gists.git"
+  - dest: "https://github.com/tjmaynes/image-analyzer-app"
+    repo_https: "https://github.com/tjmaynes/image-analyzer-app.git"
+    repo_ssh: "git@github.com:tjmaynes/image-analyzer-app.git"
+  - dest: "software-interviewing-with-python"
+    repo_https: "https://github.com/tjmaynes/software-interviewing-with-python.git"
+    repo_ssh: "git@github.com:tjmaynes/software-interviewing-with-python.git"
+  - dest: "playbooks"
+    repo_https: "https://github.com/tjmaynes/playbooks.git"
+    repo_ssh: "git@github.com:tjmaynes/playbooks.git"
+  - dest: "config-nix"
+    repo_https: "https://github.com/tjmaynes/config-nix.git"
+    repo_ssh: "git@github.com:tjmaynes/config-nix.git"
+  - dest: "career"
+    repo_https: "https://github.com/tjmaynes/career.git"
+    repo_ssh: "git@github.com:tjmaynes/career.git"
+  - dest: "shopping-cart-service-py"
+    repo_https: "https://github.com/tjmaynes/shopping-cart-service-py.git"
+    repo_ssh: "git@github.com:tjmaynes/shopping-cart-service-py.git"
+  - dest: "maze"
+    repo_https: "https://github.com/tjmaynes/maze.git"
+    repo_ssh: "git@github.com:tjmaynes/maze.git"
+    version: master
+  - dest: "canny-bot"
+    repo_https: "https://github.com/tjmaynes/canny-bot.git"
+    repo_ssh: "git@github.com:tjmaynes/canny-bot.git"
+    version: master
+  - dest: "tanzu-dev-portal"
+    repo_https: "https://github.com/tjmaynes/tanzu-dev-portal.git"
+    repo_ssh: "git@github.com:tjmaynes/tanzu-dev-portal.git"
+  - dest: "gpt-crawler"
+    repo_https: "https://github.com/tjmaynes/gpt-crawler.git"
+    repo_ssh: "git@github.com:tjmaynes/gpt-crawler.git"

@@ -1,0 +1,17 @@
+---
+- name: Ensure asdf is installed
+  command: command -v asdf
+  register: asdf_result
+  failed_when: asdf_result == ""
+  changed_when: false
+
+- name: Check if .tool-versions file exists
+  stat:
+    path: "$HOME/.tool-versions"
+  register: tool_versions_file
+
+- name: Run asdf install
+  ansible.builtin.shell:
+    cmd: asdf install
+    chdir: "$HOME"
+  when: tool_versions_file.stat.exists

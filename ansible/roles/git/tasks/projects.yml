@@ -1,0 +1,23 @@
+---
+
+- name: Ensure developer directory exists
+  file:
+    path: "{{ workspace_dir }}"
+    state: directory
+    follow: true
+
+- name: Clone project repos
+  git:
+    repo: "{{ item.repo_https }}"
+    dest: "{{ git_projects_dir }}/{{ item.dest }}"
+    accept_hostkey: true
+    version: "{{ item.version | default('main') }}"
+    update: false
+  with_items: "{{ git_projects }}"
+
+- name: Set git remote URL to SSH
+  ansible.builtin.shell:
+    cmd: git remote set-url origin {{ item.repo_ssh }}
+    chdir: "{{ git_projects_dir }}/{{ item.dest }}"
+  with_items: "{{ git_projects }}"
+  changed_when: false

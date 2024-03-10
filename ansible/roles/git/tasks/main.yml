@@ -1,0 +1,9 @@
+---
+- name: Ensure git is installed
+  command: command -v git
+  register: git_result
+  failed_when: git_result == ""
+  changed_when: false
+
+- include_tasks: projects.yml
+- include_tasks: config.yml

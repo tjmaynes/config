@@ -1,0 +1,18 @@
+---
+- name: Ensure stow is installed
+  command: command -v stow
+  register: stow_result
+  failed_when: stow_result == ""
+  changed_when: false
+
+- name: Ensure dotfiles project exists
+  file:
+    path: "$HOME/workspace/{{ git_username }}/dotfiles"
+    state: directory
+    follow: true
+
+- name: Stow dotfiles in home directory
+  ansible.builtin.shell:
+    cmd: stow --stow --verbose --target=$HOME .
+    chdir: "$HOME/workspace/{{ git_username }}/dotfiles"
+  changed_when: true

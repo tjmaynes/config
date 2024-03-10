@@ -1,0 +1,53 @@
+---
+- name: Setup macos machine
+  hosts: macos
+  gather_facts: true
+  become: no
+  vars:
+    computername: gaia
+    hostname: gaia
+  vars_files:
+    - vars/common.yml
+    - vars/macos.yml
+  roles:
+    - role: elliotweiser.osx-command-line-tools
+      when: ansible_distribution in ['MacOSX']
+    - role: geerlingguy.mac.homebrew
+      when: ansible_distribution in ['MacOSX']
+    - role: geerlingguy.mac.mas
+      when: ansible_distribution in ['MacOSX']
+    - role: geerlingguy.mac.dock
+      when: ansible_distribution in ['MacOSX']
+    - role: macos
+      when: ansible_distribution in ['MacOSX']
+
+- name: Setup ubuntu machine
+  hosts: ubuntu
+  gather_facts: true
+  become: no
+  vars:
+    computername: ares
+    hostname: ares
+  vars_files:
+    - vars/common.yml
+    - vars/ubuntu.yml
+  roles:
+    - role: ubuntu
+      when: ansible_distribution in ['Ubuntu']
+
+- name: Setup common dev environment
+  hosts:
+    - macos
+    - ubuntu
+  gather_facts: true
+  become: no
+  vars_files:
+    - vars/common.yml
+    - vars/git.yml
+  roles:
+    - role: common
+    - role: zsh
+    - role: git
+    - role: asdf
+    - role: vim
+    - role: dotfiles

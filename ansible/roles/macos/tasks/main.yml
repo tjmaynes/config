@@ -1,0 +1,8 @@
+---
+- include_tasks: docker.yml
+- include_tasks: hostname.yml
+# - include_tasks: safari.yml
+- include_tasks: system.yml
+- include_tasks: dock.yml
+- include_tasks: trackpad_tap_to_click.yml
+  when: trackpad_tap_to_click != None

@@ -1,0 +1,36 @@
+---
+- name: Ensure docker is installed
+  command: command -v docker
+  register: docker_result
+  failed_when: docker_result == ""
+  changed_when: false
+
+- name: Ensure docker-compose is installed
+  command: command -v docker-compose
+  register: docker_compose_result
+  failed_when: docker_compose_result == ""
+  changed_when: false
+
+- name: Ensure docker-buildx is installed
+  command: command -v docker-buildx
+  register: docker_buildx_result
+  failed_when: docker_buildx_result == ""
+  changed_when: false
+
+- name: Ensure docker-plugins directory exists
+  file:
+    path: $HOME/.docker/cli-plugins
+    state: directory
+    follow: true
+
+- name: Create a symbolic link for docker-compose
+  ansible.builtin.file:
+    src: "{{ homebrew_path }}/docker-compose"
+    dest: $HOME/.docker/cli-plugins/docker-compose
+    state: link
+
+- name: Create a symbolic link for docker-buildx
+  ansible.builtin.file:
+    src: "{{ homebrew_path }}/docker-buildx"
+    dest: $HOME/.docker/cli-plugins/docker-buildx
+    state: link

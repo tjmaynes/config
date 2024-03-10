@@ -1,0 +1,15 @@
+---
+timezone: "America/Chicago"
+
+workspace_dir: $HOME/workspace
+backups_dir: "{{ workspace_dir }}/backups"
+
+configure_ssh: true
+
+ssh_keys:
+  - name: "id_ed25519"
+    host: "github.com"
+    type: "ed25519"
+    comment: "TJ Maynes"
+
+homebrew_path: /opt/homebrew/bin

@@ -1,0 +1,11 @@
+---
+
+- name: daemon_reload
+  systemd:
+    daemon_reload: yes
+
+- name: Unstow dotfiles from home directory
+  ansible.builtin.shell:
+    cmd: stow --delete --verbose --target=$HOME .
+    chdir: "$HOME/workspace/{{ git_username }}/dotfiles"
+  changed_when: true
