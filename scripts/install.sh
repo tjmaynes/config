@@ -21,16 +21,47 @@ function install_homebrew() {
 }
 
 function install_python() {
-  if [[ -z "$(command -v python)" ]]; then
+  if [[ -z "$(command -v python3)" ]]; then
     brew install python3
   fi
 }
 
-function main() {
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    install_homebrew
-    install_python
+function setup_virtualenv() {
+  if [[ -z "$(command -v pip3)" ]]; then
+    python3 -m pip install --upgrade pip
   fi
+
+  if [[ -z "$(command -v virtualenv)" ]]; then
+    brew install virtualenv
+  fi
+
+  test -d .venv || virtualenv .venv
+  source .venv/bin/activate
+}
+
+function accept_xcode_license() {
+  XCODE_VERSION=$(xcodebuild -version | grep '^Xcode\s' | sed -E 's/^Xcode[[:space]]+([0-9\.]+)/\1/')
+  ACCEPTED_LICENSE_VERSION=$(defaults read /Library/Preferences/com.apple.dt.Xcode 2> /dev/null | grep IDEXcodeVersionForAgreedToGMLicense | cut -d '"' -f 2)
+
+  if [ "$XCODE_VERSION" != "$ACCEPTED_LICENSE_VERSION" ]; then
+    sudo xcodebuild -license
+  fi
+}
+
+function main() {
+  if [[ "$OSTYPE" != "darwin"* ]]; then
+    echo "Unable to run install script on this operating system."
+    exit 1
+  fi
+
+  install_homebrew
+  install_python
+  setup_virtualenv
+
+  OPENSSL_LOCATION=$(brew --prefix openssl)
+  export LDFLAGS="-I/$OPENSSL_LOCATION/include -L/$OPENSSL_LOCATION/lib"
+
+  python3 -m pip install --no-cache -r requirements.txt
 
   ansible-galaxy install \
     -r ./ansible/collections/requirements.yml \

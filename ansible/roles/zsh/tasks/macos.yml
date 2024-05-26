@@ -1,17 +1,8 @@
 ---
 
-- name: Check if homebrew-path is already defined
-  lineinfile:
-    state: absent
-    path: "$HOME/.zshrc"
-    regexp: "^export PATH={{ homebrew_path }}:$PATH"
-  check_mode: true
-  changed_when: false
-  register: check_homebrew_path
-
 - name: Ensure homebrew-path is set
-  lineinfile:
+  ansible.builtin.lineinfile:
     state: present
     path: "$HOME/.zshrc"
-    line: "export PATH={{ homebrew_path }}:$PATH"
-  when: check_homebrew_path.found == 0
+    line: "export PATH=$(brew --prefix)/bin:$PATH"
+  when: ansible_distribution in ['MacOSX']

@@ -3,9 +3,11 @@ install:
 	./scripts/install.sh
 
 setup:
-	ansible-playbook ./ansible/setup.yml --ask-become-pass \
+	. .venv/bin/activate; ansible-playbook ./ansible/setup.yml --ask-become-pass \
 		--inventory-file ./ansible/inventory/hosts.ini
 
+bootstrap: install bootstrap
+
 teardown:
-	ansible-playbook ./ansible/teardown.yml --ask-become-pass \
+	. .venv/bin/activate; ansible-playbook ./ansible/teardown.yml --ask-become-pass \
 		--inventory-file ./ansible/inventory/hosts.ini

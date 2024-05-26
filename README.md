@@ -7,6 +7,16 @@
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 
 ## Usage
+To bootstrap `dev` machine, run the following command:
+```bash
+make bootstrap
+```
+
+To install project dependencies, run the following command:
+```bash
+make setup
+```
+
 To setup `dev` machine, run the following command:
 ```bash
 make setup

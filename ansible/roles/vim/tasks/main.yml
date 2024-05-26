@@ -20,7 +20,8 @@
 - name: Check if vim-plug is downloaded
   stat:
     path: "$HOME/.vim/autoload/plug.vim"
-  register: vim_plug_file
+  changed_when: false
+  register: vim_plug_file_result
 
 - name: Download vim-plug
   get_url:
@@ -28,13 +29,14 @@
     validate_certs: false
     dest: "$HOME/.vim/autoload/plug.vim"
     mode: 0755
-  when: not vim_plug_file.stat.exists
+  when: not vim_plug_file_result.stat.exists
 
 - name: Check if vim-plug is installed
   stat:
     path: "$HOME/.vim/plugged"
-  register: vim_plug_directory
+  changed_when: false
+  register: vim_plug_directory_result
 
 - name: Setup vim plugins
   command: vim +'PlugInstall --sync' +qa
-  when: not vim_plug_directory.stat.exists
+  when: not vim_plug_directory_result.stat.exists

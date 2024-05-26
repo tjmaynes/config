@@ -1,0 +1,5 @@
+---
+
+aptget_programs:
+  - { name: "curl" }
+  - { name: "git" }

@@ -12,7 +12,7 @@
     recursive: true
     accept_hostkey: false
     version: master
-  when: not prezto_result
+  when: not prezto_result.stat.exists
 
 - name: Link all Prezto files
   ansible.builtin.file:

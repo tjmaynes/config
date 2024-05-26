@@ -12,4 +12,12 @@ ssh_keys:
     type: "ed25519"
     comment: "TJ Maynes"
 
-homebrew_path: /opt/homebrew/bin
+# asdf
+
+asdf_branch: v0.14.0
+
+asdf_plugins:
+  - { name: "direnv", url: "https://github.com/asdf-community/asdf-direnv.git", post_install: "asdf direnv setup --shell zsh --version latest" }
+  - { name: "golang", url: "https://github.com/asdf-community/asdf-golang.git" }
+  - { name: "nodejs", url: "https://github.com/asdf-vm/asdf-nodejs.git" }
+  - { name: "python", url: "https://github.com/asdf-community/asdf-python.git" }

@@ -1,32 +1,24 @@
 ---
-- name: Check if asdf-completion is already defined
-  lineinfile:
-    state: absent
-    path: "$HOME/.zshrc"
-    regexp: "^source $HOME/.asdf/asdf.sh"
-  check_mode: true
-  changed_when: false
-  register: check_asdf_completion
-
-- name: Ensure asdf-completion is setup
-  lineinfile:
+- name: Ensure asdf support
+  ansible.builtin.lineinfile:
     state: present
     path: "$HOME/.zshrc"
     line: "source $HOME/.asdf/asdf.sh"
-  when: check_asdf_completion.found == 0
 
-- name: Check if asdf-direnv is already defined
-  lineinfile:
-    state: absent
+- name: Ensure asdf-completion support
+  ansible.builtin.lineinfile:
+    state: present
     path: "$HOME/.zshrc"
-    regexp: "^source \"$HOME/.config/asdf-direnv/zshrc\""
-  check_mode: true
-  changed_when: false
-  register: check_asdf_direnv
+    line: "source $HOME/.asdf/completions/asdf.bash"
 
-- name: Ensure asdf-direnv is setup
-  lineinfile:
+- name: Ensure asdf-direnv support
+  ansible.builtin.lineinfile:
     state: present
     path: "$HOME/.zshrc"
     line: "source \"$HOME/.config/asdf-direnv/zshrc\""
-  when: check_asdf_direnv.found == 0
+
+- name: Ensure asdf-golang support
+  ansible.builtin.lineinfile:
+    state: present
+    path: "$HOME/.zshrc"
+    line: "source $HOME/.asdf/plugins/golang/set-env.zsh"

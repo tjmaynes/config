@@ -6,11 +6,9 @@
   failed_when: zsh_result == ""
   changed_when: false
 
-- include_tasks: prezto.yml
+- include_tasks: oh-my-zsh.yml
 - include_tasks: asdf.yml
-- include_tasks: docker.yml
 - include_tasks: node.yml
-- include_tasks: custom_fns.yml
-- include_tasks: aliases.yml
+- include_tasks: dotfiles.yml
 - include_tasks: macos.yml
   when: ansible_distribution in ['MacOSX']

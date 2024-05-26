@@ -11,34 +11,14 @@
     state: directory
     follow: true
 
-- name: Check if nodejs path is already defined
-  lineinfile:
-    state: absent
-    path: "$HOME/.zshrc"
-    regexp: "^export PATH=$HOME/.npm-packages/bin:$PATH"
-  check_mode: true
-  changed_when: false
-  register: check_nodejs_path
-
 - name: Add nodejs path to PATH
-  lineinfile:
+  ansible.builtin.lineinfile:
     state: present
     path: "$HOME/.zshrc"
     line: "export PATH=$HOME/.npm-packages/bin:$PATH"
-  when: check_nodejs_path.found == 0
-
-- name: Check if node path is already defined
-  lineinfile:
-    state: absent
-    path: "$HOME/.zshrc"
-    regexp: "^export NODE_PATH=$HOME/.npm-packages/lib/node_modules"
-  check_mode: true
-  changed_when: false
-  register: check_node_path
 
 - name: Add node path to PATH
-  lineinfile:
+  ansible.builtin.lineinfile:
     state: present
     path: "$HOME/.zshrc"
     line: "export NODE_PATH=$HOME/.npm-packages/lib/node_modules"
-  when: check_node_path.found == 0

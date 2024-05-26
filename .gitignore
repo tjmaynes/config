@@ -1,2 +1,5 @@
 # Macos
 .DS_Store
+
+# Python
+.venv/

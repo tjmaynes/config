@@ -1,0 +1,12 @@
+---
+- name: Ensure apt-get is installed
+  command: command -v apt-get
+  register: aptget_result
+  failed_when: aptget_result == ""
+  changed_when: false
+
+- name: Add apt-get programs
+  ansible.builtin.shell:
+    cmd: apt-get install -y {{ item }}
+    chdir: "$HOME"
+  loop: "{{ aptget_programs }}"

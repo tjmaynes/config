@@ -1,7 +1,7 @@
 ---
 - name: Setup macos machine
   hosts: macos
-  gather_facts: true
+  gather_facts: yes
   become: no
   vars:
     computername: gaia
@@ -21,33 +21,33 @@
     - role: macos
       when: ansible_distribution in ['MacOSX']
 
-- name: Setup ubuntu machine
-  hosts: ubuntu
-  gather_facts: true
+- name: Setup debian environment
+  hosts:
+    - debian
+  gather_facts: yes
   become: no
   vars:
-    computername: ares
-    hostname: ares
+    computername: zeus
+    hostname: zeus
   vars_files:
-    - vars/common.yml
-    - vars/ubuntu.yml
+    - debian
   roles:
-    - role: ubuntu
-      when: ansible_distribution in ['Ubuntu']
+    - role: debian
+      when: ansible_distribution in ['Debian']
 
 - name: Setup common dev environment
   hosts:
     - macos
-    - ubuntu
-  gather_facts: true
+    - debian
+  gather_facts: yes
   become: no
   vars_files:
     - vars/common.yml
     - vars/git.yml
   roles:
     - role: common
+    - role: asdf
     - role: zsh
     - role: git
-    - role: asdf
-    - role: vim
     - role: dotfiles
+    - role: vim

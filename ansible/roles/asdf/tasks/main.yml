@@ -1,17 +1,38 @@
 ---
-- name: Ensure asdf is installed
-  command: command -v asdf
+- name: Check if asdf is installed
+  stat:
+    path: "$HOME/.asdf"
   register: asdf_result
-  failed_when: asdf_result == ""
-  changed_when: false
+
+- name: Download asdf
+  ansible.builtin.git:
+    repo: "https://github.com/asdf-vm/asdf.git"
+    dest: "$HOME/.asdf"
+    version: "{{ asdf_branch }}"
+    accept_hostkey: true
+    update: false
+  when: not asdf_result.stat.exists
+
+- name: Add asdf plugins
+  ansible.builtin.shell:
+    cmd: source $HOME/.asdf/asdf.sh && asdf plugin add {{ item.name }} {{ item.url }}
+    chdir: "$HOME"
+  loop: "{{ asdf_plugins }}"
+
+- name: Run post asdf plugin install script
+  ansible.builtin.shell:
+    cmd: source $HOME/.asdf/asdf.sh && {{ item.post_install }}
+    chdir: "$HOME"
+  loop: "{{ asdf_plugins }}"
+  when: "'post_install' in item"
 
 - name: Check if .tool-versions file exists
   stat:
     path: "$HOME/.tool-versions"
-  register: tool_versions_file
+  register: tool_versions_file_result
 
 - name: Run asdf install
   ansible.builtin.shell:
-    cmd: asdf install
+    cmd: source $HOME/.asdf/asdf.sh && asdf install
     chdir: "$HOME"
-  when: tool_versions_file.stat.exists
+  when: tool_versions_file_result.stat.exists

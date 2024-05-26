@@ -7,7 +7,7 @@
     follow: true
 
 - name: Clone project repos
-  git:
+  ansible.builtin.git:
     repo: "{{ item.repo_https }}"
     dest: "{{ git_projects_dir }}/{{ item.dest }}"
     accept_hostkey: true
