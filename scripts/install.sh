@@ -64,7 +64,7 @@ function main() {
   python3 -m pip install --no-cache -r requirements.txt
 
   ansible-galaxy install \
-    -r ./ansible/collections/requirements.yml \
+    -r collections/requirements.yml \
     --force
 }
 

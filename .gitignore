@@ -3,3 +3,11 @@
 
 # Python
 .venv/
+
+# Editors
+.vscode/
+.idea/
+*.iml
+
+# Generated
+roles/elliotweiser.osx-command-line-tools
