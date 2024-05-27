@@ -41,3 +41,15 @@
     path: "$HOME/.zshrc"
     line: "source $HOME/.custom-fns.sh"
   when: check_customfns_result.stat.exists
+
+- name: Ensure Rack user directory exists
+  file:
+    path: "{{ rack_user_dir }}"
+    state: directory
+    follow: true
+
+- name: Set RACK_USER_DIR env var if not already started
+  ansible.builtin.lineinfile:
+    state: present
+    path: "$HOME/.zshrc"
+    line: "export RACK_USER_DIR={{ rack_user_dir }}"

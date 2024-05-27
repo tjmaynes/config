@@ -21,3 +21,7 @@ asdf_plugins:
   - { name: "golang", url: "https://github.com/asdf-community/asdf-golang.git" }
   - { name: "nodejs", url: "https://github.com/asdf-vm/asdf-nodejs.git" }
   - { name: "python", url: "https://github.com/asdf-community/asdf-python.git" }
+
+# vcv-rack
+
+rack_user_dir: "{{ workspace_dir }}/music/vcv-rack-2"
