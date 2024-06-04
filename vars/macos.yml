@@ -21,6 +21,7 @@ homebrew_cask_apps:
   - docker
   - macvim
   - obsidian
+  - shottr
 
 mas_installed_apps:
   - { name: "Amphetamine", id: 937984704 }
@@ -38,6 +39,7 @@ homebrew_installed_packages:
   - gpg2
   - jq
   - offlineimap
+  - pandoc
   - ssh-copy-id
   - stow
   - tmux
