@@ -50,3 +50,7 @@ git_projects:
   - dest: "gpt-crawler"
     repo_https: "https://github.com/tjmaynes/gpt-crawler.git"
     repo_ssh: "git@github.com:tjmaynes/gpt-crawler.git"
+  - dest: "fonts"
+    repo_https: "https://github.com/tjmaynes/fonts.git"
+    repo_ssh: "git@github.com:tjmaynes/fonts.git"
+    version: master
