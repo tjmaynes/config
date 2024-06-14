@@ -14,7 +14,7 @@ make bootstrap
 
 To install project dependencies, run the following command:
 ```bash
-make setup
+make install
 ```
 
 To setup `dev` machine, run the following command:

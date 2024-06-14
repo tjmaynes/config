@@ -6,6 +6,9 @@ git_name: TJ Maynes
 git_email: tj@tjmaynes.com
 
 git_projects:
+  - dest: "dotfiles"
+    repo_https: "https://github.com/tjmaynes/dotfiles.git"
+    repo_ssh: "git@github.com:tjmaynes/dotfiles.git"
   - dest: "tjmaynes.com"
     repo_https: "https://github.com/tjmaynes/tjmaynes.com.git"
     repo_ssh: "git@github.com:tjmaynes/tjmaynes.com.git"

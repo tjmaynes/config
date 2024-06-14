@@ -22,7 +22,4 @@ asdf_plugins:
   - { name: "nodejs", url: "https://github.com/asdf-vm/asdf-nodejs.git" }
   - { name: "python", url: "https://github.com/asdf-community/asdf-python.git" }
   - { name: "java", url: "https://github.com/halcyon/asdf-java.git" }
-
-# vcv-rack
-
-rack_user_dir: "{{ workspace_dir }}/music/vcv-rack-2"
+  - { name: "kubectl", url: "https://github.com/asdf-community/asdf-kubectl.git" }

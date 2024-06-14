@@ -26,6 +26,14 @@ function install_python() {
   fi
 }
 
+function setup_macos() {
+  install_homebrew
+  install_python
+
+  OPENSSL_LOCATION=$(brew --prefix openssl)
+  export LDFLAGS="-I/$OPENSSL_LOCATION/include -L/$OPENSSL_LOCATION/lib"
+}
+
 function setup_virtualenv() {
   if [[ -z "$(command -v pip3)" ]]; then
     python3 -m pip install --upgrade pip
@@ -49,17 +57,14 @@ function accept_xcode_license() {
 }
 
 function main() {
-  if [[ "$OSTYPE" != "darwin"* ]]; then
-    echo "Unable to run install script on this operating system."
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    setup_macos
+  else
+    echo "Unable to run install script on this '$OSTYPE' operating system..."
     exit 1
   fi
 
-  install_homebrew
-  install_python
   setup_virtualenv
-
-  OPENSSL_LOCATION=$(brew --prefix openssl)
-  export LDFLAGS="-I/$OPENSSL_LOCATION/include -L/$OPENSSL_LOCATION/lib"
 
   python3 -m pip install --no-cache -r requirements.txt
 

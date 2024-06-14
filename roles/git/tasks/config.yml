@@ -39,11 +39,11 @@
     - { name: alias.ditchall, value: "reset --hard && git clean -fd" }
     - { name: alias.d, value: "difftool" }
     - { name: alias.diffc, value: "diff --cached" }
-    - { name: alias.smp, value: "submodule foreach git pull origin master" }
+    - { name: alias.smp, value: "submodule foreach git pull origin main" }
     - { name: alias.sgc, value: "og --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %C(cyan)(%cr) %C(blue)<%an>%Creset' --abbrev-commit --date=relative" }
     - { name: alias.aliases, value: "config --get-regexp alias" }
     - { name: alias.pushf, value: "push --force-with-lease" }
     - { name: init.defaultBranch, value: "main" }
-    - { name: core.editor, value: "vim" }
+    - { name: core.editor, value: "vim -u NONE" }
     - { name: diff.tool, value: "delta" }
     - { name: gpg.program, value: "gpg2" }
