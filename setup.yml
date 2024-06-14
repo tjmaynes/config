@@ -50,4 +50,3 @@
     - role: zsh
     - role: git
     - role: dotfiles
-    - role: vim
