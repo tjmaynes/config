@@ -7,21 +7,21 @@ homebrew_cask_appdir: /Applications
 
 homebrew_cask_apps:
   - arc
-  - jetbrains-toolbox
   - appcleaner
-  - spotify
-  - visual-studio-code
+  - chatgpt
+  - docker
+  - jetbrains-toolbox
+  - ledger-live
+  - macvim
   - mpv
+  - obs
+  - obsidian
+  - ollama
+  - shottr
+  - spotify
   - synology-drive
   - vcv-rack
-  - ledger-live
-  - obs
-  - ollama
-  - emacs
-  - docker
-  - macvim
-  - obsidian
-  - shottr
+  - visual-studio-code
 
 mas_installed_apps:
   - { name: "Amphetamine", id: 937984704 }

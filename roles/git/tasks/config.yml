@@ -23,27 +23,4 @@
     name: "{{ item.name }}"
     scope: global
     value: "{{ item.value }}"
-  loop:
-    - { name: user.email, value: "{{ git_email }}" }
-    - { name: user.name, value: "{{ git_name }}" }
-    - { name: alias.ci, value: "commit" }
-    - { name: alias.co, value: "checkout" }
-    - { name: alias.st, value: "status" }
-    - { name: alias.s, value: "status -s -uno" }
-    - { name: alias.br, value: "branch" }
-    - { name: alias.llog, value: "log --date=local" }
-    - { name: alias.flog, value: "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative" }
-    - { name: alias.lol, value: "log --graph --decorate --oneline" }
-    - { name: alias.lola, value: "log --graph --decorate --oneline --all" }
-    - { name: alias.ditch, value: "reset --hard" }
-    - { name: alias.ditchall, value: "reset --hard && git clean -fd" }
-    - { name: alias.d, value: "difftool" }
-    - { name: alias.diffc, value: "diff --cached" }
-    - { name: alias.smp, value: "submodule foreach git pull origin main" }
-    - { name: alias.sgc, value: "og --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %C(cyan)(%cr) %C(blue)<%an>%Creset' --abbrev-commit --date=relative" }
-    - { name: alias.aliases, value: "config --get-regexp alias" }
-    - { name: alias.pushf, value: "push --force-with-lease" }
-    - { name: init.defaultBranch, value: "main" }
-    - { name: core.editor, value: "vim -u NONE" }
-    - { name: diff.tool, value: "delta" }
-    - { name: gpg.program, value: "gpg2" }
+  loop: "{{ git_configs }}"
