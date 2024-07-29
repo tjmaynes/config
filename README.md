@@ -1,5 +1,6 @@
-# developer-workstation
-> Ansible playbook for my developer workstation.
+# config
+
+> Ansible playbook for my workstations.
 
 ## Requirements
 
@@ -7,7 +8,8 @@
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 
 ## Usage
-To bootstrap `dev` machine, run the following command:
+
+To bootstrap machine, run the following command:
 ```bash
 make bootstrap
 ```
@@ -17,12 +19,12 @@ To install project dependencies, run the following command:
 make install
 ```
 
-To setup `dev` machine, run the following command:
+To set up machine, run the following command:
 ```bash
 make setup
 ```
 
-To teardown `dev` machine, run the following command:
+To teardown machine, run the following command:
 ```bash
 make teardown
 ```
