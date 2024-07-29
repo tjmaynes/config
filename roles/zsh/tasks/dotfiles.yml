@@ -1,17 +1,5 @@
 ---
 
-- name: Ensure backup directory exists
-  file:
-    path: "{{ backups_dir }}"
-    state: directory
-    follow: true
-
-- name: Set BACKUPS_DIRECTORY env var if not already started
-  ansible.builtin.lineinfile:
-    state: present
-    path: "$HOME/.zshrc"
-    line: "export BACKUPS_DIRECTORY={{ backups_dir }}"
-
 - name: Set PROJECTS_DIRECTORY env var if not already started
   ansible.builtin.lineinfile:
     state: present

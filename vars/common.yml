@@ -2,7 +2,6 @@
 timezone: "America/Chicago"
 
 workspace_dir: $HOME/workspace
-backups_dir: "{{ workspace_dir }}/backups"
 
 configure_ssh: true
 
@@ -18,8 +17,7 @@ asdf_branch: v0.14.0
 
 asdf_plugins:
   - { name: "direnv", url: "https://github.com/asdf-community/asdf-direnv.git", post_install: "asdf direnv setup --shell zsh --version latest" }
-  - { name: "golang", url: "https://github.com/asdf-community/asdf-golang.git" }
   - { name: "nodejs", url: "https://github.com/asdf-vm/asdf-nodejs.git" }
+  - { name: "rust", url: "https://github.com/asdf-community/asdf-rust.git" }
   - { name: "python", url: "https://github.com/asdf-community/asdf-python.git" }
-  - { name: "java", url: "https://github.com/halcyon/asdf-java.git" }
   - { name: "kubectl", url: "https://github.com/asdf-community/asdf-kubectl.git" }

@@ -1,8 +1,8 @@
 ---
-git_username: tjmaynes
-git_projects_dir: "{{ workspace_dir }}/{{ git_username }}"
+git_projects_dir: "{{ workspace_dir }}/projects"
 
-git_name: TJ Maynes
+git_username: tjmaynes
+git_fullname: TJ Maynes
 git_email: tj@tjmaynes.com
 
 git_projects:
@@ -72,7 +72,7 @@ git_projects:
 
 git_configs:
   - { name: user.email, value: "{{ git_email }}" }
-  - { name: user.name, value: "{{ git_name }}" }
+  - { name: user.name, value: "{{ git_fullname }}" }
   - { name: alias.ci, value: "commit" }
   - { name: alias.co, value: "checkout" }
   - { name: alias.st, value: "status" }
