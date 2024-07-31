@@ -9,6 +9,7 @@ homebrew_cask_apps:
   - arc
   - appcleaner
   - chatgpt
+  - darktable
   - docker
   - jetbrains-toolbox
   - ledger-live
