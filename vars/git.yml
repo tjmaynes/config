@@ -1,11 +1,14 @@
 ---
-git_projects_dir: "{{ workspace_dir }}/projects"
+git_projects_dir: "{{ workspace_dir }}/code"
 
 git_username: tjmaynes
 git_fullname: TJ Maynes
 git_email: tj@tjmaynes.com
 
 git_projects:
+  - dest: "config"
+    repo_https: "https://github.com/tjmaynes/config.git"
+    repo_ssh: "git@github.com:tjmaynes/config.git"
   - dest: "dotfiles"
     repo_https: "https://github.com/tjmaynes/dotfiles.git"
     repo_ssh: "git@github.com:tjmaynes/dotfiles.git"
