@@ -17,12 +17,6 @@
     path: "$HOME/.zshrc"
     line: "source \"$HOME/.config/asdf-direnv/zshrc\""
 
-- name: Ensure asdf-golang support
-  ansible.builtin.lineinfile:
-    state: present
-    path: "$HOME/.zshrc"
-    line: "source \"$HOME/.asdf/plugins/golang/set-env.zsh\""
-
 - name: Ensure asdf-java support
   ansible.builtin.lineinfile:
     state: present

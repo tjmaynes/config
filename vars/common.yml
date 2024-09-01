@@ -17,7 +17,6 @@ asdf_branch: v0.14.0
 
 asdf_plugins:
   - { name: "direnv", url: "https://github.com/asdf-community/asdf-direnv.git", post_install: "asdf direnv setup --shell zsh --version latest" }
-  - { name: "nodejs", url: "https://github.com/asdf-vm/asdf-nodejs.git" }
-  - { name: "rust", url: "https://github.com/asdf-community/asdf-rust.git" }
   - { name: "python", url: "https://github.com/asdf-community/asdf-python.git" }
+  - { name: "nodejs", url: "https://github.com/asdf-vm/asdf-nodejs.git" }
   - { name: "kubectl", url: "https://github.com/asdf-community/asdf-kubectl.git" }
