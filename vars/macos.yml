@@ -12,6 +12,7 @@ homebrew_cask_apps:
   - darktable
   - docker
   - firefox
+  - gimp
   - jetbrains-toolbox
   - ledger-live
   - macvim

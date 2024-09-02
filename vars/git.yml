@@ -94,6 +94,6 @@ git_configs:
   - { name: alias.aliases, value: "config --get-regexp alias" }
   - { name: alias.pushf, value: "push --force-with-lease" }
   - { name: init.defaultBranch, value: "main" }
-  - { name: core.editor, value: "vim -u NONE" }
+  - { name: core.editor, value: "vi" }
   - { name: diff.tool, value: "delta" }
   - { name: gpg.program, value: "gpg2" }
