@@ -8,11 +8,8 @@ homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   - appcleaner
   - calibre
-  - chatgpt
   - darktable
   - docker
-  - firefox
-  - gimp
   - jetbrains-toolbox
   - ledger-live
   - macvim
@@ -20,10 +17,7 @@ homebrew_cask_apps:
   - obs
   - obsidian
   - ollama
-  - shottr
   - spotify
-  - synology-drive
-  - vcv-rack
   - visual-studio-code
 
 mas_installed_apps:
