@@ -29,3 +29,15 @@
     path: "$HOME/.zshrc"
     line: "source $HOME/.custom-fns.sh"
   when: check_customfns_result.stat.exists
+
+- name: Ensure oh-my-zsh themes are configured
+  ansible.builtin.lineinfile:
+    state: present
+    path: "$HOME/.zshrc"
+    line: "plugins=(git macos kubectl asdf)"
+
+- name: Ensure history timestamp is set
+  ansible.builtin.lineinfile:
+    state: present
+    path: "$HOME/.zshrc"
+    line: "export HISTTIMEFORMAT=\"%F %T\""

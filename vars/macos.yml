@@ -12,8 +12,10 @@ homebrew_cask_apps:
   - docker
   - jetbrains-toolbox
   - ledger-live
+  - mactex-no-gui
   - macvim
   - mpv
+  - mythic
   - obs
   - obsidian
   - ollama
