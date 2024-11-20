@@ -6,6 +6,6 @@
 
 - name: Unstow dotfiles from home directory
   ansible.builtin.shell:
-    cmd: stow --delete --verbose --target=$HOME .
-    chdir: "$HOME/workspace/code/dotfiles"
+    cmd: stow --delete --verbose --target={{ ansible_env.HOME }} .
+    chdir: "{{ ansible_env.HOME }}/workspace/code/dotfiles"
   changed_when: true

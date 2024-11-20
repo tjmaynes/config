@@ -1,8 +1,8 @@
 ---
-- name: Update timezone to {{ timezone }}
-  timezone:
+- name: Update timezone to '{{ timezone }}'
+  community.general.timezone:
     name: "{{ timezone }}"
-  become: yes
+  become: true
 
 - include_tasks: ssh.yml
   when: configure_ssh

@@ -3,6 +3,6 @@
 - name: Ensure homebrew-path is set
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zshrc"
+    path: "$HOME/.zsh-dynamic"
     line: "export PATH=$(brew --prefix)/bin:$PATH"
-  when: ansible_distribution in ['MacOSX']
+  when: ansible_distribution == 'MacOSX'

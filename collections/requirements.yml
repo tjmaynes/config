@@ -6,4 +6,5 @@ collections:
 
 roles:
   - name: elliotweiser.osx-command-line-tools
+  - name: gantsign.visual-studio-code
   

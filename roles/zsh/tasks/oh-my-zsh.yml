@@ -1,39 +1,34 @@
 ---
 - name: Check if Oh-my-zsh exists
   stat:
-    path: $HOME/.oh-my-zsh
+    path: "{{ ansible_env.HOME }}/.oh-my-zsh"
   register: ohmyzsh_result
   changed_when: false
 
 - name: Download Oh-my-zsh
   ansible.builtin.git:
     repo: "https://github.com/ohmyzsh/ohmyzsh.git"
-    dest: "$HOME/.oh-my-zsh-tmp"
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh-temp"
     recursive: true
     accept_hostkey: false
     depth: 1
   when: not ohmyzsh_result.stat.exists
 
-- name: Check if .zshrc exists
-  stat:
-    path: $HOME/.zshrc
-  register: zshrc_result
-  changed_when: false
-
 - name: Install Oh-my-zsh
-  command: "$HOME/.oh-my-zsh-tmp/tools/install.sh"
-  when: not zshrc_result.stat.exists
+  ansible.builtin.script:
+    cmd: "{{ ansible_env.HOME }}/.oh-my-zsh-temp/tools/install.sh"
+  when: not ohmyzsh_result.stat.exists
 
 - name: Check if zsh-autosuggestions plugins installed
   stat:
-    path: "$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    path: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
   register: zsh_autosuggestions_result
   changed_when: false
 
 - name: Install zsh-autosuggestions plugin
   ansible.builtin.git:
     repo: "https://github.com/zsh-users/zsh-autosuggestions.git"
-    dest: "$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
     recursive: true
     accept_hostkey: false
     depth: 1
@@ -41,14 +36,14 @@
 
 - name: Check if zsh-completions plugins installed
   stat:
-    path: "$HOME/.oh-my-zsh/custom/plugins/zsh-completions"
+    path: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-completions"
   register: zsh_completions_result
   changed_when: false
 
 - name: Install zsh-completions plugin
   ansible.builtin.git:
     repo: "https://github.com/zsh-users/zsh-completions.git"
-    dest: "$HOME/.oh-my-zsh/custom/plugins/zsh-completions"
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-completions"
     recursive: true
     accept_hostkey: false
     depth: 1
@@ -56,15 +51,21 @@
 
 - name: Check if zsh-syntax-highlighting plugins installed
   stat:
-    path: "$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    path: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
   register: zsh_syntaxhighlighting_result
   changed_when: false
 
 - name: Install zsh-syntax-highlighting plugin
   ansible.builtin.git:
     repo: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
-    dest: "$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
     recursive: true
     accept_hostkey: false
     depth: 1
   when: not zsh_syntaxhighlighting_result.stat.exists
+
+- name: Ensure oh-my-zsh themes are configured
+  ansible.builtin.lineinfile:
+    state: present
+    path: "$HOME/.zshrc"
+    line: "plugins=(git macos kubectl asdf zsh-autosuggestions zsh-completions zsh-syntax-highlighting)"

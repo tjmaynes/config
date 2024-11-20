@@ -2,6 +2,6 @@
 - name: Teardown development machine
   hosts: localhost
   gather_facts: yes
-  become: no
+  become: false
   roles:
     - role: teardown

@@ -14,11 +14,11 @@
 - name: Add nodejs path to PATH
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zshrc"
+    path: "$HOME/.zsh-dynamic"
     line: "export PATH=$HOME/.npm-packages/bin:$PATH"
 
 - name: Add node path to PATH
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zshrc"
+    path: "$HOME/.zsh-dynamic"
     line: "export NODE_PATH=$HOME/.npm-packages/lib/node_modules"

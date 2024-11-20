@@ -7,12 +7,12 @@
 
 - name: Ensure dotfiles project exists
   file:
-    path: "$HOME/workspace/code/dotfiles"
+    path: "{{ ansible_env.HOME }}/workspace/code/dotfiles"
     state: directory
     follow: true
 
 - name: Stow dotfiles in home directory
   ansible.builtin.shell:
-    cmd: stow --stow --verbose --target=$HOME .
-    chdir: "$HOME/workspace/code/dotfiles"
+    cmd: stow --stow --verbose --target={{ ansible_env.HOME }} .
+    chdir: "{{ ansible_env.HOME }}/workspace/code/dotfiles"
   changed_when: true

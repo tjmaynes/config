@@ -7,19 +7,19 @@
 
 - name: Create vim directory if it does not exist
   ansible.builtin.file:
-    path: $HOME/.vim
+    path: {{ ansible_env.HOME }}/.vim
     state: directory
     mode: '0755'
 
 - name: Create vim-autoload directory if it does not exist
   ansible.builtin.file:
-    path: $HOME/.vim/autoload
+    path: {{ ansible_env.HOME }}/.vim/autoload
     state: directory
     mode: '0755'
 
 - name: Check if vim-plug is downloaded
   stat:
-    path: "$HOME/.vim/autoload/plug.vim"
+    path: "{{ ansible_env.HOME }}/.vim/autoload/plug.vim"
   changed_when: false
   register: vim_plug_file_result
 
@@ -27,13 +27,13 @@
   get_url:
     url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     validate_certs: false
-    dest: "$HOME/.vim/autoload/plug.vim"
+    dest: "{{ ansible_env.HOME }}/.vim/autoload/plug.vim"
     mode: 0755
   when: not vim_plug_file_result.stat.exists
 
 - name: Check if vim-plug is installed
   stat:
-    path: "$HOME/.vim/plugged"
+    path: "{{ ansible_env.HOME }}/.vim/plugged"
   changed_when: false
   register: vim_plug_directory_result
 

@@ -1,0 +1,30 @@
+---
+- name: Setup debian environment
+  hosts: debian
+  gather_facts: yes
+  become: false
+  vars:
+    computername: zeus
+    hostname: zeus
+  vars_files:
+    - vars/common.yml
+    - vars/debian.yml
+  roles:
+    - role: debian
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+    - role: gantsign.visual-studio-code
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Setup common dev environment
+  hosts: all
+  gather_facts: yes
+  become: false
+  vars_files:
+    - vars/common.yml
+    - vars/git.yml
+  roles:
+    - role: common
+    - role: git
+    - role: dotfiles
+    - role: zsh
+    - role: asdf

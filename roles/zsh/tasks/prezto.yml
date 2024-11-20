@@ -1,14 +1,14 @@
 ---
 - name: Check if Prezto exists
   stat:
-    path: $HOME/.zprezto
+    path: "{{ ansible_env.HOME }}/.zprezto"
   register: prezto_result
   changed_when: false
 
 - name: Install Prezto
   ansible.builtin.git:
     repo: "https://github.com/sorin-ionescu/prezto.git"
-    dest: "$HOME/.zprezto"
+    dest: "{{ ansible_env.HOME }}/.zprezto"
     recursive: true
     accept_hostkey: false
     version: master
@@ -16,10 +16,10 @@
 
 - name: Link all Prezto files
   ansible.builtin.file:
-    src: "$HOME/.zprezto/runcoms/{{ item }}"
-    dest: $HOME/.{{ item }}
+    src: "{{ ansible_env.HOME }}/.zprezto/runcoms/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.{{ item }}"
     state: link
-  with_items:
+  loop:
     - zlogin
     - zlogout
     - zprofile

@@ -9,44 +9,20 @@ homebrew_cask_apps:
   - appcleaner
   - calibre
   - darktable
-  - docker
-  - jetbrains-toolbox
   - ledger-live
-  - mactex-no-gui
-  - macvim
   - mpv
-  - mythic
   - obs
   - obsidian
   - ollama
   - spotify
   - utm
-  - visual-studio-code
-
-mas_installed_apps:
-  - { name: "Amphetamine", id: 937984704 }
-  - { name: "DaisyDisk", id: 411643860 }
-  - { name: "Final Cut Pro", id: 424389933 }
-  - { name: "Bitwarden", id: 1352778147 }
 
 homebrew_installed_packages:
   - mas
-  - curl
-  - ffmpeg
-  - git
-  - git-lfs
-  - git-delta
-  - gpg2
-  - jq
-  - offlineimap
-  - pandoc
-  - ssh-copy-id
-  - stow
-  - tmux
-  - tree
-  - watchman
-  - webp
-  - zsh
+
+mas_installed_apps:
+  - { name: "Daisy Disk", id: 411643860 }
+  - { name: "Final Cut Pro", id: 424389933 }
 
 # Macos Settings
 

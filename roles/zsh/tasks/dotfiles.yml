@@ -1,9 +1,8 @@
 ---
-
 - name: Set PROJECTS_DIRECTORY env var if not already started
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zshrc"
+    path: "$HOME/.zsh-dynamic"
     line: "export PROJECTS_DIRECTORY={{ git_projects_dir }}"
 
 - name: Check .aliases exists
@@ -14,8 +13,8 @@
 - name: Ensure .aliases is setup
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zshrc"
-    line: "source $HOME/.aliases"
+    path: "$HOME/.zsh-dynamic"
+    line: ". \"$HOME/.aliases\""
   when: check_aliases_result.stat.exists
 
 - name: Check .custom-fns exists
@@ -26,18 +25,6 @@
 - name: Ensure .custom-fns is setup
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zshrc"
-    line: "source $HOME/.custom-fns.sh"
+    path: "$HOME/.zsh-dynamic"
+    line: ". \"$HOME/.custom-fns.sh\""
   when: check_customfns_result.stat.exists
-
-- name: Ensure oh-my-zsh themes are configured
-  ansible.builtin.lineinfile:
-    state: present
-    path: "$HOME/.zshrc"
-    line: "plugins=(git macos kubectl asdf)"
-
-- name: Ensure history timestamp is set
-  ansible.builtin.lineinfile:
-    state: present
-    path: "$HOME/.zshrc"
-    line: "export HISTTIMEFORMAT=\"%F %T\""

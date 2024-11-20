@@ -6,9 +6,21 @@
   failed_when: zsh_result == ""
   changed_when: false
 
+- name: Set login shell of user {{ ansible_env.USER }} to `/bin/zsh` with `usermod`
+  ansible.builtin.user:
+    name: "{{ ansible_env.USER }}"
+    shell: /bin/zsh
+  become: true
+  changed_when: false
+
+- name: Create zsh-dynamic file
+  file:
+    path: "{{ ansible_env.HOME }}/.zsh-dynamic"
+    state: touch
+
 - include_tasks: oh-my-zsh.yml
 - include_tasks: asdf.yml
-- include_tasks: node.yml
 - include_tasks: dotfiles.yml
 - include_tasks: macos.yml
-  when: ansible_distribution in ['MacOSX']
+  when: ansible_distribution == 'MacOSX'
+- include_tasks: node.yml

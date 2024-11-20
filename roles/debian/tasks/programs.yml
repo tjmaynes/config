@@ -1,12 +1,47 @@
 ---
-- name: Ensure apt-get is installed
-  command: command -v apt-get
-  register: aptget_result
-  failed_when: aptget_result == ""
-  changed_when: false
+- name: Add common development tools
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - software-properties-common
+    - autoconf
+    - automake
+    - gcc
+    - g++
+    - apt-transport-https
+    - build-essential
+    - ca-certificates
+    - zlib1g-dev
+    - libffi-dev
+    - libssl-dev
+    - libbz2-dev
+    - libreadline-dev
+    - libsqlite3-dev
+    - liblzma-dev
+    - libncurses-dev
+    - tk-dev
+    - unzip
+    - wget
+  become: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
-- name: Add apt-get programs
-  ansible.builtin.shell:
-    cmd: apt-get install -y {{ item }}
-    chdir: "$HOME"
-  loop: "{{ aptget_programs }}"
+- name: Add apt programs
+  apt:
+    name: "{{ item.name }}"
+    state: present
+  loop: "{{ apt_programs | default([]) }}"
+  become: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Add snap classic programs
+  command: "snap install --classic {{ item }}"
+  loop: "{{ snap_classic_programs | default([]) }}"
+  become: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Add snap programs
+  command: "snap install {{ item }}"
+  loop: "{{ snap_programs | default([]) }}"
+  become: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

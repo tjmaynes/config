@@ -13,10 +13,10 @@
   loop: "{{ ssh_keys }}"
 
 - name: Enable ssh agent
-  shell: eval `ssh-agent -s`
+  shell: eval `ssh-agent -s` && ssh-add
   changed_when: false
 
 - name: Add ssh private keys to ssh agent
-  command: "ssh-add -K {{ ansible_env.HOME }}/.ssh/{{item.name}}"
+  command: "ssh-add {{ ansible_env.HOME }}/.ssh/{{item.name}}"
   loop: "{{ ssh_keys }}"
   changed_when: false

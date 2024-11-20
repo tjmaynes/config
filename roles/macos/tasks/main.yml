@@ -1,6 +1,9 @@
 ---
 - include_tasks: hostname.yml
+  when: ansible_distribution == 'MacOSX'
 - include_tasks: system.yml
+  when: ansible_distribution == 'MacOSX'
 - include_tasks: dock.yml
+  when: ansible_distribution == 'MacOSX'
 - include_tasks: trackpad_tap_to_click.yml
-  when: trackpad_tap_to_click != None
+  when: trackpad_tap_to_click != None and ansible_distribution == 'MacOSX'

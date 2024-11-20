@@ -3,8 +3,8 @@ install:
 	./scripts/install.sh
 
 setup:
-	. .venv/bin/activate; ansible-playbook setup.yml --ask-become-pass \
-		--inventory-file inventory/hosts.ini
+	chmod +x ./scripts/setup.sh
+	./scripts/setup.sh
 
 bootstrap: install setup
 
