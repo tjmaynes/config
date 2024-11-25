@@ -1,13 +1,21 @@
 ---
-- name: Add Docker GPG apt key
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
+- name: Add required Docker programs
+  apt:
+    name: "{{ item }}"
     state: present
+    update_cache: true
+  loop:
+    - python3-debian
+  become: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
-- name: Add Docker repository
-  apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu focal stable
-    state: present
+- name: Add Docker GPG apt key
+  deb822_repository:
+    name: docker
+    types: deb
+    uris: https://download.docker.com/linux/ubuntu
+    suites: '{{ ansible_distribution_release }}'
+    components: stable
 
 - name: Update apt and install Docker packages
   apt:
@@ -17,4 +25,3 @@
   with_items:
     - docker-ce
     - docker-compose-plugin
-

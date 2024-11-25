@@ -29,7 +29,7 @@
 
 - name: Add apt programs
   apt:
-    name: "{{ item.name }}"
+    name: "{{ item }}"
     state: present
     update_cache: true
   loop: "{{ apt_programs | default([]) }}"

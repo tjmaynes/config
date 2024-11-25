@@ -1,11 +1,24 @@
 ---
+- name: Add Syncthing repository
+  deb822_repository:
+    name: syncthing
+    types: deb
+    uris: https://apt.syncthing.net/
+    suites: '{{ ansible_distribution_release }}'
+    components: stable
+    architectures: '{{ ansible_architecture }}'
+    signed_by: https://syncthing.net/release-key.gpg
+
 - name: Add Libretro repository
   apt_repository:
     repo: ppa:libretro/stable
     state: present
 
-- name: Update apt and install Retroarch packages
+- name: Update apt and install gaming packages
   apt:
-    name: retroarch
+    name: item
     state: latest
     update_cache: true
+  loop:
+    - syncthing
+    - retroarch

@@ -1,21 +1,21 @@
 ---
 apt_programs:
-  - { name: "curl" }
-  - { name: "git" }
-  - { name: "git-lfs" }
-  # - { name: "git-delta" }
-  - { name: "gnupg" }
-  - { name: "ffmpeg" }
-  - { name: "jq" }
-  - { name: "openssh-client" }
-  - { name: "pandoc" }
-  - { name: "stow" }
-  - { name: "texlive-xetex" }
-  - { name: "tmux" }
-  - { name: "tree" }
-  - { name: "vim" }
-  - { name: "webp" }
-  - { name: "zsh" }
+  - curl
+  - git
+  - git-lfs
+# - git-delta
+  - gnupg
+  - ffmpeg
+  - jq
+  - openssh-client
+  - pandoc
+  - stow
+  - texlive-xetex
+  - tmux
+  - tree
+  - vim
+  - webp
+  - zsh
 
 snap_classic_programs:
   - emacs
