@@ -13,7 +13,6 @@ homebrew_cask_apps:
   - mpv
   - obs
   - obsidian
-  - ollama
   - spotify
   - utm
 
@@ -23,6 +22,7 @@ homebrew_installed_packages:
 mas_installed_apps:
   - { name: "Daisy Disk", id: 411643860 }
   - { name: "Final Cut Pro", id: 424389933 }
+  - { name: "Wipr 2", id: 1662217862 }
 
 # Macos Settings
 

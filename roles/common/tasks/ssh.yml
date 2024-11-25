@@ -1,5 +1,5 @@
 ---
-- name: Ensure ~/.ssh exists
+- name: Ensure {{ ansible_env.HOME }}/.ssh exists
   file:
     path: "{{ ansible_env.HOME }}/.ssh"
     state: directory
@@ -7,16 +7,12 @@
 
 - name: Generate ssh keys
   openssh_keypair:
-    path: "{{ ansible_env.HOME }}/.ssh/{{item.name}}"
+    path: "{{ ansible_env.HOME }}/.ssh/{{ item.name }}"
     type: "{{ item.type | default('ed25519')}}"
     comment: "{{ item.comment | default(omit)}}"
   loop: "{{ ssh_keys }}"
 
-- name: Enable ssh agent
-  shell: eval `ssh-agent -s` && ssh-add
-  changed_when: false
-
 - name: Add ssh private keys to ssh agent
-  command: "ssh-add {{ ansible_env.HOME }}/.ssh/{{item.name}}"
+  command:  bash -lc "eval `ssh-agent -s` && ssh-add {{ ansible_env.HOME }}/.ssh/{{item.name}}"
   loop: "{{ ssh_keys }}"
   changed_when: false

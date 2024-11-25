@@ -24,8 +24,6 @@
     - tk-dev
     - unzip
     - wget
-  become: true
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Add apt programs
   apt:
@@ -33,17 +31,11 @@
     state: present
     update_cache: true
   loop: "{{ apt_programs | default([]) }}"
-  become: true
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Add snap classic programs
   command: "snap install --classic {{ item }}"
   loop: "{{ snap_classic_programs | default([]) }}"
-  become: true
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Add snap programs
   command: "snap install {{ item }}"
   loop: "{{ snap_programs | default([]) }}"
-  become: true
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

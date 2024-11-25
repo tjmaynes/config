@@ -1,11 +1,12 @@
 ---
 - name: Setup debian environment
   hosts: debian
-  gather_facts: yes
-  become: false
+  gather_facts: true
+  become: true
   vars:
     computername: zeus
     hostname: zeus
+    debian_gui: true
   vars_files:
     - vars/common.yml
     - vars/debian.yml
@@ -15,8 +16,8 @@
 
 - name: Setup common dev environment
   hosts: all
-  gather_facts: yes
-  become: false
+  gather_facts: true
+  become: true
   vars_files:
     - vars/common.yml
     - vars/git.yml
