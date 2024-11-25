@@ -1,0 +1,11 @@
+---
+- name: Add Libretro repository
+  apt_repository:
+    repo: ppa:libretro/stable
+    state: present
+
+- name: Update apt and install Retroarch packages
+  apt:
+    name: retroarch
+    state: latest
+    update_cache: true
