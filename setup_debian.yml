@@ -11,9 +11,7 @@
     - vars/debian.yml
   roles:
     - role: debian
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
     - role: gantsign.visual-studio-code
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Setup common dev environment
   hosts: all

@@ -1,2 +1,3 @@
 ---
 - include_tasks: programs.yml
+- include_tasks: docker.yml

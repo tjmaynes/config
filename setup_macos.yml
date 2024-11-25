@@ -11,15 +11,10 @@
     - vars/macos.yml
   roles:
     - role: elliotweiser.osx-command-line-tools
-      when: ansible_distribution == 'MacOSX'
     - role: geerlingguy.mac.homebrew
-      when: ansible_distribution == 'MacOSX'
     - role: geerlingguy.mac.mas
-      when: ansible_distribution == 'MacOSX'
     - role: geerlingguy.mac.dock
-      when: ansible_distribution == 'MacOSX'
     - role: macos
-      when: ansible_distribution == 'MacOSX'
 
 - name: Setup common dev environment
   hosts: all

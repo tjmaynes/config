@@ -3,6 +3,7 @@
   apt:
     name: "{{ item }}"
     state: present
+    update_cache: true
   loop:
     - software-properties-common
     - autoconf
@@ -30,6 +31,7 @@
   apt:
     name: "{{ item.name }}"
     state: present
+    update_cache: true
   loop: "{{ apt_programs | default([]) }}"
   become: true
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
