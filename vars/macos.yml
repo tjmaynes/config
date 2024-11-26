@@ -8,11 +8,9 @@ homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   - appcleaner
   - calibre
-  - darktable
   - ledger-live
   - mpv
   - obs
-  - obsidian
   - spotify
   - utm
 

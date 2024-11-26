@@ -16,16 +16,12 @@
     - role: geerlingguy.mac.dock
     - role: macos
 
-- name: Setup common dev environment
-  hosts: all
-  gather_facts: true
-  become: false
-  vars_files:
-    - vars/common.yml
-    - vars/git.yml
-  roles:
-    - role: common
-    - role: git
-    - role: dotfiles
-    - role: zsh
-    - role: asdf
+# - name: Setup common dev environment
+#   hosts: all
+#   gather_facts: true
+#   become: false
+#   vars_files:
+#     - vars/common.yml
+#     - vars/git.yml
+#   roles:
+#     - role: common
