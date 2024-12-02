@@ -8,19 +8,40 @@ homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   - appcleaner
   - calibre
+  # - docker
+  # - jetbrains-toolbox
   - ledger-live
   - mpv
   - obs
+  # - ollama
   - spotify
   - utm
-
-homebrew_installed_packages:
-  - mas
+  - visual-studio-code
 
 mas_installed_apps:
+  # - { name: "Bitwarden", id: 1352778147 }
   - { name: "Daisy Disk", id: 411643860 }
   - { name: "Final Cut Pro", id: 424389933 }
   - { name: "Wipr 2", id: 1662217862 }
+
+homebrew_installed_packages:
+  - mas
+  # - curl
+  # - ffmpeg
+  # - git
+  # - git-lfs
+  # - git-delta
+  # - gpg2
+  # - jq
+  # - offlineimap
+  # - pandoc
+  # - ssh-copy-id
+  # - stow
+  # - tmux
+  # - tree
+  # - watchman
+  # - webp
+  # - zsh
 
 # Macos Settings
 
