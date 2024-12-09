@@ -8,10 +8,10 @@ homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   - appcleaner
   - calibre
-  - chatgpt
-  # - docker
-  # - jetbrains-toolbox
+  - docker
+  - jetbrains-toolbox
   - ledger-live
+  - mactex-no-gui
   - mpv
   - obs
   # - ollama
@@ -24,28 +24,26 @@ mas_installed_apps:
   # - { name: "Bitwarden", id: 1352778147 }
   - { name: "Daisy Disk", id: 411643860 }
   - { name: "Final Cut Pro", id: 424389933 }
-  - { name: "MindNode", id: 2143818060 }
-  - { name: "Resident Evil 4", id: 2127574510 }
   - { name: "Wipr 2", id: 1662217862 }
 
 homebrew_installed_packages:
   - mas
-  # - curl
-  # - ffmpeg
-  # - git
-  # - git-lfs
-  # - git-delta
-  # - gpg2
-  # - jq
-  # - offlineimap
-  # - pandoc
-  # - ssh-copy-id
-  # - stow
-  # - tmux
-  # - tree
-  # - watchman
-  # - webp
-  # - zsh
+  - curl
+  - ffmpeg
+  - git
+  - git-lfs
+  - git-delta
+  - gpg2
+  - jq
+  - offlineimap
+  - pandoc
+  - ssh-copy-id
+  - stow
+  - tmux
+  - tree
+  - watchman
+  - webp
+  - zsh
 
 # Macos Settings
 

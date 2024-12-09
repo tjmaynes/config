@@ -3,8 +3,6 @@
 set -e
 
 function ensure_virtualenv_installed() {
-  python3 -m pip install --upgrade pip
-
   if [[ -z "$(command -v virtualenv)" ]]; then
     python3 -m pip install virtualenv
   fi
@@ -21,7 +19,8 @@ function setup_debian() {
     git \
     make \
     python3 \
-    python3-pip
+    python3-pip \
+    ubuntu-desktop
 }
 
 function accept_xcode_license() {
@@ -73,10 +72,12 @@ function main() {
 
   ensure_virtualenv_installed
 
-  test -d .venv || python3 -m virtualenv .venv
+  test -d .venv || python3 -m venv .venv
   . .venv/bin/activate
 
-  python3 -m pip install --no-cache -r requirements.txt
+  pip3 install --upgrade pip
+
+  pip3 install --no-cache -r requirements.txt
 
   ansible-galaxy install \
     -r collections/requirements.yml \

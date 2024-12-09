@@ -17,16 +17,16 @@
     - role: macos
       when: ansible_distribution in ['MacOSX']
 
-# - name: Setup common dev environment
-#   hosts: all
-#   gather_facts: true
-#   become: false
-#   vars_files:
-#     - vars/common.yml
-#     - vars/git.yml
-#   roles:
-#     - role: common
-#     - role: asdf
-#     - role: zsh
-#     - role: git
-#     - role: dotfiles
+- name: Setup common dev environment
+  hosts: all
+  gather_facts: true
+  become: false
+  vars_files:
+    - vars/common.yml
+    - vars/git.yml
+  roles:
+    - role: common
+    - role: asdf
+    - role: zsh
+    - role: git
+    - role: dotfiles
