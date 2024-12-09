@@ -28,3 +28,17 @@ To teardown machine, run the following command:
 ```bash
 make teardown
 ```
+
+## Ubuntu users
+To resize / extend the filesystem, run the following commands:
+```bash
+sudo lsblk /dev/vda
+
+sudo cfdisk # select "Resize", set "New Size", hit "Write", and "Quit"
+
+sudo lvextend -L+10G /dev/ubuntu-vg/ubuntu-lv
+
+sudo resize2fs /dev/mapper/ubunut...
+
+sudo df -h
+```

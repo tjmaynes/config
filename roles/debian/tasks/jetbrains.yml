@@ -1,0 +1,24 @@
+---
+- name: Add required tools for jetbrains
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  loop:
+    - libfuse2
+
+- name: Creates directory
+  ansible.builtin.file:
+    path: /opt
+    state: directory
+
+- name: Download and unarchive jetbrains-toolbox
+  ansible.builtin.unarchive:
+    src: "https://download.jetbrains.com/toolbox/jetbrains-toolbox-2.5.2.35332-arm64.tar.gz"
+    dest: /opt #/usr/local/bin
+    remote_src: yes
+  when: ansible_architecture == "aarch64"
+
+- name: Changing perm of "/opt/jetbrains-toolbox-2.5.2.35332/jetbrains-toolbox", adding "+x"
+  file: dest=/opt/jetbrains-toolbox-2.5.2.35332/jetbrains-toolbox mode=a+x
+  when: ansible_architecture == "aarch64"
