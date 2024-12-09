@@ -2,10 +2,6 @@
 
 set -e
 
-function ensure_virtualenv_installed() {
-
-}
-
 function setup_debian() {
   sudo apt update -y
 
@@ -39,12 +35,10 @@ function install_homebrew() {
 
     if [[ $(uname -m) == 'arm64' ]]; then
       export PATH="/opt/homebrew/bin:$PATH" >> "$HOME/.zshrc"
-      echo "eval $(/opt/homebrew/bin/brew shellenv)" >> "$HOME/.zshrc"
 
       /opt/homebrew/bin/brew shellenv
     else
       export PATH="/usr/local/bin:$PATH" >> "$HOME/.zshrc"
-      echo "eval $(/usr/local/bin/brew shellenv)" >> "$HOME/.zshrc"
 
       /usr/local/bin/brew shellenv
     fi

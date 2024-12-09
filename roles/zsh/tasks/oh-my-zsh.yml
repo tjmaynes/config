@@ -63,9 +63,3 @@
     accept_hostkey: false
     depth: 1
   when: not zsh_syntaxhighlighting_result.stat.exists
-
-- name: Ensure oh-my-zsh themes are configured
-  ansible.builtin.lineinfile:
-    state: present
-    path: "$HOME/.zshrc"
-    line: "plugins=(git macos kubectl asdf zsh-autosuggestions zsh-completions zsh-syntax-highlighting)"

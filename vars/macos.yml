@@ -7,7 +7,6 @@ homebrew_cask_appdir: /Applications
 
 homebrew_cask_apps:
   - appcleaner
-  - calibre
   - docker
   - jetbrains-toolbox
   - ledger-live

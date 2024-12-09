@@ -26,7 +26,7 @@
     - vars/git.yml
   roles:
     - role: common
-    - role: asdf
-    - role: zsh
     - role: git
     - role: dotfiles
+    - role: zsh
+    - role: asdf
