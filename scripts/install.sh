@@ -3,9 +3,7 @@
 set -e
 
 function ensure_virtualenv_installed() {
-  if [[ -z "$(command -v virtualenv)" ]]; then
-    python3 -m pip install virtualenv
-  fi
+
 }
 
 function setup_debian() {
@@ -20,6 +18,7 @@ function setup_debian() {
     make \
     python3 \
     python3-pip \
+    python3-virtualenv \
     ubuntu-desktop
 }
 
@@ -33,6 +32,8 @@ function accept_xcode_license() {
 }
 
 function install_homebrew() {
+  # accept_xcode_license
+
   if [[ -z "$(command -v brew)" ]]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
@@ -51,8 +52,6 @@ function install_homebrew() {
 }
 
 function setup_macos() {
-  # accept_xcode_license
-
   install_homebrew
 
   if [[ -z "$(command -v python3)" ]]; then
@@ -61,6 +60,10 @@ function setup_macos() {
 
   OPENSSL_LOCATION=$(brew --prefix openssl)
   export LDFLAGS="-I/$OPENSSL_LOCATION/include -L/$OPENSSL_LOCATION/lib"
+
+  if [[ -z "$(command -v virtualenv)" ]]; then
+    brew install virtualenv
+  fi
 }
 
 function main() {
@@ -70,12 +73,8 @@ function main() {
     *)          echo "Unable to run install script on this '$OSTYPE' operating system..." ; exit 1 ;;
   esac
 
-  ensure_virtualenv_installed
-
   test -d .venv || python3 -m venv .venv
   . .venv/bin/activate
-
-  pip3 install --upgrade pip
 
   pip3 install --no-cache -r requirements.txt
 
