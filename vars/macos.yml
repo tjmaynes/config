@@ -17,6 +17,7 @@ homebrew_cask_apps:
   # - ollama
   - steam
   - spotify
+  - synology-drive
   - utm
   - visual-studio-code
 
