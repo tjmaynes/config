@@ -8,6 +8,7 @@ homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   - appcleaner
   - docker
+  - figma
   - jetbrains-toolbox
   - ledger-live
   - mactex-no-gui
