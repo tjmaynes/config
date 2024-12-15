@@ -4,8 +4,8 @@
 - include_tasks: docker.yml
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 - include_tasks: jetbrains.yml
-  when: debian_gui and ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  when: enable_debian_gui and ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 - include_tasks: media.yml
-  when: debian_gui and ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  when: enable_debian_gui and ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 - include_tasks: gaming.yml
-  when: debian_gui and ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  when: enable_debian_gui and ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

@@ -6,7 +6,7 @@
   vars:
     computername: zeus
     hostname: zeus
-    debian_gui: true
+    enable_debian_gui: true
   vars_files:
     - vars/common.yml
     - vars/debian.yml
@@ -18,6 +18,8 @@
   hosts: all
   gather_facts: true
   become: true
+  vars:
+    enable_java: false
   vars_files:
     - vars/common.yml
     - vars/git.yml

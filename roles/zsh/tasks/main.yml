@@ -15,7 +15,7 @@
 
 - name: Create zsh-dynamic file
   file:
-    path: "{{ ansible_env.HOME }}/.zsh-dynamic"
+    path: "{{ ansible_env.HOME }}/.zsh_dynamic"
     state: touch
 
 - include_tasks: oh-my-zsh.yml

@@ -2,29 +2,30 @@
 - name: Ensure asdf support
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zsh-dynamic"
+    path: "$HOME/.zsh_dynamic"
     line: "export ASDF_DIR=$HOME/.asdf"
 
 - name: Ensure asdf support
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zsh-dynamic"
+    path: "$HOME/.zsh_dynamic"
     line: ". \"$HOME/.asdf/asdf.sh\""
 
 - name: Ensure asdf-completion support
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zsh-dynamic"
+    path: "$HOME/.zsh_dynamic"
     line: ". \"$HOME/.asdf/completions/asdf.bash\""
 
 - name: Ensure asdf-direnv support
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zsh-dynamic"
+    path: "$HOME/.zsh_dynamic"
     line: ". \"$HOME/.config/asdf-direnv/zshrc\""
 
 - name: Ensure asdf-java support
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zsh-dynamic"
+    path: "$HOME/.zsh_dynamic"
     line: ". \"$HOME/.asdf/plugins/java/set-java-home.zsh\""
+  when: enable_java_env

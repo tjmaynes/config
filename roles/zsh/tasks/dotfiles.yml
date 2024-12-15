@@ -2,7 +2,7 @@
 - name: Set PROJECTS_DIRECTORY env var if not already started
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zsh-dynamic"
+    path: "$HOME/.zsh_dynamic"
     line: "export PROJECTS_DIRECTORY={{ git_projects_dir }}"
 
 - name: Check .aliases exists
@@ -13,7 +13,7 @@
 - name: Ensure .aliases is setup
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zsh-dynamic"
+    path: "$HOME/.zsh_dynamic"
     line: ". \"$HOME/.aliases\""
   when: check_aliases_result.stat.exists
 
@@ -25,6 +25,6 @@
 - name: Ensure .custom-fns is setup
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zsh-dynamic"
+    path: "$HOME/.zsh_dynamic"
     line: ". \"$HOME/.custom-fns.sh\""
   when: check_customfns_result.stat.exists
