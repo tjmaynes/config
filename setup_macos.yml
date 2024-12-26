@@ -21,8 +21,6 @@
   hosts: all
   gather_facts: true
   become: false
-  vars:
-    enable_java: false
   vars_files:
     - vars/common.yml
     - vars/git.yml
