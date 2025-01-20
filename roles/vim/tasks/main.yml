@@ -7,13 +7,13 @@
 
 - name: Create vim directory if it does not exist
   ansible.builtin.file:
-    path: {{ ansible_env.HOME }}/.vim
+    path: "{{ ansible_env.HOME }}/.vim"
     state: directory
     mode: '0755'
 
 - name: Create vim-autoload directory if it does not exist
   ansible.builtin.file:
-    path: {{ ansible_env.HOME }}/.vim/autoload
+    path: "{{ ansible_env.HOME }}/.vim/autoload"
     state: directory
     mode: '0755'
 

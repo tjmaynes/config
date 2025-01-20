@@ -7,14 +7,16 @@ homebrew_cask_appdir: /Applications
 
 homebrew_cask_apps:
   - appcleaner
+  - calibre
+  - cursor
   - docker
-  - figma
   - jetbrains-toolbox
   - ledger-live
   - mactex-no-gui
+  - macvim
   - mpv
   - obs
-  # - ollama
+  - ollama
   - steam
   - spotify
   - synology-drive

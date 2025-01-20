@@ -24,6 +24,7 @@
   roles:
     - role: common
     - role: git
+    - role: vim
     - role: dotfiles
     - role: zsh
     - role: asdf
