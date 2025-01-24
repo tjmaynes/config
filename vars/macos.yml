@@ -18,8 +18,8 @@ homebrew_cask_apps:
   - obs
   - ollama
   - steam
-  - spotify
   - synology-drive
+  - tailscale
   - utm
   - visual-studio-code
 

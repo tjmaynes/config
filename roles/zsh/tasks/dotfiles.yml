@@ -1,9 +1,15 @@
 ---
-- name: Set PROJECTS_DIRECTORY env var if not already started
+- name: Set WORKSPACE_DIRECTORY env var if not already started
   ansible.builtin.lineinfile:
     state: present
     path: "$HOME/.zsh_dynamic"
-    line: "export PROJECTS_DIRECTORY={{ git_projects_dir }}"
+    line: "export WORKSPACE_DIRECTORY={{ workspace_dir }}"
+
+- name: Set CODE_DIRECTORY env var if not already started
+  ansible.builtin.lineinfile:
+    state: present
+    path: "$HOME/.zsh_dynamic"
+    line: "export CODE_DIRECTORY={{ git_projects_dir }}"
 
 - name: Check .aliases exists
   stat:
