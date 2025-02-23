@@ -8,8 +8,7 @@ homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   - appcleaner
   - calibre
-  - cursor
-  - docker
+  - discord
   - jetbrains-toolbox
   - ledger-live
   - mactex-no-gui
@@ -17,14 +16,12 @@ homebrew_cask_apps:
   - mpv
   - obs
   - ollama
-  - steam
+  - podman
   - synology-drive
   - tailscale
-  - utm
   - visual-studio-code
 
 mas_installed_apps:
-  # - { name: "Bitwarden", id: 1352778147 }
   - { name: "Daisy Disk", id: 411643860 }
   - { name: "Final Cut Pro", id: 424389933 }
   - { name: "Wipr 2", id: 1662217862 }
