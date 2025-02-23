@@ -1,30 +1,35 @@
 ---
-- name: Check if asdf is installed
-  stat:
-    path: "{{ ansible_env.HOME }}/.asdf"
+- name: Ensure asdf is installed
+  command: command -v asdf
   register: asdf_result
 
-- name: Download asdf
-  ansible.builtin.git:
-    repo: "https://github.com/asdf-vm/asdf.git"
-    dest: "{{ ansible_env.HOME }}/.asdf"
-    version: "{{ asdf_branch }}"
-    accept_hostkey: true
-    update: false
-  when: not asdf_result.stat.exists
+- name: Get latest release of asdf
+  community.general.github_release:
+    user: asdf-vm
+    repo: asdf
+    action: latest_release
+  register: asdf_latest_release
 
-- name: "Source asdf script"
-  template:
-    src: "{{ ansible_env.HOME }}/.asdf/asdf.sh"
-    dest: "{{ ansible_env.HOME }}/.asdf/asdf.sh"
-    mode: 0755
+- name: Set latest asdf version
+  set_fact:
+    asdf_latest_version: "{{ asdf_latest_release.tag }}"
+
+- name: Download latest asdf
+  ansible.builtin.get_url:
+    url: "https://github.com/asdf-vm/asdf/releases/download/{{ asdf_latest_version }}/asdf-{{ asdf_latest_version }}-{{ ansible_os_family | lower }}-{{ ansible_architecture }}.tar.gz"
+    dest: "/tmp/asdf-{{ asdf_latest_version }}.tar.gz"
+
+- name: Unarchive and install latest asdf
+  command: "tar -xvzf /tmp/asdf-{{ asdf_latest_version }}.tar.gz && mv asdf /usr/local/bin && rm -rf /tmp/asdf-{{ asdf_latest_version }}.tar.gz"
+  become: true
+  when: asdf_result is failed
 
 - name: Add asdf plugins
-  command: "bash -lc 'source {{ ansible_env.HOME }}/.asdf/asdf.sh && asdf plugin add {{ item.name }} {{ item.url }}'"
+  command: "asdf plugin add {{ item.name }} {{ item.url }}"
   loop: "{{ asdf_plugins }}"
 
 - name: Run asdf post install script for plugins
-  command: "bash -lc 'source {{ ansible_env.HOME }}/.asdf/asdf.sh && {{ item.post_install }}'"
+  command: "{{ item.post_install }}"
   loop: "{{ asdf_plugins }}"
   when: "'post_install' in item"
 
@@ -34,5 +39,5 @@
   register: tool_versions_file_result
 
 - name: Run asdf install
-  command: "bash -lc 'source {{ ansible_env.HOME }}/.asdf/asdf.sh && asdf install'"
+  command: "asdf install"
   when: tool_versions_file_result.stat.exists

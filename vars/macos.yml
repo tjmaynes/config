@@ -16,7 +16,6 @@ homebrew_cask_apps:
   - mpv
   - obs
   - ollama
-  - podman
   - synology-drive
   - tailscale
   - visual-studio-code
@@ -37,6 +36,7 @@ homebrew_installed_packages:
   - jq
   - offlineimap
   - pandoc
+  # - podman
   - ssh-copy-id
   - stow
   - tmux
