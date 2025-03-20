@@ -9,13 +9,13 @@ homebrew_cask_apps:
   - appcleaner
   - calibre
   - discord
+  - docker
   - jetbrains-toolbox
   - ledger-live
   - mactex-no-gui
   - macvim
   - mpv
   - obs
-  - ollama
   - synology-drive
   - tailscale
   - visual-studio-code
@@ -24,6 +24,7 @@ mas_installed_apps:
   - { name: "Daisy Disk", id: 411643860 }
   - { name: "Final Cut Pro", id: 424389933 }
   - { name: "Wipr 2", id: 1662217862 }
+  - { name: "Xcode", id: 497799835 }
 
 homebrew_installed_packages:
   - mas
@@ -36,7 +37,6 @@ homebrew_installed_packages:
   - jq
   - offlineimap
   - pandoc
-  # - podman
   - ssh-copy-id
   - stow
   - tmux
