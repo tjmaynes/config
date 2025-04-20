@@ -2,7 +2,7 @@
 
 - name: Ensure developer directory exists
   file:
-    path: "{{ workspace_dir }}"
+    path: "{{ git_projects_dir }}"
     state: directory
     follow: true
 

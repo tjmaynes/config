@@ -24,3 +24,5 @@
 - include_tasks: macos.yml
   when: ansible_distribution == 'MacOSX'
 - include_tasks: node.yml
+- include_tasks: windsurf.yml
+- include_tasks: secrets.yml

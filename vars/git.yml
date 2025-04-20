@@ -1,9 +1,9 @@
 ---
-git_projects_dir: "{{ workspace_dir }}/code"
-
 git_username: tjmaynes
 git_fullname: TJ Maynes
 git_email: tj@tjmaynes.com
+
+git_projects_dir: "{{ workspace_dir }}/code/{{ git_username }}"
 
 git_projects:
   - dest: "config"

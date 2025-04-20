@@ -70,7 +70,7 @@ function main() {
   test -d .venv || python3 -m venv .venv
   . .venv/bin/activate
 
-  pip3 install --no-cache -r requirements.txt
+  python3 -m pip install --no-cache -r requirements.txt
 
   ansible-galaxy install \
     -r collections/requirements.yml \
