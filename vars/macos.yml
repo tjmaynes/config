@@ -16,9 +16,9 @@ homebrew_cask_apps:
   - macvim
   - mpv
   - obs
+  - pcsx2
   - synology-drive
   - visual-studio-code
-  - windsurf
 
 mas_installed_apps:
   - { name: "Daisy Disk", id: 411643860 }
