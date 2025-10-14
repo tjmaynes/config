@@ -3,7 +3,6 @@ apt_programs:
   - curl
   - git
   - git-lfs
-# - git-delta
   - gnupg
   - ffmpeg
   - jq

@@ -27,4 +27,4 @@
     - role: vim
     - role: dotfiles
     - role: zsh
-    - role: asdf
+    - role: mise

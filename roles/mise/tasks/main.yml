@@ -1,0 +1,22 @@
+---
+- name: Ensure mise is installed
+  command: command -v mise
+  register: mise_result
+
+- name: Install mise plugins
+  command: "mise plugin install {{ item.name }} {{ item.url }}"
+  loop: "{{ mise_plugins }}"
+
+- name: Run mise post-install script for plugins
+  command: "{{ item.post_install }}"
+  loop: "{{ mise_plugins }}"
+  when: "'post_install' in item"
+
+- name: Check if .tool-versions file exists
+  stat:
+    path: "{{ ansible_env.HOME }}/.tool-versions"
+  register: tool_versions_file_result
+
+- name: Run mise install
+  command: "mise install"
+  when: tool_versions_file_result.stat.exists
