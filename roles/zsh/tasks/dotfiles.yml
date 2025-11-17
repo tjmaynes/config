@@ -11,26 +11,20 @@
     path: "$HOME/.zsh_dynamic"
     line: "export CODE_DIRECTORY={{ git_projects_dir }}"
 
-- name: Check .aliases exists
-  stat:
-    path: "$HOME/.aliases"
-  register: check_aliases_result
-
 - name: Ensure .aliases is setup
   ansible.builtin.lineinfile:
     state: present
     path: "$HOME/.zsh_dynamic"
     line: ". \"$HOME/.aliases\""
-  when: check_aliases_result.stat.exists
-
-- name: Check .custom-fns exists
-  stat:
-    path: "$HOME/.custom-fns.sh"
-  register: check_customfns_result
 
 - name: Ensure .custom-fns is setup
   ansible.builtin.lineinfile:
     state: present
     path: "$HOME/.zsh_dynamic"
     line: ". \"$HOME/.custom-fns.sh\""
-  when: check_customfns_result.stat.exists
+
+- name: Ensure ~/.local/bin is available in PATH
+  ansible.builtin.lineinfile:
+    state: present
+    path: "$HOME/.zsh_dynamic"
+    line: 'export PATH="$HOME/.local/bin:$PATH"'

@@ -8,13 +8,13 @@ homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   - appcleaner
   - calibre
+  - claude-code
   - discord
   - docker
   - jetbrains-toolbox
   - ledger-live
   - mactex-no-gui
   - macvim
-  - mpv
   - obs
   - synology-drive
   - visual-studio-code

@@ -31,3 +31,4 @@
     - role: dotfiles
     - role: zsh
     - role: mise
+    - role: ai

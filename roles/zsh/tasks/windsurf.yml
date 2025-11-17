@@ -1,7 +1,0 @@
----
-
-- name: Ensure windsurf-path is set
-  ansible.builtin.lineinfile:
-    state: present
-    path: "$HOME/.zsh_dynamic"
-    line: "export PATH=$HOME/.codium/windsurf/bin:$PATH"

@@ -14,7 +14,7 @@ function main() {
 
   case "$OSTYPE" in
     linux-gnu*) CONFIG_OS_TYPE=debian ;;
-    darwin*)    CONFIG_OS_TYPE=macos ;; 
+    darwin*)    CONFIG_OS_TYPE=macos ;;
     *)          echo "Unable to run install script on this '$OSTYPE' operating system..." ; exit 1 ;;
   esac
 
