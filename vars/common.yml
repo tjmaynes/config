@@ -10,12 +10,3 @@ ssh_keys:
     host: "github.com"
     type: "ed25519"
     comment: "TJ Maynes"
-
-required_secrets:
-  CONTEXT7_API_KEY: "{{ lookup('ansible.builtin.env', 'CONTEXT7_API_KEY') }}"
-
-mcps:
-  - name: context7
-    transport: http
-    url: https://mcp.context7.com/mcp
-    extras: "--header 'CONTEXT7_API_KEY: {{ required_secrets.CONTEXT7_API_KEY }}'"

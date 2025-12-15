@@ -9,13 +9,13 @@ homebrew_cask_apps:
   - appcleaner
   - calibre
   - claude-code
-  - discord
+  - codex
   - docker
-  - jetbrains-toolbox
   - ledger-live
   - mactex-no-gui
-  - macvim
   - obs
+  - pop-app
+  - signal
   - synology-drive
   - visual-studio-code
 
@@ -26,6 +26,7 @@ mas_installed_apps:
 
 homebrew_installed_packages:
   - mas
+  - atuin
   - curl
   - ffmpeg
   - git
@@ -34,6 +35,7 @@ homebrew_installed_packages:
   - gpg2
   - jq
   - mise
+  - charmbracelet/tap/mods
   - offlineimap
   - pandoc
   - ssh-copy-id

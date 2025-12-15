@@ -2,13 +2,6 @@
 
 set -e
 
-function check_requirements() {
-  if [[ -z "$CONTEXT7_API_KEY" ]]; then
-    echo "Please ensure env var 'CONTEXT7_API_KEY' is set before running this script..."
-    exit 1
-  fi
-}
-
 function setup_debian() {
   sudo apt update -y
 
@@ -53,8 +46,6 @@ function install_homebrew() {
 }
 
 function setup_macos() {
-  check_requirements
-
   install_homebrew
 
   if [[ -z "$(command -v python3)" ]]; then
