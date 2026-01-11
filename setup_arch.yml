@@ -1,0 +1,25 @@
+---
+- name: Setup arch linux environment
+  hosts: arch
+  gather_facts: true
+  become: true
+  vars_files:
+    - vars/common.yml
+    - vars/arch.yml
+  roles:
+    - role: arch
+
+- name: Setup common dev environment
+  hosts: all
+  gather_facts: true
+  become: true
+  vars_files:
+    - vars/common.yml
+    - vars/git.yml
+  roles:
+    - role: common
+    - role: git
+    - role: vim
+    - role: dotfiles
+    - role: zsh
+    - role: mise

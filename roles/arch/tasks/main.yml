@@ -1,0 +1,7 @@
+---
+
+- include_tasks: programs.yml
+  when: ansible_distribution == 'Arch'
+
+- include_tasks: docker.yml
+  when: ansible_distribution == 'Arch'
