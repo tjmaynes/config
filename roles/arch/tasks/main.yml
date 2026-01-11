@@ -5,3 +5,6 @@
 
 - include_tasks: docker.yml
   when: ansible_distribution == 'Arch'
+
+- include_tasks: mise.yml
+  when: ansible_distribution == 'Arch'

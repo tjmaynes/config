@@ -1,0 +1,16 @@
+---
+- name: Ensure ~/.local/bin directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.local/bin"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Install mise using official script
+  ansible.builtin.shell: |
+    set -o pipefail
+    curl --fail --location https://mise.jdx.dev/install.sh | sh
+  args:
+    executable: /bin/bash
+    creates: "{{ ansible_user_dir }}/.local/bin/mise"
+  become: false
