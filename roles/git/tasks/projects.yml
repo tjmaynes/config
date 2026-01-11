@@ -6,18 +6,11 @@
     state: directory
     follow: true
 
-- name: Clone project repos
-  ansible.builtin.git:
-    repo: "{{ item.repo_https }}"
-    dest: "{{ git_projects_dir }}/{{ item.dest }}"
-    accept_hostkey: true
-    version: "{{ item.version | default('main') }}"
-    update: false
-  loop: "{{ git_projects }}"
-
-- name: Set git remote URL to SSH
-  ansible.builtin.shell:
-    cmd: git remote set-url origin {{ item.repo_ssh }}
-    chdir: "{{ git_projects_dir }}/{{ item.dest }}"
-  loop: "{{ git_projects }}"
-  changed_when: false
+- name: Backup project repos
+  shell: |
+    {{ playbook_dir }}/scripts/backup_git_repos.sh {{ git_username }} {{ git_projects_dir }}
+  environment:
+    GITHUB_TOKEN: "{{ github_token }}"
+  register: backup_repos_result
+  changed_when: "'Successfully' in backup_repos_result.stdout"
+  failed_when: backup_repos_result.rc != 0

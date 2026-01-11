@@ -8,8 +8,6 @@ homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   - appcleaner
   - calibre
-  - claude-code
-  - codex
   - docker
   - ledger-live
   - mactex-no-gui
@@ -39,6 +37,7 @@ homebrew_installed_packages:
   - offlineimap
   - pandoc
   - ssh-copy-id
+  - shfmt
   - stow
   - tmux
   - tree

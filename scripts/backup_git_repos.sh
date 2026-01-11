@@ -126,15 +126,33 @@ validate_repositories_found() {
     echo ""
 }
 
+# Extract git username and repo name from SSH URL
+# SSH URL format: git@github.com:username/repo.git
+extract_git_info() {
+    local repo_url="$1"
+    # Remove the git@github.com: prefix and .git suffix, then split on /
+    local path="${repo_url#*:}"     # Remove git@github.com: prefix
+    path="${path%.git}"             # Remove .git suffix
+    local git_username="${path%%/*}" # Get username (part before /)
+    local repo_name="${path##*/}"    # Get repo name (part after /)
+
+    echo "$git_username|$repo_name"
+}
+
 # Clone a single repository
 clone_single_repository() {
     local repo_url="$1"
     local target_dir="$2"
 
-    # Extract repository name from SSH URL
-    # Format: git@github.com:username/repo.git
-    local repo_name=$(basename "$repo_url" .git)
-    local repo_path="$target_dir/$repo_name"
+    # Extract git username and repo name from SSH URL
+    local git_info=$(extract_git_info "$repo_url")
+    local git_username="${git_info%|*}"
+    local repo_name="${git_info#*|}"
+
+    local repo_path="$target_dir/$git_username/$repo_name"
+
+    # Ensure the username directory exists
+    mkdir -p "$target_dir/$git_username"
 
     # Check if repository already exists
     if [ -d "$repo_path" ]; then
@@ -142,11 +160,10 @@ clone_single_repository() {
 
         if (cd "$repo_path" && git pull >/dev/null 2>&1); then
             print_success "✓ Successfully updated: $repo_name"
-            return 0
         else
-            print_error "✗ Failed to update: $repo_name"
-            return 1
+            print_error "⚠ Failed to update: $repo_name (continuing anyway)"
         fi
+        return 0
     fi
 
     print_info "Cloning: $repo_url"

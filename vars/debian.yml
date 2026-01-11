@@ -8,6 +8,7 @@ apt_programs:
   - jq
   - openssh-client
   - pandoc
+  - shfmt
   - stow
   - texlive-xetex
   - tmux

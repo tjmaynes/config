@@ -5,5 +5,5 @@
   failed_when: git_result == ""
   changed_when: false
 
-- include_tasks: projects.yml
 - include_tasks: config.yml
+- include_tasks: projects.yml

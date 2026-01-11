@@ -6,6 +6,9 @@ function check_requirements() {
   if [[ ! -f ".venv/bin/activate" ]]; then
     echo "Run install script before running this script..."
     exit 1
+  elif [[ -z "$GITHUB_TOKEN" ]]; then
+    echo "Please ensure GITHUB_TOKEN env var is available before running this script..."
+    exit 1
   fi
 }
 
