@@ -8,6 +8,7 @@ homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   - appcleaner
   - calibre
+  - claude
   - docker
   - ledger-live
   - mactex-no-gui
@@ -25,6 +26,7 @@ mas_installed_apps:
 homebrew_installed_packages:
   - mas
   - atuin
+  - claude-code
   - curl
   - ffmpeg
   - git
