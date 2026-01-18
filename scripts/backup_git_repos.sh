@@ -6,6 +6,7 @@ set -e
 REPOS=()
 SUCCESS=0
 FAILED=0
+GITHUB_USERNAME_LOWER=""
 
 # Color codes for output
 RED='\033[0;31m'
@@ -55,6 +56,7 @@ validate_arguments() {
     fi
 
     GITHUB_USERNAME="$1"
+    GITHUB_USERNAME_LOWER=$(printf "%s" "$GITHUB_USERNAME" | tr '[:upper:]' '[:lower:]')
     TARGET_DIR="$2"
 
     # Validate GITHUB_PROFILE_NAME is not empty
@@ -106,9 +108,20 @@ fetch_repositories() {
         local page_repos=$(echo "$response" | grep -o 'ssh_url[^,]*' | sed 's/ssh_url": "\(.*\)".*/\1/')
 
         while IFS= read -r repo_url; do
-            if [ -n "$repo_url" ]; then
-                REPOS+=("$repo_url")
+            if [ -z "$repo_url" ]; then
+                continue
             fi
+
+            local git_info=$(extract_git_info "$repo_url")
+            local repo_git_username="${git_info%|*}"
+            local repo_git_username_lower=$(printf "%s" "$repo_git_username" | tr '[:upper:]' '[:lower:]')
+
+            if [ "$repo_git_username_lower" != "$GITHUB_USERNAME_LOWER" ]; then
+                print_info "Skipping repository owned by $repo_git_username (expected $GITHUB_USERNAME)"
+                continue
+            fi
+
+            REPOS+=("$repo_url")
         done <<<"$page_repos"
 
         page=$((page + 1))
