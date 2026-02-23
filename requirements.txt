@@ -3,3 +3,4 @@ requests==2.31.0
 github3.py==4.0.1
 python-debian==0.1.49
 docker==7.0.0
+ansible-lint>=24.0.0

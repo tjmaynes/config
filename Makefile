@@ -12,6 +12,9 @@ teardown:
 	. .venv/bin/activate; ansible-playbook teardown.yml --ask-become-pass \
 		--inventory-file inventory/hosts.ini
 
+format:
+	. .venv/bin/activate; ansible-lint --fix .
+
 backup_github_repos:
 	@if [ -z "$(GITHUB_PROFILE)" ] || [ -z "$(BACKUP_DIR)" ]; then \
 		echo "Usage: make backup_github_repos GITHUB_PROFILE=<username> BACKUP_DIR=<directory>"; \
