@@ -53,8 +53,9 @@ function main() {
 
     . .venv/bin/activate
 
-    ansible-playbook setup_$CONFIG_OS_TYPE.yml --ask-become-pass \
-        --inventory-file inventory/hosts.ini
+    ansible-playbook playbooks/setup_$CONFIG_OS_TYPE.yml --ask-become-pass \
+        --inventory-file inventory/hosts.ini \
+        -e ansible_python_interpreter="$PWD/.venv/bin/python"
 }
 
 main

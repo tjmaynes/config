@@ -9,8 +9,9 @@ setup:
 bootstrap: install setup
 
 teardown:
-	. .venv/bin/activate; ansible-playbook teardown.yml --ask-become-pass \
-		--inventory-file inventory/hosts.ini
+	. .venv/bin/activate; ansible-playbook playbooks/teardown.yml --ask-become-pass \
+		--inventory-file inventory/hosts.ini \
+		-e ansible_python_interpreter=$$PWD/.venv/bin/python
 
 format:
 	. .venv/bin/activate; ansible-lint --fix .

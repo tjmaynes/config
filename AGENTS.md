@@ -16,8 +16,9 @@
 .
 ├── Makefile                 # All automation entry points
 ├── ansible.cfg              # Ansible configuration
-├── setup_macos.yml          # Main macOS provisioning playbook
-├── teardown.yml             # Machine teardown playbook
+├── playbooks/
+│   ├── setup_macos.yml      # Main macOS provisioning playbook
+│   └── teardown.yml         # Machine teardown playbook
 ├── requirements.txt         # Python dependencies (ansible, etc.)
 ├── collections/
 │   └── requirements.yml     # Ansible Galaxy collections and roles
@@ -77,7 +78,7 @@ make bootstrap  # Runs install then setup
 | `make install` | Creates `.venv`, installs Python deps and Ansible Galaxy collections/roles |
 | `make setup` | Detects OS, activates venv, runs the matching `setup_<os>.yml` playbook |
 | `make bootstrap` | Runs `install` then `setup` |
-| `make teardown` | Runs `teardown.yml` playbook to remove provisioned config |
+| `make teardown` | Runs `playbooks/teardown.yml` playbook to remove provisioned config |
 | `make format` | Runs `ansible-lint --fix .` to auto-format Ansible files |
 | `make backup_github_repos GITHUB_PROFILE=<user> BACKUP_DIR=<dir>` | Clones/pulls all GitHub repos for a user |
 

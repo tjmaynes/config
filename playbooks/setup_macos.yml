@@ -7,8 +7,8 @@
     computername: gaia
     hostname: gaia
   vars_files:
-    - vars/common.yml
-    - vars/macos.yml
+    - ../vars/common.yml
+    - ../vars/macos.yml
   roles:
     - role: elliotweiser.osx-command-line-tools
     - role: geerlingguy.mac.homebrew
@@ -22,8 +22,8 @@
   gather_facts: true
   become: false
   vars_files:
-    - vars/common.yml
-    - vars/git.yml
+    - ../vars/common.yml
+    - ../vars/git.yml
   roles:
     - role: common
     - role: git
