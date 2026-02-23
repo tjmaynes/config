@@ -23,5 +23,5 @@ backup_github_repos:
 		echo "Example: make backup_github_repos BACKUP_DIR=/backup/repos"; \
 		exit 1; \
 	fi
-	chmod +x ./scripts/backup_git_repos.sh
-	./scripts/backup_git_repos.sh $(BACKUP_DIR)
+	chmod +x ./scripts/backup-git-repos.sh
+	./scripts/backup-git-repos.sh $(BACKUP_DIR)
