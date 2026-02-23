@@ -17,11 +17,11 @@ format:
 	. .venv/bin/activate; ansible-lint --fix .
 
 backup_github_repos:
-	@if [ -z "$(GITHUB_PROFILE)" ] || [ -z "$(BACKUP_DIR)" ]; then \
-		echo "Usage: make backup_github_repos GITHUB_PROFILE=<username> BACKUP_DIR=<directory>"; \
+	@if [ -z "$(BACKUP_DIR)" ]; then \
+		echo "Usage: make backup_github_repos BACKUP_DIR=<directory>"; \
 		echo ""; \
-		echo "Example: make backup_github_repos GITHUB_PROFILE=tjmaynes BACKUP_DIR=/backup/repos"; \
+		echo "Example: make backup_github_repos BACKUP_DIR=/backup/repos"; \
 		exit 1; \
 	fi
 	chmod +x ./scripts/backup_git_repos.sh
-	./scripts/backup_git_repos.sh $(GITHUB_PROFILE) $(BACKUP_DIR)
+	./scripts/backup_git_repos.sh $(BACKUP_DIR)

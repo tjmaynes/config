@@ -8,7 +8,7 @@
 
 - name: Backup project repos
   shell: |
-    {{ playbook_dir }}/../scripts/backup_git_repos.sh {{ git_username }} {{ git_projects_dir }}
+    {{ playbook_dir }}/../scripts/backup_git_repos.sh {{ git_projects_dir }}
   environment:
     GITHUB_TOKEN: "{{ github_token }}"
   register: backup_repos_result

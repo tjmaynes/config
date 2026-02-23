@@ -6,8 +6,6 @@ set -e
 REPOS=()
 SUCCESS=0
 FAILED=0
-GITHUB_USERNAME_LOWER=""
-
 # Color codes for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -45,25 +43,16 @@ check_github_token() {
 
 # Validate command line arguments
 validate_arguments() {
-    if [ $# -lt 2 ]; then
+    if [ $# -lt 1 ]; then
         print_error "Missing required arguments"
-        echo "Usage: $0 <GITHUB_PROFILE_NAME> <TARGET_DIRECTORY>"
+        echo "Usage: $0 <TARGET_DIRECTORY>"
         echo ""
         echo "Required Arguments:"
-        echo "  GITHUB_PROFILE_NAME: The GitHub profile/username to clone repositories from"
         echo "  TARGET_DIRECTORY: The directory where repositories will be cloned"
         exit 1
     fi
 
-    GITHUB_USERNAME="$1"
-    GITHUB_USERNAME_LOWER=$(printf "%s" "$GITHUB_USERNAME" | tr '[:upper:]' '[:lower:]')
-    TARGET_DIR="$2"
-
-    # Validate GITHUB_PROFILE_NAME is not empty
-    if [ -z "$GITHUB_USERNAME" ]; then
-        print_error "GITHUB_PROFILE_NAME is required and cannot be empty"
-        exit 1
-    fi
+    TARGET_DIR="$1"
 
     # Validate TARGET_DIRECTORY is not empty
     if [ -z "$TARGET_DIR" ]; then
@@ -86,9 +75,7 @@ setup_target_directory() {
 
 # Fetch all repositories from GitHub using the API
 fetch_repositories() {
-    local github_username="$1"
-
-    print_info "Fetching repositories for GitHub user: $github_username"
+    print_info "Fetching owned repositories for authenticated user"
 
     # Fetch all repositories (public and private) using GitHub API
     # Using pagination to get all repositories (100 per page)
@@ -97,7 +84,7 @@ fetch_repositories() {
 
     while true; do
         local response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-            "https://api.github.com/users/$github_username/repos?type=all&per_page=$per_page&page=$page&sort=updated")
+            "https://api.github.com/user/repos?affiliation=owner&per_page=$per_page&page=$page&sort=updated")
 
         # Check if response contains any repositories
         if [ "$(echo "$response" | grep -c '"name"')" -eq 0 ]; then
@@ -112,15 +99,6 @@ fetch_repositories() {
                 continue
             fi
 
-            local git_info=$(extract_git_info "$repo_url")
-            local repo_git_username="${git_info%|*}"
-            local repo_git_username_lower=$(printf "%s" "$repo_git_username" | tr '[:upper:]' '[:lower:]')
-
-            if [ "$repo_git_username_lower" != "$GITHUB_USERNAME_LOWER" ]; then
-                print_info "Skipping repository owned by $repo_git_username (expected $GITHUB_USERNAME)"
-                continue
-            fi
-
             REPOS+=("$repo_url")
         done <<<"$page_repos"
 
@@ -131,7 +109,7 @@ fetch_repositories() {
 # Validate that repositories were found
 validate_repositories_found() {
     if [ ${#REPOS[@]} -eq 0 ]; then
-        print_error "No repositories found for user: $GITHUB_USERNAME"
+        print_error "No repositories found for authenticated user"
         exit 1
     fi
 
@@ -227,7 +205,7 @@ main() {
     setup_target_directory "$TARGET_DIR"
 
     # Fetch and process repositories
-    fetch_repositories "$GITHUB_USERNAME"
+    fetch_repositories
     validate_repositories_found
 
     # Clone repositories
