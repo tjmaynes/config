@@ -10,21 +10,19 @@ homebrew_cask_apps:
   - calibre
   - claude
   - docker
-  - mactex-no-gui
   - obs
   - pop-app
   - signal
-  - synology-drive
   - visual-studio-code
 
 mas_installed_apps:
   - { name: "Daisy Disk", id: 411643860 }
   - { name: "Final Cut Pro", id: 424389933 }
-  - { name: "Wipr 2", id: 1662217862 }
 
 homebrew_installed_packages:
   - mas
   - atuin
+  - asteroid-belt/tap/skulto
   - bat
   - claude-code
   - curl
