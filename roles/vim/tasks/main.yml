@@ -1,42 +1,40 @@
 ---
 - name: Ensure vim is installed
-  command: command -v vim
+  ansible.builtin.command: which vim
   register: vim_result
-  failed_when: vim_result == ""
+  failed_when: vim_result.rc != 0
   changed_when: false
 
 - name: Create vim directory if it does not exist
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.vim"
+    path: "{{ ansible_facts.env.HOME }}/.vim"
     state: directory
-    mode: '0755'
+    mode: "0755"
 
 - name: Create vim-autoload directory if it does not exist
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.vim/autoload"
+    path: "{{ ansible_facts.env.HOME }}/.vim/autoload"
     state: directory
-    mode: '0755'
+    mode: "0755"
 
 - name: Check if vim-plug is downloaded
-  stat:
-    path: "{{ ansible_env.HOME }}/.vim/autoload/plug.vim"
-  changed_when: false
+  ansible.builtin.stat:
+    path: "{{ ansible_facts.env.HOME }}/.vim/autoload/plug.vim"
   register: vim_plug_file_result
 
 - name: Download vim-plug
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    validate_certs: false
-    dest: "{{ ansible_env.HOME }}/.vim/autoload/plug.vim"
-    mode: 0755
+    dest: "{{ ansible_facts.env.HOME }}/.vim/autoload/plug.vim"
+    mode: "0755"
   when: not vim_plug_file_result.stat.exists
 
 - name: Check if vim-plug is installed
-  stat:
-    path: "{{ ansible_env.HOME }}/.vim/plugged"
-  changed_when: false
+  ansible.builtin.stat:
+    path: "{{ ansible_facts.env.HOME }}/.vim/plugged"
   register: vim_plug_directory_result
 
 - name: Setup vim plugins
-  command: vim +'PlugInstall --sync' +qa
+  ansible.builtin.command: vim +'PlugInstall --sync' +qa
   when: not vim_plug_directory_result.stat.exists
+  changed_when: true

@@ -1,0 +1,12 @@
+---
+- name: Ensure mas is installed
+  ansible.builtin.command: which mas
+  register: mas_result
+  failed_when: mas_result.rc != 0
+  changed_when: false
+
+- name: Install Mac App Store apps
+  community.general.mas:
+    id: "{{ item.id }}"
+    state: present
+  loop: "{{ mas_installed_apps }}"

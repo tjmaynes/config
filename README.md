@@ -41,17 +41,18 @@ make format
 
 To backup GitHub repositories:
 ```bash
-make backup_github_repos GITHUB_PROFILE=<username> BACKUP_DIR=<directory>
+make backup_github_repos BACKUP_DIR=<directory>
 ```
 
 ## Roles
 
 | Role | Description |
 |------|-------------|
-| `common` | SSH configuration |
-| `dotfiles` | Dotfile management |
-| `git` | Git configuration |
-| `macos` | macOS system preferences (dock, hostname, trackpad, screen) |
+| `common` | SSH configuration and timezone setup |
+| `dotfiles` | Dotfile management via GNU stow |
+| `git` | Git configuration, aliases, and project backup |
+| `macos` | Homebrew packages/casks, Mac App Store apps, and system preferences (dock, hostname, trackpad, screen) |
 | `mise` | [mise](https://mise.jdx.dev/) runtime version manager |
-| `vim` | Vim configuration |
-| `zsh` | Zsh and Oh My Zsh setup |
+| `teardown` | Machine teardown (unstow dotfiles) |
+| `vim` | Vim and vim-plug setup |
+| `zsh` | Zsh, Oh My Zsh, and shell environment setup |

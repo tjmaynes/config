@@ -1,37 +1,40 @@
 ---
 - name: Get current ComputerName
-  command: scutil --get ComputerName
+  ansible.builtin.command: scutil --get ComputerName
   register: computername_result
   changed_when: false
   check_mode: false
-  when: computername != None
+  when: computername is not none
 
 - name: Update ComputerName
-  command: scutil --set ComputerName "{{ computername }}"
+  ansible.builtin.command: scutil --set ComputerName "{{ computername }}"
   become: true
-  when: computername != None and (computername not in computername_result.stdout)
+  when: computername is not none and (computername not in computername_result.stdout)
+  changed_when: true
 
 - name: Get current HostName
-  command: scutil --get HostName
+  ansible.builtin.command: scutil --get HostName
   register: hostname_result
   changed_when: false
   failed_when: false
   check_mode: false
-  when: hostname != None
+  when: hostname is not none
 
 - name: Update HostName
-  command: scutil --set HostName {{ hostname }}
+  ansible.builtin.command: scutil --set HostName {{ hostname }}
   become: true
-  when: hostname != None and (hostname_result.failed or (hostname not in hostname_result.stdout))
+  when: hostname is not none and (hostname_result.failed or (hostname not in hostname_result.stdout))
+  changed_when: true
 
 - name: Get current LocalHostName
-  command: scutil --get LocalHostName
+  ansible.builtin.command: scutil --get LocalHostName
   register: localhostname_result
   changed_when: false
   check_mode: false
-  when: hostname != None
+  when: hostname is not none
 
 - name: Update LocalHostName
-  command: scutil --set LocalHostName {{ hostname }}
+  ansible.builtin.command: scutil --set LocalHostName {{ hostname }}
   become: true
-  when: hostname != None and (hostname not in localhostname_result.stdout)
+  when: hostname is not none and (hostname not in localhostname_result.stdout)
+  changed_when: true

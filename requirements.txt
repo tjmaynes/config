@@ -1,6 +1,6 @@
-ansible>=13.3.0
-requests>=2.32.4
+ansible>=13.4.0
+requests>=2.32.5
 github3.py>=4.0.1
 python-debian>=1.1.0
 docker>=7.1.0
-ansible-lint>=24.0.0
+ansible-lint>=26.3.0

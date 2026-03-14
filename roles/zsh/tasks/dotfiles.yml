@@ -1,30 +1,30 @@
 ---
-- name: Set WORKSPACE_DIRECTORY env var if not already started
+- name: Set WORKSPACE_DIRECTORY env var
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zsh_dynamic"
+    path: "{{ ansible_facts.env.HOME }}/.zsh_dynamic"
     line: "export WORKSPACE_DIRECTORY={{ workspace_dir }}"
 
-- name: Set CODE_DIRECTORY env var if not already started
+- name: Set CODE_DIRECTORY env var
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zsh_dynamic"
+    path: "{{ ansible_facts.env.HOME }}/.zsh_dynamic"
     line: "export CODE_DIRECTORY={{ git_projects_dir }}"
 
 - name: Ensure .aliases is setup
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zsh_dynamic"
-    line: ". \"$HOME/.aliases\""
+    path: "{{ ansible_facts.env.HOME }}/.zsh_dynamic"
+    line: '. "$HOME/.aliases"'
 
 - name: Ensure .custom-fns is setup
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zsh_dynamic"
-    line: ". \"$HOME/.custom-fns.sh\""
+    path: "{{ ansible_facts.env.HOME }}/.zsh_dynamic"
+    line: '. "$HOME/.custom-fns.sh"'
 
 - name: Ensure ~/.local/bin is available in PATH
   ansible.builtin.lineinfile:
     state: present
-    path: "$HOME/.zsh_dynamic"
+    path: "{{ ansible_facts.env.HOME }}/.zsh_dynamic"
     line: 'export PATH="$HOME/.local/bin:$PATH"'

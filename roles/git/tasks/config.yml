@@ -1,21 +1,20 @@
 ---
-
 - name: Ensure vim is installed
-  command: command -v vim
+  ansible.builtin.command: which vim
   register: vim_result
-  failed_when: vim_result == ""
+  failed_when: vim_result.rc != 0
   changed_when: false
 
-- name: Ensure gpg2 is installed
-  command: command -v gpg2
-  register: gpg2_result
-  failed_when: gpg2_result == ""
+- name: Ensure gpg is installed
+  ansible.builtin.command: which gpg
+  register: gpg_result
+  failed_when: gpg_result.rc != 0
   changed_when: false
 
 - name: Ensure git-delta is installed
-  command: command -v delta
+  ansible.builtin.command: which delta
   register: delta_result
-  failed_when: delta_result == ""
+  failed_when: delta_result.rc != 0
   changed_when: false
 
 - name: Updating git global config values

@@ -10,7 +10,7 @@ bootstrap: install setup
 
 teardown:
 	. .venv/bin/activate; ansible-playbook playbooks/teardown.yml --ask-become-pass \
-		--inventory-file inventory/hosts.ini \
+		-i inventory/hosts.ini \
 		-e ansible_python_interpreter=$$PWD/.venv/bin/python
 
 format:

@@ -1,18 +1,18 @@
 ---
-- name: Ensure {{ ansible_env.HOME }}/.ssh exists
-  file:
-    path: "{{ ansible_env.HOME }}/.ssh"
+- name: Ensure {{ ansible_facts.env.HOME }}/.ssh exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts.env.HOME }}/.ssh"
     state: directory
     mode: "0700"
 
 - name: Generate ssh keys
-  openssh_keypair:
-    path: "{{ ansible_env.HOME }}/.ssh/{{ item.name }}"
-    type: "{{ item.type | default('ed25519')}}"
-    comment: "{{ item.comment | default(omit)}}"
+  community.crypto.openssh_keypair:
+    path: "{{ ansible_facts.env.HOME }}/.ssh/{{ item.name }}"
+    type: "{{ item.type | default('ed25519') }}"
+    comment: "{{ item.comment | default(omit) }}"
   loop: "{{ ssh_keys }}"
 
 - name: Add ssh private keys to ssh agent
-  command:  bash -lc "eval `ssh-agent -s` && ssh-add {{ ansible_env.HOME }}/.ssh/{{item.name}}"
+  ansible.builtin.command: bash -lc "eval `ssh-agent -s` && ssh-add {{ ansible_facts.env.HOME }}/.ssh/{{ item.name }}"
   loop: "{{ ssh_keys }}"
   changed_when: false

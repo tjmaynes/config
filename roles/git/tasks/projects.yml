@@ -1,14 +1,14 @@
 ---
-
 - name: Ensure developer directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ git_projects_dir }}"
     state: directory
     follow: true
+    mode: "0755"
 
 - name: Backup project repos
-  shell: |
-    {{ playbook_dir }}/../scripts/backup_git_repos.sh {{ git_projects_dir }}
+  ansible.builtin.shell: |
+    {{ playbook_dir }}/../scripts/backup-git-repos.sh {{ git_projects_dir }}
   environment:
     GITHUB_TOKEN: "{{ github_token }}"
   register: backup_repos_result

@@ -1,0 +1,22 @@
+---
+- name: Tap Homebrew repositories
+  community.general.homebrew_tap:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ homebrew_taps }}"
+
+- name: Install Homebrew packages
+  community.general.homebrew:
+    name: "{{ homebrew_installed_packages }}"
+    state: present
+
+- name: Install Homebrew cask applications
+  community.general.homebrew_cask:
+    name: "{{ homebrew_cask_apps }}"
+    state: present
+    install_options: "appdir={{ homebrew_cask_appdir }}"
+
+- name: Clear Homebrew cache
+  ansible.builtin.command: brew cleanup
+  when: homebrew_clear_cache
+  changed_when: true

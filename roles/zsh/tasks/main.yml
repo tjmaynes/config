@@ -1,26 +1,34 @@
 ---
-
 - name: Ensure zsh is installed
-  command: command -v zsh
+  ansible.builtin.command: which zsh
   register: zsh_result
-  failed_when: zsh_result == ""
+  failed_when: zsh_result.rc != 0
   changed_when: false
 
-- name: Set login shell of user {{ ansible_env.USER }} to `/bin/zsh` with `usermod`
+- name: Set login shell of user {{ ansible_facts.env.USER }} to /bin/zsh
   ansible.builtin.user:
-    name: "{{ ansible_env.USER }}"
+    name: "{{ ansible_facts.env.USER }}"
     shell: /bin/zsh
   become: true
-  changed_when: false
 
 - name: Create zsh-dynamic file
-  file:
-    path: "{{ ansible_env.HOME }}/.zsh_dynamic"
+  ansible.builtin.file:
+    path: "{{ ansible_facts.env.HOME }}/.zsh_dynamic"
     state: touch
+    mode: "0644"
 
-- include_tasks: oh-my-zsh.yml
-- include_tasks: dotfiles.yml
-- include_tasks: macos.yml
-  when: ansible_distribution == 'MacOSX'
-- include_tasks: node.yml
-- include_tasks: secrets.yml
+- name: Setup Oh My Zsh
+  ansible.builtin.import_tasks: oh-my-zsh.yml
+
+- name: Setup zsh dotfiles
+  ansible.builtin.import_tasks: dotfiles.yml
+
+- name: Setup macOS-specific paths
+  ansible.builtin.import_tasks: macos.yml
+  when: ansible_facts.distribution == 'MacOSX'
+
+- name: Setup Node.js paths
+  ansible.builtin.import_tasks: node.yml
+
+- name: Setup secrets
+  ansible.builtin.import_tasks: secrets.yml

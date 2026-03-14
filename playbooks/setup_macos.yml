@@ -10,12 +10,7 @@
     - ../vars/common.yml
     - ../vars/macos.yml
   roles:
-    - role: elliotweiser.osx-command-line-tools
-    - role: geerlingguy.mac.homebrew
-    - role: geerlingguy.mac.mas
-    - role: geerlingguy.mac.dock
     - role: macos
-      when: ansible_distribution in ['MacOSX']
 
 - name: Setup common dev environment
   hosts: all

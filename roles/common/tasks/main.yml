@@ -4,5 +4,6 @@
     name: "{{ timezone }}"
   become: true
 
-- include_tasks: ssh.yml
+- name: Configure SSH
+  ansible.builtin.import_tasks: ssh.yml
   when: configure_ssh

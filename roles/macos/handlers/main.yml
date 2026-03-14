@@ -1,17 +1,12 @@
 ---
 - name: Restart Finder
-  command: killall Finder
+  ansible.builtin.command: killall Finder
+  changed_when: true
 
 - name: Restart Dock
-  command: killall Dock
+  ansible.builtin.command: killall Dock
+  changed_when: true
 
 - name: Restart Safari
-  command: osascript -e 'quit app "Safari"' && osascript -e 'tell application "Safari" to activate'
-
-- name: Restart Transmission
-  command: killall Transmission
-  ignore_errors: true
-
-- name: Restart Tower
-  command: killall Tower
-  ignore_errors: true
+  ansible.builtin.command: osascript -e 'quit app "Safari"' && osascript -e 'tell application "Safari" to activate'
+  changed_when: true

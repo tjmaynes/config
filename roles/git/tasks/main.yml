@@ -1,9 +1,12 @@
 ---
 - name: Ensure git is installed
-  command: command -v git
+  ansible.builtin.command: which git
   register: git_result
-  failed_when: git_result == ""
+  failed_when: git_result.rc != 0
   changed_when: false
 
-- include_tasks: config.yml
-- include_tasks: projects.yml
+- name: Configure git
+  ansible.builtin.import_tasks: config.yml
+
+- name: Setup git projects
+  ansible.builtin.import_tasks: projects.yml
