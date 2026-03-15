@@ -13,6 +13,7 @@ homebrew_cask_apps:
   - appcleaner
   - calibre
   - claude
+  - davinci-resolve
   - docker
   - obs
   - pop-app
@@ -22,7 +23,6 @@ homebrew_cask_apps:
 
 mas_installed_apps:
   - { name: "Daisy Disk", id: 411643860 }
-  - { name: "Final Cut Pro", id: 424389933 }
 
 homebrew_installed_packages:
   - mas
