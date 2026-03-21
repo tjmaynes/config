@@ -3,10 +3,12 @@
   ansible.builtin.command: killall Finder
   changed_when: true
 
-- name: Restart Dock
-  ansible.builtin.command: killall Dock
+- name: Restart code-server
+  ansible.builtin.command:
+    cmd: brew services restart code-server
   changed_when: true
 
-- name: Restart Safari
-  ansible.builtin.command: osascript -e 'quit app "Safari"' && osascript -e 'tell application "Safari" to activate'
-  changed_when: true
+- name: Restart immich-ml
+  community.general.launchd:
+    name: local.immich-ml
+    state: restarted

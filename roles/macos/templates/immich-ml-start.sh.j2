@@ -1,0 +1,17 @@
+#!/bin/bash
+set -euo pipefail
+
+export IMMICH_HOST=0.0.0.0
+export IMMICH_PORT=3003
+export MACHINE_LEARNING_CACHE_FOLDER="{{ ansible_facts.env.HOME }}/.cache/immich/models"
+export MACHINE_LEARNING_WORKERS=1
+export MACHINE_LEARNING_REQUEST_THREADS=4
+export PYTHONUNBUFFERED=1
+
+mkdir -p "$MACHINE_LEARNING_CACHE_FOLDER"
+
+source "{{ immich_ml_dir }}/venv/bin/activate"
+export PATH="{{ immich_ml_dir }}/venv/bin:$PATH"
+cd "{{ immich_ml_dir }}/source/machine-learning"
+
+exec python -m immich_ml

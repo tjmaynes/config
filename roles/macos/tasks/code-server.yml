@@ -1,0 +1,40 @@
+---
+- name: Create code-server config directory
+  ansible.builtin.file:
+    path: "{{ ansible_facts.env.HOME }}/.config/code-server"
+    state: directory
+    mode: "0755"
+
+- name: Deploy code-server config
+  ansible.builtin.template:
+    src: code-server-config.yaml.j2
+    dest: "{{ ansible_facts.env.HOME }}/.config/code-server/config.yaml"
+    mode: "0644"
+    force: false
+  notify: Restart code-server
+
+- name: Disable code-server telemetry
+  ansible.builtin.lineinfile:
+    state: present
+    path: "{{ ansible_facts.env.HOME }}/.zsh_dynamic"
+    line: 'export CODER_TELEMETRY_ENABLE=false'
+
+- name: Check code-server service status
+  ansible.builtin.command:
+    cmd: brew services info code-server --json
+  register: code_server_status
+  changed_when: false
+
+- name: Restart code-server service if loaded but not running
+  ansible.builtin.command:
+    cmd: brew services restart code-server
+  when: >
+    (code_server_status.stdout | from_json)[0].loaded
+    and not (code_server_status.stdout | from_json)[0].running
+  changed_when: true
+
+- name: Start code-server service if not loaded
+  ansible.builtin.command:
+    cmd: brew services start code-server
+  when: not (code_server_status.stdout | from_json)[0].loaded
+  changed_when: true

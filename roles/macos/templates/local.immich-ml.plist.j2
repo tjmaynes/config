@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>local.immich-ml</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>{{ immich_ml_dir }}/start.sh</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>{{ immich_ml_dir }}/source/machine-learning</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key>
+        <string>{{ ansible_facts.env.HOME }}</string>
+        <key>PATH</key>
+        <string>{{ ansible_facts.env.HOME }}/.local/share/mise/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>ALBUMENTATION_DISABLE_VERSION_CHECK</key>
+        <string>1</string>
+        <key>OBJC_DISABLE_INITIALIZE_FORK_SAFETY</key>
+        <string>YES</string>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>ThrottleInterval</key>
+    <integer>5</integer>
+
+    <key>StandardOutPath</key>
+    <string>{{ immich_ml_dir }}/logs/stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>{{ immich_ml_dir }}/logs/stderr.log</string>
+</dict>
+</plist>

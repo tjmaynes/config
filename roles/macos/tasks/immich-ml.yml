@@ -1,0 +1,72 @@
+---
+- name: Create immich-ml directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ immich_ml_dir }}"
+    - "{{ immich_ml_dir }}/logs"
+    - "{{ ansible_facts.env.HOME }}/.cache/immich/models"
+
+- name: Install Python {{ immich_ml_python_version }} via mise
+  ansible.builtin.command:
+    cmd: mise install python@{{ immich_ml_python_version }}
+  register: mise_install_result
+  changed_when: "'installed' in mise_install_result.stderr"
+
+- name: Set mise local Python version
+  ansible.builtin.command:
+    cmd: mise use python@{{ immich_ml_python_version }}
+    chdir: "{{ immich_ml_dir }}"
+  changed_when: true
+
+- name: Check if virtualenv exists
+  ansible.builtin.stat:
+    path: "{{ immich_ml_dir }}/venv/bin/python"
+  register: immich_ml_venv
+
+- name: Create virtualenv
+  ansible.builtin.command:
+    cmd: "{{ ansible_facts.env.HOME }}/.local/share/mise/installs/python/{{ immich_ml_python_version }}/bin/python -m venv {{ immich_ml_dir }}/venv"
+  when: not immich_ml_venv.stat.exists
+  changed_when: true
+
+- name: Clone immich source
+  ansible.builtin.git:
+    repo: https://github.com/immich-app/immich.git
+    dest: "{{ immich_ml_dir }}/source"
+    depth: 1
+    version: main
+
+- name: Install immich-ml dependencies
+  ansible.builtin.command:
+    cmd: "{{ immich_ml_dir }}/venv/bin/pip install -e '.[cpu]'"
+    chdir: "{{ immich_ml_dir }}/source/machine-learning"
+  changed_when: true
+
+- name: Deploy immich-ml start script
+  ansible.builtin.template:
+    src: immich-ml-start.sh.j2
+    dest: "{{ immich_ml_dir }}/start.sh"
+    mode: "0755"
+  notify: Restart immich-ml
+
+- name: Deploy immich-ml update script
+  ansible.builtin.template:
+    src: immich-ml-update.sh.j2
+    dest: "{{ immich_ml_dir }}/update.sh"
+    mode: "0755"
+
+- name: Deploy immich-ml LaunchAgent plist
+  ansible.builtin.template:
+    src: local.immich-ml.plist.j2
+    dest: "{{ ansible_facts.env.HOME }}/Library/LaunchAgents/local.immich-ml.plist"
+    mode: "0644"
+  notify: Restart immich-ml
+
+- name: Start immich-ml service
+  community.general.launchd:
+    name: local.immich-ml
+    state: started
+    enabled: true

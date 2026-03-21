@@ -2,9 +2,6 @@
 - name: Install Homebrew packages and apps
   ansible.builtin.import_tasks: homebrew.yml
 
-- name: Install Mac App Store apps
-  ansible.builtin.import_tasks: mas.yml
-
 - name: Configure hostname
   ansible.builtin.import_tasks: hostname.yml
   when: ansible_facts.distribution == 'MacOSX'
@@ -13,10 +10,10 @@
   ansible.builtin.import_tasks: system.yml
   when: ansible_facts.distribution == 'MacOSX'
 
-- name: Configure dock
-  ansible.builtin.import_tasks: dock.yml
+- name: Setup code-server service
+  ansible.builtin.import_tasks: code-server.yml
   when: ansible_facts.distribution == 'MacOSX'
 
-- name: Configure trackpad tap to click
-  ansible.builtin.import_tasks: trackpad_tap_to_click.yml
-  when: trackpad_tap_to_click is not none and ansible_facts.distribution == 'MacOSX'
+- name: Setup immich-ml service
+  ansible.builtin.import_tasks: immich-ml.yml
+  when: ansible_facts.distribution == 'MacOSX'

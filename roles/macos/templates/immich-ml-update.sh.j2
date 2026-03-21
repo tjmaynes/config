@@ -1,0 +1,12 @@
+#!/bin/bash
+set -euo pipefail
+
+cd "{{ immich_ml_dir }}/source"
+git fetch origin
+git reset --hard origin/main
+
+cd machine-learning
+source "{{ immich_ml_dir }}/venv/bin/activate"
+pip install -e ".[cpu]"
+
+echo "immich-machine-learning updated to $(git rev-parse --short HEAD)"

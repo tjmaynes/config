@@ -2,7 +2,6 @@
 - name: Setup macos machine
   hosts: macos
   gather_facts: true
-  become: false
   vars:
     computername: gaia
     hostname: gaia
@@ -15,7 +14,6 @@
 - name: Setup common dev environment
   hosts: all
   gather_facts: true
-  become: false
   vars_files:
     - ../vars/common.yml
     - ../vars/git.yml
