@@ -13,8 +13,6 @@ test "$athena_emacs" = true
 rg -q '^[[:space:]]+gh$' modules/workstation/common/home/packages.nix
 
 rg -q 'workspace = "cd \$WORKSPACE_DIRECTORY"' modules/workstation/common/home/shells.nix
-rg -q 'dotfiles = "cd \$CODE_DIRECTORY/dotfiles"' modules/workstation/common/home/shells.nix
-rg -q 'tm = "task-master"' modules/workstation/common/home/shells.nix
 rg -q 'kill-process-on-port\(\)' modules/workstation/common/home/shells.nix
 rg -q 'prefix = "C-g"' modules/workstation/common/home/tmux.nix
 rg -q 'bind m set-window-option main-pane-height' modules/workstation/common/home/tmux.nix

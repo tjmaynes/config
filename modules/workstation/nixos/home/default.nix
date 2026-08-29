@@ -8,7 +8,6 @@
     cmus
     feh
     gimp
-    jetbrains.goland
     mpv
     mutt
     vscode

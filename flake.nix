@@ -41,6 +41,9 @@
       athenaUser = identity // {
         homeDirectory = "/home/${identity.username}";
       };
+      atlasUser = identity // {
+        homeDirectory = "/home/${identity.username}";
+      };
     in
     {
       darwinConfigurations.gaia = nix-darwin.lib.darwinSystem {
@@ -65,6 +68,15 @@
           home-manager.nixosModules.home-manager
           ./hosts/athena/default.nix
         ];
+      };
+
+      nixosConfigurations.atlas = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {
+          inherit identity;
+          user = atlasUser;
+        };
+        modules = [ ./hosts/atlas/default.nix ];
       };
 
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);

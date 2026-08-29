@@ -14,8 +14,6 @@
     };
     shellAliases = {
       workspace = "cd $WORKSPACE_DIRECTORY";
-      dotfiles = "cd $CODE_DIRECTORY/dotfiles";
-      tm = "task-master";
       k = "kubectl";
       cat = "bat";
       ps = "procs";
@@ -31,11 +29,6 @@
 
       convert-m4a-to-mp3() {
         ffmpeg -i "$1" -codec:a libmp3lame "''${1%.m4a}.mp3"
-      }
-
-      morning-paper() {
-        mkdir -p "$WORKSPACE_DIRECTORY/morning-pages"
-        vi "$WORKSPACE_DIRECTORY/morning-pages/$(date +%Y-%m-%d).md"
       }
     '';
   };

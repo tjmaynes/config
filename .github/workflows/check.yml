@@ -16,6 +16,7 @@ jobs:
       - run: make lint
       - run: make test
       - run: make eval-athena
+      - run: make eval-atlas
 
   darwin:
     runs-on: macos-latest

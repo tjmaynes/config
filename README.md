@@ -6,6 +6,14 @@ This repository defines reproducible system and user configuration for two hosts
 
 - `gaia`: Apple Silicon macOS managed by nix-darwin.
 - `athena`: x86_64 NixOS workstation. Its checked-in hardware profile is evaluation-only.
+- `atlas`: x86_64 NixOS home-server foundation. Its hardware profile is
+  evaluation-only; Docker applications remain managed by Ansible in
+  `tmp/home-server`.
+
+Workstation modules live under `modules/workstation`. Atlas uses focused
+`modules/server` modules for identity, security, networking, storage
+prerequisites, and Docker. Physical disks, interfaces, device paths, and
+secrets are deferred until the server is inventoried.
 
 ## Requirements
 
@@ -34,7 +42,7 @@ make update
 
 ## Check
 
-Run formatting, static checks, shell contracts, and both host evaluations:
+Run formatting, static checks, shell contracts, and all host evaluations:
 
 ```sh
 make check
@@ -89,4 +97,8 @@ Gaia owns only the approved GUI and MAS applications. Homebrew updates, upgrades
 
 ## Hardware
 
-The Athena hardware file uses a tmpfs root solely so the configuration can evaluate without access to the physical machine. Generate and review a real hardware configuration on Athena before any deployment or switch.
+The Athena and Atlas hardware files use a tmpfs root solely so their
+configurations can evaluate without access to the physical machines. Generate
+and review real hardware configurations on each host before deployment or
+switch. Atlas's Nix layer currently provides Docker and host prerequisites;
+Ansible continues to deploy Compose services and their secrets.
