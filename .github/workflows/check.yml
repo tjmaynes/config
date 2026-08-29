@@ -1,0 +1,28 @@
+name: check
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: NixOS/nix-installer-action@main
+      - run: make lint
+      - run: make test
+      - run: make eval-athena
+
+  darwin:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: NixOS/nix-installer-action@main
+      - run: make lint
+      - run: make test
+      - run: make eval-gaia
+      - run: make build-gaia

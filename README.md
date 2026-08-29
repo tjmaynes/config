@@ -1,100 +1,92 @@
-# Config
-> Configuration files for my workstations using `nixos`, `nix-darwin` and `home-manager`.
+# Nix workstation configuration
+
+This repository defines reproducible system and user configuration for two hosts using Nix flakes, nix-darwin, NixOS, and Home Manager.
+
+## Supported Hosts
+
+- `gaia`: Apple Silicon macOS managed by nix-darwin.
+- `athena`: x86_64 NixOS workstation. Its checked-in hardware profile is evaluation-only.
 
 ## Requirements
 
-- [GNU Make](https://www.gnu.org/software/make/)
-- [Nix](https://nixos.org/download.html)
+- GNU Make
+- Upstream Nix 2.35 or newer with flakes enabled per command when needed
+- Git
 
-## Background
+## Bootstrap
 
-| Host                                                       | Usage                                       | Tools                       | Status |
-| :--------------------------------------------------------- | :-----------------------------------------: | :-------------------------: | :----: |
-| [apollo](https://en.wikipedia.org/wiki/apollo)             | ubuntu dev workstation                      | ubuntu / home-manager       | ✅ |
-| [glaucus](https://en.wikipedia.org/wiki/Glaucus)           | full nixos dev workstation                  | nixos / home-manager        | ✅ |
-| [gaia](https://en.wikipedia.org/wiki/Gaia)                 | macos apple silicon (personal) workstation  | nix-darwin / home-manager   | ✅ |
-| [demeter](https://en.wikipedia.org/wiki/Demeter)           | macos intel (personal) workstation          | nix-darwin / home-manager   | ✅ |
+Install upstream Nix using the official installer in an interactive Terminal, open a fresh login shell, clone this repository, and verify:
 
-## Usage
-To install `gaia` on an Silicon Mac, run the following command:
-```bash
-make install_gaia
+```sh
+nix --version
+nix --extra-experimental-features 'nix-command flakes' flake metadata
 ```
 
-To install `demeter` on an Intel Mac, run the following command:
-```bash
-make install_demeter
+Do not run an activation during bootstrap. Inventory existing files in the home directory before the first Home Manager activation.
+
+## Update
+
+Update the locked inputs deliberately and review the resulting diff:
+
+```sh
+make update
 ```
 
-To install `glaucus` on a new NixOS machine, run the following command:
-```bash
-make install_glaucus
+## Check
+
+Run formatting, static checks, shell contracts, and both host evaluations:
+
+```sh
+make check
 ```
 
-To install `apollo` on a new Ubuntu machine, run the following command:
-```bash
-make install_apollo
+Checks never activate a system or mutate Homebrew.
+
+## Build
+
+Build without switching the active generation:
+
+```sh
+make build-gaia
+make build-athena
 ```
 
-To reload local changes, run the following command:
-```bash
-make reload
+## Activate
+
+Gaia activation is explicit and requires macOS administrator approval:
+
+```sh
+make bootstrap-gaia   # first activation only
+make switch-gaia      # subsequent activations
 ```
 
-## Setting up NixOS on a new machine
+`bootstrap-gaia` installs nix-darwin through `nix run`; use `switch-gaia` after
+the first successful activation.
 
-```bash
-# login as root
-sudo -i
+The Athena switch target refuses until `hosts/athena/hardware-eval.nix` has been replaced with a reviewed hardware configuration generated on the physical host.
 
-# download repo
-curl -SL https://github.com/tjmaynes/config/archive/master.tar.gz | tar xz
-cd config-main
+## Rollback
 
-# download dotfiles
-rm -rf dotfiles
-curl -SL https://github.com/tjmaynes/dotfiles/archive/master.tar.gz | tar xz
-mv dotfiles-main dotfiles
+Use the native system manager rollback and generation selection tools. Review the generation before activating a rollback; this repository does not automate reboot or rollback activation.
 
-# Cannot create partitions through automation
-# -- too much headache and bugs with parted
+## Secrets
 
-parted /dev/sda
+Keep tokens, SSH private keys, credentials, and machine-specific secrets outside this repository and outside the Nix store. The configuration does not read environment secrets or external dotfile paths.
 
-mklabel gpt
+## Mise
 
-mkpart "BOOT" fat32 1MiB 3MiB \
-  set 1 esp on
+Home Manager declares the approved mise tool versions. After an explicit activation, install runtimes manually:
 
-mkpart "root" ext4 1000MiB ${NIX_PARTITION}000MiB
-
-mkpart "swap" linux-swap ${NIX_PARTITION}000MiB 100% \
-  set 3 swap on
-
-# run installer
-./scripts/install.sh "glaucus" "nixos" "tjmaynes"
-
-# change password
-passwd "tjmaynes"
-
-# reboot
-reboot
-
-# login as user in GUI
-
-# open terminal
-ctrl+enter
-
-# create new keys
-ssh-keygen -t ed25519 -C "your-email"
-cat ~/.ssh/id_ed25519.pub | pbcopy
-
-# clone config repo
-pclone config
-make install_glaucus
+```sh
+mise install
 ```
 
-## Notes
+Runtime downloads are never performed by activation hooks or CI.
 
-- I learned quite a bit of NixOS-specific concepts from Malloc47's [config repo](https://github.com/malloc47/config).
-- Learning how to setup nextcloud on NixOS via this [blog post](https://jacobneplokh.com/how-to-setup-nextcloud-on-nixos/).
+## Homebrew
+
+Gaia owns only the approved GUI and MAS applications. Homebrew updates, upgrades, and cleanup are disabled during initial activation; cleanup remains `none` until separately reviewed.
+
+## Hardware
+
+The Athena hardware file uses a tmpfs root solely so the configuration can evaluate without access to the physical machine. Generate and review a real hardware configuration on Athena before any deployment or switch.

@@ -1,21 +1,50 @@
-USERNAME := tjmaynes
+NIX := nix --extra-experimental-features 'nix-command flakes'
 
-install_gaia:
-	./scripts/install.sh "gaia" "darwin" "$(USERNAME)"
+fmt:
+	$(NIX) fmt
 
-install_demeter:
-	./scripts/install.sh "demeter" "darwin" "$(USERNAME)"
+format-check:
+	$(NIX) develop --command nixfmt --check $$(find . -type f -name '*.nix' -not -path './.git/*' -print | sort)
 
-install_glaucus:
-	./scripts/install.sh "glaucus" "nixos" "$(USERNAME)" "80"
+lint:
+	$(NIX) develop --command statix check .
+	$(NIX) develop --command deadnix --fail .
+	$(NIX) develop --command shellcheck tests/*.sh
+	$(NIX) develop --command actionlint
 
-install_apollo:
-	./scripts/install.sh "apollo" "linux" "$(USERNAME)"
+test:
+	$(NIX) develop --command sh tests/flake-bootstrap.sh
+	$(NIX) develop --command sh tests/common-eval.sh
+	$(NIX) develop --command sh tests/gaia.sh
+	$(NIX) develop --command sh tests/athena.sh
+	$(NIX) develop --command sh tests/hygiene.sh
+	$(NIX) develop --command sh tests/docs.sh
 
-install_kratos:
-	./scripts/install.sh "kratos" "docker" "$(USERNAME)"
+eval-gaia:
+	$(NIX) eval --raw .#darwinConfigurations.gaia.config.system.build.toplevel.drvPath
 
-reload:
-	./scripts/reload.sh
+eval-athena:
+	$(NIX) eval --raw .#nixosConfigurations.athena.config.system.build.toplevel.drvPath
 
-.PHONY: install_* reload
+check: format-check lint test eval-gaia eval-athena
+
+build-gaia:
+	$(NIX) build .#darwinConfigurations.gaia.system --no-link
+
+build-athena:
+	$(NIX) build .#nixosConfigurations.athena.config.system.build.toplevel --no-link
+
+bootstrap-gaia:
+	sudo nix --extra-experimental-features 'nix-command flakes' run nix-darwin/nix-darwin-26.05#darwin-rebuild -- switch --flake .#gaia
+
+switch-gaia:
+	sudo darwin-rebuild switch --flake .#gaia
+
+switch-athena:
+	@echo "Refusing switch: replace hosts/athena/hardware-eval.nix with reviewed hardware configuration first." >&2
+	@exit 1
+
+update:
+	$(NIX) flake update
+
+.PHONY: fmt format-check lint test check update bootstrap-gaia switch-gaia switch-athena eval-gaia eval-athena build-gaia build-athena

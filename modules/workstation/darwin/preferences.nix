@@ -1,9 +1,6 @@
-{ pkgs, ... }:
-
-let home = builtins.getEnv "HOME";
-
-in {
-  fonts.fonts = [ pkgs.inconsolata ];
+{ pkgs, user, ... }:
+{
+  fonts.packages = [ pkgs.inconsolata ];
 
   system.keyboard = {
     enableKeyMapping = true;
@@ -11,7 +8,7 @@ in {
   };
 
   system.defaults = {
-    screencapture.location = "${home}/libra/photos/screencaptures";
+    screencapture.location = "${user.homeDirectory}/libra/photos/screencaptures";
 
     dock = {
       autohide = true;
@@ -30,12 +27,6 @@ in {
       AppleShowAllExtensions = true;
       FXEnableExtensionChangeWarning = false;
       CreateDesktop = false;
-    };
-
-    alf = {
-      globalstate = 2;
-      loggingenabled = 0;
-      stealthenabled = 1;
     };
 
     loginwindow = {
@@ -58,5 +49,11 @@ in {
       NSNavPanelExpandedStateForSaveMode2 = true;
       _HIHideMenuBar = false;
     };
+  };
+
+  networking.applicationFirewall = {
+    enable = true;
+    blockAllIncoming = false;
+    enableStealthMode = true;
   };
 }
