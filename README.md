@@ -1,6 +1,8 @@
-# Nix workstation configuration
+# Nix system configurations
 
-This repository defines reproducible system and user configuration for two hosts using Nix flakes, nix-darwin, NixOS, and Home Manager.
+This repository defines reproducible system and user configuration for two
+workstations and an evaluation-only home-server foundation using Nix flakes,
+nix-darwin, NixOS, and Home Manager.
 
 ## Supported Hosts
 
@@ -20,6 +22,25 @@ secrets are deferred until the server is inventoried.
 - GNU Make
 - Upstream Nix 2.35 or newer with flakes enabled per command when needed
 - Git
+
+## Repository Layout
+
+```text
+flake.nix
+hosts/
+  gaia/       # Apple Silicon workstation
+  athena/     # Linux workstation
+  atlas/      # Evaluation-only server host
+modules/
+  workstation/{common,darwin,nixos}
+  server/{common,security,networking,storage,docker}
+tests/        # Evaluation and contract checks
+```
+
+The shared workstation Home Manager profile includes portable shell, Git,
+Emacs, Vim, tmux, mise, and `gh` configuration. Server modules intentionally
+stop at host prerequisites; the existing Ansible project remains responsible
+for Atlas's Docker Compose applications and secrets.
 
 ## Bootstrap
 
@@ -50,6 +71,9 @@ make check
 
 Checks never activate a system or mutate Homebrew.
 
+CI runs the same checks on Linux and macOS. Darwin-only builds run only in the
+macOS job; Linux checks evaluate Gaia without trying to build a Darwin system.
+
 ## Build
 
 Build without switching the active generation:
@@ -57,6 +81,12 @@ Build without switching the active generation:
 ```sh
 make build-gaia
 make build-athena
+```
+
+Atlas is evaluation-only for now:
+
+```sh
+make eval-atlas
 ```
 
 ## Activate
@@ -72,6 +102,9 @@ make switch-gaia      # subsequent activations
 the first successful activation.
 
 The Athena switch target refuses until `hosts/athena/hardware-eval.nix` has been replaced with a reviewed hardware configuration generated on the physical host.
+
+Atlas has no activation target yet. Add a reviewed hardware configuration and
+an explicit deployment workflow only after the server inventory is complete.
 
 ## Rollback
 

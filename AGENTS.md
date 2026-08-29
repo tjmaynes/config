@@ -149,6 +149,9 @@ useful explanations of why a boundary exists.
 
 ## Documentation Duties
 
+Whenever the project changes significantly, update `README.md` in the same
+change so the primary project overview stays current.
+
 Update `README.md` when a change affects:
 
 - supported hosts or their readiness for build or activation;
