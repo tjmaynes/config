@@ -16,3 +16,4 @@ hosts/atlas/.env.production
 .vscode/
 
 tmp/
+.superpowers/

@@ -10,6 +10,27 @@ athena_emacs=$(nix_eval '.#nixosConfigurations.athena.config.home-manager.users.
 test "$gaia_emacs" = true
 test "$athena_emacs" = true
 
+check_delta() {
+  prefix=$1
+
+  test "$(nix_eval "$prefix.programs.delta.options.navigate")" = true
+  test "$(nix_eval "$prefix.programs.delta.options.side-by-side")" = true
+  test "$(nix_eval "$prefix.programs.delta.options.line-numbers")" = true
+  test "$(nix_eval "$prefix.programs.git.iniContent.merge.conflictStyle")" = '"zdiff3"'
+  case "$(nix_eval "$prefix.programs.git.iniContent.interactive.diffFilter")" in
+    *"delta --color-only"*) : ;;
+    *) return 1 ;;
+  esac
+  case "$(nix_eval "$prefix.programs.git.iniContent.pager.diff")" in
+    *delta*) : ;;
+    *) return 1 ;;
+  esac
+  nix_eval "$prefix.programs.git.iniContent" | jq -e 'has("diff") | not' >/dev/null
+}
+
+check_delta '.#darwinConfigurations.gaia.config.home-manager.users.tjmaynes'
+check_delta '.#nixosConfigurations.athena.config.home-manager.users.tjmaynes'
+
 rg -q '^[[:space:]]+gh$' modules/workstation/common/home/packages.nix
 
 rg -q 'workspace = "cd \$WORKSPACE_DIRECTORY"' modules/workstation/common/home/shells.nix

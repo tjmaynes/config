@@ -8,9 +8,9 @@
       user.email = identity.email;
       init.defaultBranch = "main";
       core.editor = "vi";
-      diff.tool = "delta";
       gpg.program = "gpg2";
-      pull.rebase = false;
+      merge.conflictStyle = "zdiff3";
+      pull.rebase = true;
       commit.gpgSign = false;
       alias = {
         co = "checkout";
@@ -26,5 +26,10 @@
   programs.delta = {
     enable = true;
     enableGitIntegration = true;
+    options = {
+      navigate = true;
+      "side-by-side" = true;
+      "line-numbers" = true;
+    };
   };
 }
