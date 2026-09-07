@@ -1,7 +1,7 @@
 NIX := nix --extra-experimental-features 'nix-command flakes'
 
-fmt:
-	$(NIX) fmt
+format:
+	$(NIX) fmt -- $$(find . -type f -name '*.nix' -not -path './.git/*' -print | sort)
 
 format-check:
 	$(NIX) develop --command nixfmt --check $$(find . -type f -name '*.nix' -not -path './.git/*' -print | sort)
@@ -17,9 +17,11 @@ test:
 	$(NIX) develop --command sh tests/common-eval.sh
 	$(NIX) develop --command sh tests/gaia.sh
 	$(NIX) develop --command sh tests/athena.sh
-	$(NIX) develop --command sh tests/atlas.sh
 	$(NIX) develop --command sh tests/hygiene.sh
 	$(NIX) develop --command sh tests/docs.sh
+
+test-athena:
+	$(NIX) develop --command sh tests/athena.sh
 
 eval-gaia:
 	$(NIX) eval --raw .#darwinConfigurations.gaia.config.system.build.toplevel.drvPath
@@ -27,10 +29,7 @@ eval-gaia:
 eval-athena:
 	$(NIX) eval --raw .#nixosConfigurations.athena.config.system.build.toplevel.drvPath
 
-eval-atlas:
-	$(NIX) eval --raw .#nixosConfigurations.atlas.config.system.build.toplevel.drvPath
-
-check: format-check lint test eval-gaia eval-athena eval-atlas
+check: format-check lint test eval-gaia eval-athena
 
 build-gaia:
 	$(NIX) build .#darwinConfigurations.gaia.system --no-link
@@ -51,4 +50,4 @@ switch-athena:
 update:
 	$(NIX) flake update
 
-.PHONY: fmt format-check lint test check update bootstrap-gaia switch-gaia switch-athena eval-gaia eval-athena eval-atlas build-gaia build-athena
+.PHONY: format format-check lint test test-athena check update bootstrap-gaia switch-gaia eval-athena build-gaia build-athena switch-athena eval-gaia

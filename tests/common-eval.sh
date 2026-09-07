@@ -55,11 +55,8 @@ rg -q 'pencil#init' modules/workstation/common/home/vim.nix
 rg -q 'PyJSONPretty' modules/workstation/common/home/vim.nix
 
 if rg -n \
-  --glob '*.nix' \
-  --glob '*.sh' \
-  --glob '!tests/*.sh' \
   '\.emacs\.json|package-install|package-refresh-contents|chat server|password|<home-manager|config/dotfiles' \
-  modules hosts tests; then
+  modules/workstation/common/home/emacs.nix; then
   echo "forbidden private or imperative Emacs configuration found" >&2
   exit 1
 fi

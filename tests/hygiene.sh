@@ -1,6 +1,12 @@
 #!/bin/sh
 set -eu
 
+rg -q '^format:' Makefile
+if rg -q '^fmt:' Makefile; then
+  echo "deprecated make fmt alias found" >&2
+  exit 1
+fi
+
 for path in \
   hosts/apollo.nix hosts/demeter.nix hosts/gaia.nix hosts/athena.nix \
   hosts/kratos.sh modules/common/default.nix modules/common/nixpkgs.nix \
