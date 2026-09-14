@@ -1,4 +1,9 @@
-{ identity, user, ... }:
+{
+  identity,
+  pkgsUnstable,
+  user,
+  ...
+}:
 {
   imports = [ ../../modules/workstation/darwin ];
 
@@ -15,7 +20,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { inherit identity user; };
+    extraSpecialArgs = { inherit identity pkgsUnstable user; };
     users.${identity.username} = {
       imports = [
         ../../modules/workstation/common/home

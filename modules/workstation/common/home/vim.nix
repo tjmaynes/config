@@ -11,7 +11,6 @@
       vim-surround
       vim-gnupg
       editorconfig-vim
-      papercolor-theme
       vim-markdown
       goyo-vim
       vim-pencil

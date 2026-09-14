@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
@@ -18,6 +19,7 @@
   outputs =
     {
       nixpkgs,
+      nixpkgs-unstable,
       home-manager,
       nix-darwin,
       ...
@@ -28,6 +30,15 @@
         "x86_64-linux"
       ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+      unstableFor =
+        system:
+        import nixpkgs-unstable {
+          inherit system;
+          config = {
+            allowUnfree = true;
+            allowBroken = false;
+          };
+        };
       identity = {
         username = "tjmaynes";
         fullName = "TJ Maynes";
@@ -48,6 +59,7 @@
         specialArgs = {
           inherit identity;
           user = gaiaUser;
+          pkgsUnstable = unstableFor "aarch64-darwin";
         };
         modules = [
           home-manager.darwinModules.home-manager
@@ -60,6 +72,7 @@
         specialArgs = {
           inherit identity;
           user = athenaUser;
+          pkgsUnstable = unstableFor "x86_64-linux";
         };
         modules = [
           home-manager.nixosModules.home-manager

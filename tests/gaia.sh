@@ -14,6 +14,7 @@ test "$(nix_eval '.#darwinConfigurations.gaia.config.networking.hostName')" = '"
 test "$(nix_eval '.#darwinConfigurations.gaia.config.system.stateVersion')" = '4'
 test "$(nix_eval '.#darwinConfigurations.gaia.config.home-manager.users.tjmaynes.programs.emacs.enable')" = true
 test "$(nix_eval '.#darwinConfigurations.gaia.config.home-manager.users.tjmaynes.services.emacs.enable')" = false
+if rg -q '"iterm2"' modules/workstation/darwin/homebrew.nix; then exit 1; fi
 test "$(font_pnames '.#darwinConfigurations.gaia.config.fonts.packages')" = \
   '["nerd-fonts-iosevka","nerd-fonts-inconsolata","nerd-fonts-blex-mono","linux-libertine","libre-baskerville"]'
 

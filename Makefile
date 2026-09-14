@@ -50,4 +50,7 @@ switch-athena:
 update:
 	$(NIX) flake update
 
-.PHONY: format format-check lint test test-athena check update bootstrap-gaia switch-gaia eval-athena build-gaia build-athena switch-athena eval-gaia
+update-unstable:
+	$(NIX) flake update nixpkgs-unstable
+
+.PHONY: format format-check lint test test-athena check update update-unstable bootstrap-gaia switch-gaia eval-athena build-gaia build-athena switch-athena eval-gaia

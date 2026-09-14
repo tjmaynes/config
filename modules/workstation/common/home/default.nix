@@ -3,6 +3,7 @@
   imports = [
     ./git.nix
     ./emacs.nix
+    ./ghostty.nix
     ./mise.nix
     ./packages.nix
     ./shells.nix

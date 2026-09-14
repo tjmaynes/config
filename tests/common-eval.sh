@@ -10,7 +10,28 @@ athena_emacs=$(nix_eval '.#nixosConfigurations.athena.config.home-manager.users.
 test "$gaia_emacs" = true
 test "$athena_emacs" = true
 
+gaia_ghostty=$(nix_eval '.#darwinConfigurations.gaia.config.home-manager.users.tjmaynes.programs.ghostty.enable')
+athena_ghostty=$(nix_eval '.#nixosConfigurations.athena.config.home-manager.users.tjmaynes.programs.ghostty.enable')
+test "$gaia_ghostty" = true
+test "$athena_ghostty" = true
+test "$(nix_eval '.#darwinConfigurations.gaia.config.home-manager.users.tjmaynes.programs.ghostty.package.pname')" = '"ghostty-bin"'
+test "$(nix_eval '.#nixosConfigurations.athena.config.home-manager.users.tjmaynes.programs.ghostty.package.pname')" = '"ghostty"'
+
+rg -q 'nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";' flake.nix
+rg -q 'pkgsUnstable.codex' modules/workstation/common/home/packages.nix
+rg -q 'inherit identity pkgsUnstable user;' hosts/gaia/default.nix
+rg -q 'inherit identity pkgsUnstable user;' hosts/athena/default.nix
+rg -q '^update-unstable:' Makefile
+rg -q 'make update-unstable' README.md
+
 rg -q ':family "Inconsolata Nerd Font Mono"' modules/workstation/common/home/emacs.nix
+rg -q '^[[:space:]]+aspell$' modules/workstation/common/home/packages.nix
+rg -q 'workspace/code/tjmaynes/notebook' modules/workstation/common/home/emacs.nix
+rg -q 'org-capture-templates' modules/workstation/common/home/emacs.nix
+rg -q '"inbox.org"' modules/workstation/common/home/emacs.nix
+rg -q '"tasks.org"' modules/workstation/common/home/emacs.nix
+rg -q 'ispell-program-name "aspell"' modules/workstation/common/home/emacs.nix
+rg -q "(load-theme 'zenburn t)" modules/workstation/common/home/emacs.nix
 
 check_delta() {
   prefix=$1
@@ -47,7 +68,7 @@ rg -q 'kubectl = "1.37.0"' modules/workstation/common/home/mise.nix
 rg -q 'go = "1.27.0"' modules/workstation/common/home/mise.nix
 if rg -q 'bun' modules/workstation/common/home/mise.nix; then exit 1; fi
 rg -q 'plugins = with pkgs.vimPlugins' modules/workstation/common/home/vim.nix
-for plugin in nerdtree ctrlp-vim vim-fugitive vim-commentary vim-surround vim-gnupg editorconfig-vim papercolor-theme vim-markdown goyo-vim vim-pencil
+for plugin in nerdtree ctrlp-vim vim-fugitive vim-commentary vim-surround vim-gnupg editorconfig-vim vim-markdown goyo-vim vim-pencil
 do
   rg -q "^[[:space:]]+$plugin$" modules/workstation/common/home/vim.nix
 done

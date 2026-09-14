@@ -1,21 +1,19 @@
-{ pkgs, ... }:
+{ pkgs, pkgsUnstable, ... }:
 {
   home.packages = with pkgs; [
+    aspell
     bat
-    codex
+    pkgsUnstable.codex
     curl
     ffmpeg
     gh
     gnupg
     htop
     jq
-    libwebp
     openssh
     pandoc
-    procs
-    ripgrep
     shfmt
     tree
-    watchman
+    vscode
   ];
 }

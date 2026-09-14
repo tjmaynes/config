@@ -51,6 +51,12 @@ Update the locked inputs deliberately and review the resulting diff:
 make update
 ```
 
+Update only Codex from its `nixos-unstable` package source:
+
+```sh
+make update-unstable
+```
+
 ## Check
 
 Run formatting, static checks, shell contracts, and all host evaluations:
