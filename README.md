@@ -125,8 +125,7 @@ Runtime downloads are never performed by activation hooks or CI.
 ## Homebrew
 
 Gaia owns only the approved GUI and MAS applications. Homebrew updates,
-upgrades, and cleanup are disabled during initial activation; cleanup remains
-`none` until separately reviewed.
+upgrades, and cleanup are disabled during initial activation; cleanup remains `none` until separately reviewed.
 
 ## Hardware
 
