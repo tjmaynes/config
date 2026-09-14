@@ -25,7 +25,7 @@
           id = "bar-0";
           position = "bottom";
           fonts = {
-            names = [ "Inconsolata" ];
+            names = [ "Inconsolata Nerd Font Mono" ];
             size = 12.0;
           };
         }

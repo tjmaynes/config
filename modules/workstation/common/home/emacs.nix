@@ -57,7 +57,7 @@
       (setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
 
       (when (display-graphic-p)
-        (set-face-attribute 'default nil :family "Inconsolata" :height 160))
+        (set-face-attribute 'default nil :family "Inconsolata Nerd Font Mono" :height 160))
     '';
   };
 }

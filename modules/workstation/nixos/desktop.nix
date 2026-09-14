@@ -25,8 +25,9 @@
   };
 
   fonts.packages = with pkgs; [
-    corefonts
-    inconsolata
+    nerd-fonts.iosevka
+    nerd-fonts.inconsolata
+    nerd-fonts.blex-mono
     libertine
     libre-baskerville
   ];

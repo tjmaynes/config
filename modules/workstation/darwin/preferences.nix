@@ -1,6 +1,12 @@
 { pkgs, user, ... }:
 {
-  fonts.packages = [ pkgs.inconsolata ];
+  fonts.packages = with pkgs; [
+    nerd-fonts.iosevka
+    nerd-fonts.inconsolata
+    nerd-fonts.blex-mono
+    libertine
+    libre-baskerville
+  ];
 
   system.keyboard = {
     enableKeyMapping = true;

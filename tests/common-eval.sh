@@ -10,6 +10,8 @@ athena_emacs=$(nix_eval '.#nixosConfigurations.athena.config.home-manager.users.
 test "$gaia_emacs" = true
 test "$athena_emacs" = true
 
+rg -q ':family "Inconsolata Nerd Font Mono"' modules/workstation/common/home/emacs.nix
+
 check_delta() {
   prefix=$1
 
