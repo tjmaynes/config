@@ -3,10 +3,11 @@
   imports = [
     ./git.nix
     ./emacs.nix
+    ./gnupg.nix
     ./ghostty.nix
     ./mise.nix
     ./packages.nix
-    ./shells.nix
+    ./zsh.nix
     ./tmux.nix
     ./vim.nix
   ];

@@ -24,7 +24,6 @@
     users.${identity.username} = {
       imports = [
         ../../modules/workstation/common/home
-        ../../modules/workstation/darwin/home
       ];
       home.stateVersion = "22.05";
     };

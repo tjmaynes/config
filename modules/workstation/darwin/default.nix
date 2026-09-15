@@ -1,19 +1,93 @@
-{ pkgs, ... }:
+{ pkgs, user, ... }:
 {
   imports = [
     ../common/nix.nix
-    ./preferences.nix
-    ./homebrew.nix
   ];
 
   environment = {
     shells = with pkgs; [ zsh ];
-    systemPackages = with pkgs; [ vim ];
+    systemPackages = with pkgs; [
+      ghostty-bin
+      obsidian
+      google-chrome
+      bitwarden-desktop
+    ];
     pathsToLink = [ "/Applications" ];
   };
 
-  programs.gnupg.agent = {
+  homebrew = {
     enable = true;
-    enableSSHSupport = true;
+    casks = [
+      "tailscale-app"
+      "obs"
+    ];
+    onActivation = {
+      autoUpdate = false;
+      cleanup = "none";
+      upgrade = false;
+    };
+  };
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.iosevka
+    nerd-fonts.inconsolata
+    nerd-fonts.blex-mono
+    libertine
+    libre-baskerville
+  ];
+
+  system.keyboard = {
+    enableKeyMapping = true;
+    remapCapsLockToControl = true;
+  };
+
+  system.defaults = {
+    screencapture.location = "${user.homeDirectory}/libra/photos/screencaptures";
+
+    dock = {
+      autohide = true;
+      orientation = "bottom";
+      showhidden = true;
+      mineffect = "genie";
+      launchanim = true;
+      show-process-indicators = true;
+      tilesize = 48;
+      static-only = true;
+      mru-spaces = false;
+      show-recents = false;
+    };
+
+    finder = {
+      AppleShowAllExtensions = true;
+      FXEnableExtensionChangeWarning = false;
+      CreateDesktop = false;
+    };
+
+    loginwindow = {
+      GuestEnabled = false;
+      DisableConsoleAccess = true;
+    };
+
+    SoftwareUpdate.AutomaticallyInstallMacOSUpdates = true;
+
+    NSGlobalDomain = {
+      AppleInterfaceStyle = "Dark";
+      AppleKeyboardUIMode = 3;
+      ApplePressAndHoldEnabled = false;
+      NSAutomaticCapitalizationEnabled = false;
+      NSAutomaticDashSubstitutionEnabled = false;
+      NSAutomaticPeriodSubstitutionEnabled = false;
+      NSAutomaticQuoteSubstitutionEnabled = false;
+      NSAutomaticSpellingCorrectionEnabled = false;
+      NSNavPanelExpandedStateForSaveMode = true;
+      NSNavPanelExpandedStateForSaveMode2 = true;
+      _HIHideMenuBar = false;
+    };
+  };
+
+  networking.applicationFirewall = {
+    enable = true;
+    blockAllIncoming = false;
+    enableStealthMode = true;
   };
 }

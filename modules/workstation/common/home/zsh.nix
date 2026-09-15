@@ -10,6 +10,7 @@
       plugins = [
         "git"
         "kubectl"
+        "macos"
       ];
     };
     shellAliases = {
@@ -25,10 +26,6 @@
         for pid in $(lsof -tiTCP:"$port" -sTCP:LISTEN 2>/dev/null); do
           kill "$pid"
         done
-      }
-
-      convert-m4a-to-mp3() {
-        ffmpeg -i "$1" -codec:a libmp3lame "''${1%.m4a}.mp3"
       }
     '';
   };

@@ -128,10 +128,10 @@ mise install
 
 Runtime downloads are never performed by activation hooks or CI.
 
-## Homebrew
+## Applications
 
-Gaia owns only the approved GUI and MAS applications. Homebrew updates,
-upgrades, and cleanup are disabled during initial activation; cleanup remains `none` until separately reviewed.
+Gaia installs its graphical applications from nixpkgs. nix-darwin places their
+bundles in `/Applications/Nix Apps` during activation.
 
 ## Hardware
 

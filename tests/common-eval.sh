@@ -54,10 +54,30 @@ check_delta() {
 check_delta '.#darwinConfigurations.gaia.config.home-manager.users.tjmaynes'
 check_delta '.#nixosConfigurations.athena.config.home-manager.users.tjmaynes'
 
+check_oh_my_zsh() {
+  prefix=$1
+
+  test "$(nix_eval "$prefix.programs.zsh.oh-my-zsh.plugins")" = \
+    '["git","kubectl","macos"]'
+}
+
+check_oh_my_zsh '.#darwinConfigurations.gaia.config.home-manager.users.tjmaynes'
+check_oh_my_zsh '.#nixosConfigurations.athena.config.home-manager.users.tjmaynes'
+
+for prefix in .#darwinConfigurations.gaia.config .#nixosConfigurations.athena.config
+do
+  test "$(nix_eval "$prefix.home-manager.users.tjmaynes.services.gpg-agent.enable")" = true
+  test "$(nix_eval "$prefix.home-manager.users.tjmaynes.services.gpg-agent.enableSshSupport")" = true
+done
+
 rg -q '^[[:space:]]+gh$' modules/workstation/common/home/packages.nix
 
-rg -q 'workspace = "cd \$WORKSPACE_DIRECTORY"' modules/workstation/common/home/shells.nix
-rg -q 'kill-process-on-port\(\)' modules/workstation/common/home/shells.nix
+rg -q 'workspace = "cd \$WORKSPACE_DIRECTORY"' modules/workstation/common/home/zsh.nix
+rg -q 'kill-process-on-port\(\)' modules/workstation/common/home/zsh.nix
+if rg -q 'convert-m4a-to-mp3' modules/workstation/common/home/zsh.nix; then
+  echo "removed M4A conversion helper found" >&2
+  exit 1
+fi
 rg -q 'prefix = "C-g"' modules/workstation/common/home/tmux.nix
 rg -q 'bind m set-window-option main-pane-height' modules/workstation/common/home/tmux.nix
 rg -q 'set -g base-index 1' modules/workstation/common/home/tmux.nix

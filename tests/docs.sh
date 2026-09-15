@@ -14,7 +14,7 @@ if rg -q 'apollo|demeter|kratos' README.md; then exit 1; fi
 test -f .github/workflows/check.yml
 rg -q 'nix-installer-action' .github/workflows/check.yml
 if rg -q 'darwin-rebuild switch|nixos-rebuild switch' .github/workflows/check.yml; then exit 1; fi
-rg -q 'cleanup remains `none`' README.md
+rg -q '/Applications/Nix Apps' README.md
 rg -q 'hardware-eval.nix' README.md
 
 for path in \
