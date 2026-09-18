@@ -4,7 +4,7 @@
     ./git.nix
     ./emacs.nix
     ./gnupg.nix
-    ./ghostty.nix
+    ./terminal.nix
     ./mise.nix
     ./packages.nix
     ./zsh.nix
