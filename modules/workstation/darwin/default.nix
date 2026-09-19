@@ -42,7 +42,7 @@
   };
 
   system.defaults = {
-    screencapture.location = "${user.homeDirectory}/libra/photos/screencaptures";
+    screencapture.location = "${user.homeDirectory}/workspace/screencaptures";
 
     dock = {
       autohide = true;
@@ -72,7 +72,8 @@
 
     NSGlobalDomain = {
       AppleInterfaceStyle = "Dark";
-      AppleKeyboardUIMode = 3;
+      AppleInterfaceStyleSwitchesAutomatically = false;
+      AppleKeyboardUIMode = 2;
       ApplePressAndHoldEnabled = false;
       NSAutomaticCapitalizationEnabled = false;
       NSAutomaticDashSubstitutionEnabled = false;
