@@ -14,6 +14,16 @@
       url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    superpowers = {
+      url = "github:obra/superpowers/main";
+      flake = false;
+    };
+
+    tjmaynes-skills = {
+      url = "github:tjmaynes/skills/main";
+      flake = false;
+    };
   };
 
   outputs =
@@ -22,6 +32,8 @@
       nixpkgs-unstable,
       home-manager,
       nix-darwin,
+      superpowers,
+      tjmaynes-skills,
       ...
     }:
     let
@@ -46,6 +58,18 @@
         githubUsername = "tjmaynes";
         timezone = "America/Chicago";
       };
+      skillRepos = [
+        {
+          name = "superpowers";
+          source = superpowers;
+          subdir = "skills";
+        }
+        {
+          name = "tjmaynes-skills";
+          source = tjmaynes-skills;
+          subdir = "skills";
+        }
+      ];
       gaiaUser = identity // {
         homeDirectory = "/Users/${identity.username}";
       };
@@ -57,7 +81,7 @@
       darwinConfigurations.gaia = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         specialArgs = {
-          inherit identity;
+          inherit identity skillRepos;
           user = gaiaUser;
           pkgsUnstable = unstableFor "aarch64-darwin";
         };
@@ -70,7 +94,7 @@
       nixosConfigurations.athena = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
-          inherit identity;
+          inherit identity skillRepos;
           user = athenaUser;
           pkgsUnstable = unstableFor "x86_64-linux";
         };

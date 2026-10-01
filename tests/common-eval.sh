@@ -5,6 +5,11 @@ nix_eval() {
   nix --extra-experimental-features 'nix-command flakes' eval --json "$1"
 }
 
+package_pnames() {
+  nix --extra-experimental-features 'nix-command flakes' eval --json \
+    --apply 'packages: map (package: package.pname or "") packages' "$1"
+}
+
 gaia_emacs=$(nix_eval '.#darwinConfigurations.gaia.config.home-manager.users.tjmaynes.programs.emacs.enable')
 athena_emacs=$(nix_eval '.#nixosConfigurations.athena.config.home-manager.users.tjmaynes.programs.emacs.enable')
 test "$gaia_emacs" = true
@@ -19,8 +24,8 @@ test "$(nix_eval '.#nixosConfigurations.athena.config.home-manager.users.tjmayne
 
 rg -q 'nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";' flake.nix
 rg -q 'pkgsUnstable.codex' modules/workstation/common/home/packages.nix
-rg -q 'inherit identity pkgsUnstable user;' hosts/gaia/default.nix
-rg -q 'inherit identity pkgsUnstable user;' hosts/athena/default.nix
+rg -Uq 'extraSpecialArgs = \{[^}]*skillRepos' hosts/gaia/default.nix
+rg -Uq 'extraSpecialArgs = \{[^}]*skillRepos' hosts/athena/default.nix
 rg -q '^update-unstable:' Makefile
 rg -q 'make update-unstable' README.md
 
@@ -68,9 +73,12 @@ for prefix in .#darwinConfigurations.gaia.config .#nixosConfigurations.athena.co
 do
   test "$(nix_eval "$prefix.home-manager.users.tjmaynes.services.gpg-agent.enable")" = true
   test "$(nix_eval "$prefix.home-manager.users.tjmaynes.services.gpg-agent.enableSshSupport")" = true
+  package_pnames "$prefix.home-manager.users.tjmaynes.home.packages" \
+    | jq -e 'index("vscode") != null' >/dev/null
 done
 
 rg -q '^[[:space:]]+gh$' modules/workstation/common/home/packages.nix
+rg -q '^[[:space:]]+vagrant$' modules/workstation/common/home/packages.nix
 
 rg -q 'workspace = "cd \$WORKSPACE_DIRECTORY"' modules/workstation/common/home/zsh.nix
 rg -q 'kill-process-on-port\(\)' modules/workstation/common/home/zsh.nix

@@ -19,6 +19,8 @@ test "$(nix_eval '.#darwinConfigurations.gaia.config.networking.hostName')" = '"
 test "$(nix_eval '.#darwinConfigurations.gaia.config.system.stateVersion')" = '4'
 test "$(nix_eval '.#darwinConfigurations.gaia.config.home-manager.users.tjmaynes.programs.emacs.enable')" = true
 test "$(nix_eval '.#darwinConfigurations.gaia.config.home-manager.users.tjmaynes.services.emacs.enable')" = false
+test "$(nix_eval '.#darwinConfigurations.gaia.config.home-manager.users.tjmaynes.targets.darwin.copyApps.enable')" = true
+test "$(nix_eval '.#darwinConfigurations.gaia.config.home-manager.users.tjmaynes.targets.darwin.linkApps.enable')" = false
 test "$(nix_eval '.#darwinConfigurations.gaia.config.system.defaults.screencapture.location')" = \
   '"/Users/tjmaynes/workspace/screencaptures"'
 test "$(nix_eval '.#darwinConfigurations.gaia.config.system.defaults.NSGlobalDomain.AppleInterfaceStyle')" = '"Dark"'
@@ -34,7 +36,7 @@ do
   printf '%s' "$system_packages" | jq -e --arg package "$package" 'index($package) != null' >/dev/null
 done
 nix_eval '.#darwinConfigurations.gaia.config.homebrew.casks' | jq -e \
-  'map(.name) == ["tailscale-app", "obs"]' >/dev/null
+  'map(.name) == ["tailscale-app", "obs", "spotify", "virtualbox"]' >/dev/null
 test "$(font_pnames '.#darwinConfigurations.gaia.config.fonts.packages')" = \
   '["nerd-fonts-iosevka","nerd-fonts-inconsolata","nerd-fonts-blex-mono","linux-libertine","libre-baskerville"]'
 

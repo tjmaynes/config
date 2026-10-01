@@ -14,6 +14,7 @@ lint:
 
 test:
 	$(NIX) develop --command sh tests/flake-bootstrap.sh
+	$(NIX) develop --command sh tests/agent-skills.sh
 	$(NIX) develop --command sh tests/common-eval.sh
 	$(NIX) develop --command sh tests/gaia.sh
 	$(NIX) develop --command sh tests/athena.sh

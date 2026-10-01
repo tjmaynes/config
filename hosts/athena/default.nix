@@ -1,6 +1,7 @@
 {
   identity,
   pkgsUnstable,
+  skillRepos,
   user,
   ...
 }:
@@ -22,7 +23,14 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { inherit identity pkgsUnstable user; };
+    extraSpecialArgs = {
+      inherit
+        identity
+        pkgsUnstable
+        skillRepos
+        user
+        ;
+    };
     users.${identity.username} = {
       imports = [
         ../../modules/workstation/common/home

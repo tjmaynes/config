@@ -1,7 +1,9 @@
 {
   identity,
   pkgsUnstable,
+  skillRepos,
   user,
+  lib,
   ...
 }:
 {
@@ -20,12 +22,20 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { inherit identity pkgsUnstable user; };
+    extraSpecialArgs = {
+      inherit
+        identity
+        pkgsUnstable
+        skillRepos
+        user
+        ;
+    };
     users.${identity.username} = {
       imports = [
         ../../modules/workstation/common/home
         ../../modules/workstation/darwin/home.nix
       ];
+
       home.stateVersion = "22.05";
     };
   };

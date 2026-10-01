@@ -19,10 +19,13 @@
       "audio"
       "docker"
       "networkmanager"
+      "vboxusers"
       "video"
       "wheel"
     ];
     uid = 1000;
     shell = pkgs.zsh;
   };
+
+  virtualisation.virtualbox.host.enable = true;
 }

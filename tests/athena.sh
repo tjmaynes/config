@@ -10,11 +10,21 @@ font_pnames() {
     --apply 'packages: map (package: package.pname) packages' "$1"
 }
 
+package_pnames() {
+  nix --extra-experimental-features 'nix-command flakes' eval --json \
+    --apply 'packages: map (package: package.pname or "") packages' "$1"
+}
+
 test "$(nix_eval '.#nixosConfigurations.athena.config.networking.hostName')" = '"athena"'
 test "$(nix_eval '.#nixosConfigurations.athena.config.system.stateVersion')" = '"22.05"'
 test "$(nix_eval '.#nixosConfigurations.athena.config.home-manager.users.tjmaynes.programs.emacs.enable')" = true
 test "$(nix_eval '.#nixosConfigurations.athena.config.home-manager.users.tjmaynes.services.emacs.enable')" = true
 test "$(nix_eval '.#nixosConfigurations.athena.config.fileSystems."/".device')" = '"none"'
+test "$(nix_eval '.#nixosConfigurations.athena.config.virtualisation.virtualbox.host.enable')" = true
+nix_eval '.#nixosConfigurations.athena.config.users.users.tjmaynes.extraGroups' \
+  | jq -e 'index("vboxusers") != null' >/dev/null
+package_pnames '.#nixosConfigurations.athena.config.home-manager.users.tjmaynes.home.packages' \
+  | jq -e 'index("spotify") != null and index("virtualbox") == null' >/dev/null
 font_pnames '.#nixosConfigurations.athena.config.fonts.packages' \
   | jq -e '
     index("nerd-fonts-iosevka") != null

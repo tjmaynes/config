@@ -1,6 +1,7 @@
 { identity, user, ... }:
 {
   imports = [
+    ./agent-skills.nix
     ./git.nix
     ./emacs.nix
     ./gnupg.nix

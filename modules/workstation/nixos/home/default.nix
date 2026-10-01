@@ -10,8 +10,7 @@
     gimp
     mpv
     mutt
-    vscode
-    virtualbox
+    spotify
     xclip
   ];
 

@@ -14,6 +14,7 @@
     pandoc
     shfmt
     tree
+    vagrant
     vscode
   ];
 }

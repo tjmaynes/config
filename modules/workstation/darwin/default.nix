@@ -1,4 +1,9 @@
-{ pkgs, user, ... }:
+{
+  pkgs,
+  user,
+  lib,
+  ...
+}:
 {
   imports = [
     ../common/nix.nix
@@ -11,6 +16,7 @@
       obsidian
       google-chrome
       bitwarden-desktop
+      vscode
     ];
     pathsToLink = [ "/Applications" ];
   };
@@ -20,6 +26,8 @@
     casks = [
       "tailscale-app"
       "obs"
+      "spotify"
+      "virtualbox"
     ];
     onActivation = {
       autoUpdate = false;
