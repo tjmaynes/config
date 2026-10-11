@@ -3,7 +3,6 @@
   pkgsUnstable,
   skillRepos,
   user,
-  lib,
   ...
 }:
 {
