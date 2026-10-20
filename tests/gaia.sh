@@ -36,7 +36,7 @@ do
   printf '%s' "$system_packages" | jq -e --arg package "$package" 'index($package) != null' >/dev/null
 done
 nix_eval '.#darwinConfigurations.gaia.config.homebrew.casks' | jq -e \
-  'map(.name) == ["tailscale-app", "obs", "spotify", "virtualbox"]' >/dev/null
+  'map(.name) == ["tailscale-app", "obs", "spotify", "virtualbox", "imageoptim"]' >/dev/null
 test "$(font_pnames '.#darwinConfigurations.gaia.config.fonts.packages')" = \
   '["nerd-fonts-iosevka","nerd-fonts-inconsolata","nerd-fonts-blex-mono","linux-libertine","libre-baskerville"]'
 

@@ -27,6 +27,7 @@
       "obs"
       "spotify"
       "virtualbox"
+      "imageoptim"
     ];
     onActivation = {
       autoUpdate = false;
