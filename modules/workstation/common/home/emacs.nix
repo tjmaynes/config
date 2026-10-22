@@ -16,6 +16,7 @@
         magit
         markdown-mode
         multi-term
+        notmuch
         org
         org-journal
         paredit

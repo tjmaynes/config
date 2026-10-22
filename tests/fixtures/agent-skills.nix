@@ -1,16 +1,16 @@
 let
-  flake = builtins.getFlake (toString ../.);
+  flake = builtins.getFlake (toString ../..);
   lib = flake.inputs.nixpkgs.lib;
-  agentSkills = import ../lib/agent-skills.nix { inherit lib; };
+  agentSkills = import ../../lib/agent-skills.nix { inherit lib; };
 
   repoA = {
     name = "repo-a";
-    source = ./fixtures/agent-skills/repo-a;
+    source = ./agent-skills/repo-a;
     subdir = "skills";
   };
   repoB = {
     name = "repo-b";
-    source = ./fixtures/agent-skills/repo-b;
+    source = ./agent-skills/repo-b;
     subdir = "skills";
   };
 

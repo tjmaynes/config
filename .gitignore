@@ -15,3 +15,9 @@ result
 
 tmp/
 .superpowers/
+
+# Python test tooling
+__pycache__/
+*.py[cod]
+.venv/
+.ruff_cache/

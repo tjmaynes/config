@@ -24,6 +24,16 @@
       url = "github:tjmaynes/skills/main";
       flake = false;
     };
+
+    mattpocock-skills = {
+      url = "github:mattpocock/skills/main";
+      flake = false;
+    };
+
+    addyosmani-agent-skills = {
+      url = "github:addyosmani/agent-skills/main";
+      flake = false;
+    };
   };
 
   outputs =
@@ -34,6 +44,8 @@
       nix-darwin,
       superpowers,
       tjmaynes-skills,
+      mattpocock-skills,
+      addyosmani-agent-skills,
       ...
     }:
     let
@@ -69,12 +81,24 @@
           source = tjmaynes-skills;
           subdir = "skills";
         }
+        {
+          name = "mattpocock-skills";
+          source = mattpocock-skills;
+          subdir = "skills/productivity";
+          include = [
+            "grill-me"
+            "grilling"
+          ];
+        }
+        {
+          name = "addyosmani-agent-skills";
+          source = addyosmani-agent-skills;
+          subdir = "skills";
+          include = [ "interview-me" ];
+        }
       ];
       gaiaUser = identity // {
         homeDirectory = "/Users/${identity.username}";
-      };
-      athenaUser = identity // {
-        homeDirectory = "/home/${identity.username}";
       };
     in
     {
@@ -91,19 +115,6 @@
         ];
       };
 
-      nixosConfigurations.athena = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit identity skillRepos;
-          user = athenaUser;
-          pkgsUnstable = unstableFor "x86_64-linux";
-        };
-        modules = [
-          home-manager.nixosModules.home-manager
-          ./hosts/athena/default.nix
-        ];
-      };
-
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
 
       devShells = forAllSystems (
@@ -116,10 +127,10 @@
             packages = with pkgs; [
               actionlint
               deadnix
-              jq
               nixfmt
+              python314
               ripgrep
-              shellcheck
+              ruff
               statix
             ];
           };

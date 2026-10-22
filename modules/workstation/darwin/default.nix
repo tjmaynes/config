@@ -13,7 +13,6 @@
     systemPackages = with pkgs; [
       ghostty-bin
       obsidian
-      google-chrome
       bitwarden-desktop
       vscode
     ];
@@ -23,15 +22,20 @@
   homebrew = {
     enable = true;
     casks = [
+      "chatgpt"
+      "docker-desktop"
+      "signal"
+      "vcv-rack"
       "tailscale-app"
       "obs"
       "spotify"
       "virtualbox"
       "imageoptim"
+      "zen"
     ];
     onActivation = {
       autoUpdate = false;
-      cleanup = "none";
+      cleanup = "uninstall";
       upgrade = false;
     };
   };

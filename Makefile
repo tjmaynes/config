@@ -2,51 +2,43 @@ NIX := nix --extra-experimental-features 'nix-command flakes'
 
 format:
 	$(NIX) fmt -- $$(find . -type f -name '*.nix' -not -path './.git/*' -print | sort)
+	$(NIX) develop --command ruff format --config tests/pyproject.toml tests
 
 format-check:
 	$(NIX) develop --command nixfmt --check $$(find . -type f -name '*.nix' -not -path './.git/*' -print | sort)
+	$(NIX) develop --command ruff format --check --config tests/pyproject.toml tests
 
 lint:
 	$(NIX) develop --command statix check .
 	$(NIX) develop --command deadnix --fail .
-	$(NIX) develop --command shellcheck tests/*.sh
+	$(NIX) develop --command ruff check --config tests/pyproject.toml tests
 	$(NIX) develop --command actionlint
 
 test:
-	$(NIX) develop --command sh tests/flake-bootstrap.sh
-	$(NIX) develop --command sh tests/agent-skills.sh
-	$(NIX) develop --command sh tests/common-eval.sh
-	$(NIX) develop --command sh tests/gaia.sh
-	$(NIX) develop --command sh tests/athena.sh
-	$(NIX) develop --command sh tests/hygiene.sh
-	$(NIX) develop --command sh tests/docs.sh
+	$(NIX) develop --command python -m unittest discover -s tests -t . -v
 
-test-athena:
-	$(NIX) develop --command sh tests/athena.sh
+test-unit:
+	$(NIX) develop --command python -m unittest discover -s tests/unit -t . -v
 
-eval-gaia:
+test-smoke:
+	$(NIX) develop --command python -m unittest discover -s tests/smoke -t . -v
+
+test-integration:
+	$(NIX) develop --command python -m unittest discover -s tests/integration -t . -v
+
+eval:
 	$(NIX) eval --raw .#darwinConfigurations.gaia.config.system.build.toplevel.drvPath
 
-eval-athena:
-	$(NIX) eval --raw .#nixosConfigurations.athena.config.system.build.toplevel.drvPath
+check: format-check lint test eval
 
-check: format-check lint test eval-gaia eval-athena
-
-build-gaia:
+build:
 	$(NIX) build .#darwinConfigurations.gaia.system --no-link
 
-build-athena:
-	$(NIX) build .#nixosConfigurations.athena.config.system.build.toplevel --no-link
-
-bootstrap-gaia:
+bootstrap:
 	sudo nix --extra-experimental-features 'nix-command flakes' run nix-darwin/nix-darwin-26.05#darwin-rebuild -- switch --flake .#gaia
 
-switch-gaia:
+switch:
 	sudo darwin-rebuild switch --flake .#gaia
-
-switch-athena:
-	@echo "Refusing switch: replace hosts/athena/hardware-eval.nix with reviewed hardware configuration first." >&2
-	@exit 1
 
 update:
 	$(NIX) flake update
@@ -54,4 +46,4 @@ update:
 update-unstable:
 	$(NIX) flake update nixpkgs-unstable
 
-.PHONY: format format-check lint test test-athena check update update-unstable bootstrap-gaia switch-gaia eval-athena build-gaia build-athena switch-athena eval-gaia
+.PHONY: format format-check lint test test-unit test-smoke test-integration check update update-unstable bootstrap switch build eval

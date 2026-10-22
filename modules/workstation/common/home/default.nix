@@ -7,6 +7,7 @@
     ./gnupg.nix
     ./terminal.nix
     ./mise.nix
+    ./mail.nix
     ./packages.nix
     ./zsh.nix
     ./tmux.nix
@@ -22,6 +23,13 @@
       CODE_DIRECTORY = "${user.homeDirectory}/workspace/code";
       EDITOR = "vi";
     };
+  };
+
+  services.syncthing = {
+    enable = true;
+    # Keep devices and folders configured through the local web interface.
+    overrideDevices = false;
+    overrideFolders = false;
   };
 
   programs = {
