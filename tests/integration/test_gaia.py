@@ -9,6 +9,18 @@ HOME = f"{CONFIG}.{USER}"
 
 
 class GaiaTests(unittest.TestCase):
+    def test_atuin_uses_homebrew_without_a_conflicting_nix_package(self):
+        brews = eval_json(f"{CONFIG}.homebrew.brews")
+        self.assertIn("atuin", [brew["name"] for brew in brews])
+        self.assertIs(eval_json(f"{HOME}.programs.atuin.enable"), False)
+        self.assertNotIn(
+            "atuin", eval_json(f"{HOME}.home.packages", apply=PACKAGE_PNAMES)
+        )
+        self.assertIn(
+            'eval "$(/opt/homebrew/bin/atuin init zsh)"',
+            eval_json(f"{HOME}.programs.zsh.initContent"),
+        )
+
     def test_syncthing_runs_as_a_background_launch_agent(self):
         agent = f"{HOME}.launchd.agents.syncthing"
         self.assertIs(eval_json(f"{agent}.enable"), True)

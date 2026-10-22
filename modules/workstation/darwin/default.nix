@@ -21,6 +21,7 @@
 
   homebrew = {
     enable = true;
+    brews = [ "atuin" ];
     casks = [
       "chatgpt"
       "docker-desktop"

@@ -226,3 +226,8 @@ during activation. Other applications, including Zen Browser (the `zen` cask),
 use its declarative Homebrew configuration.
 
 Gaia does not change its default browser automatically.
+
+Atuin is installed through the Homebrew `atuin` formula. Gaia's Zsh integration
+uses `/opt/homebrew/bin/atuin` so its history database is opened by the Homebrew
+version. Update it with `brew upgrade atuin`; Homebrew upgrades are disabled
+during Nix activation.
