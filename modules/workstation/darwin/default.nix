@@ -25,6 +25,7 @@
     casks = [
       "chatgpt"
       "docker-desktop"
+      "google-chrome"
       "signal"
       "vcv-rack"
       "tailscale-app"

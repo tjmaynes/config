@@ -78,7 +78,7 @@ in
 
         def get_password():
             return subprocess.check_output(
-                ["pass", "show", "mail/icloud/tj@tjmaynes.com"], text=True
+                ["${pkgs.pass}/bin/pass", "show", "mail/icloud/tj@tjmaynes.com"], text=True
             ).strip()
       '';
 

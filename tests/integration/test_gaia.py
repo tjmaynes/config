@@ -9,6 +9,39 @@ HOME = f"{CONFIG}.{USER}"
 
 
 class GaiaTests(unittest.TestCase):
+    def test_mail_sync_runs_nightly_in_the_user_environment(self):
+        agent = eval_json(f"{HOME}.launchd.agents.sync-icloud-mail")
+        self.assertIs(agent["enable"], True)
+        config = agent["config"]
+        self.assertEqual(
+            config["StartCalendarInterval"],
+            {"Hour": 2, "Minute": 0, "Day": None, "Month": None, "Weekday": None},
+        )
+        self.assertEqual(
+            config["ProgramArguments"],
+            ["/etc/profiles/per-user/tjmaynes/bin/sync-icloud-mail"],
+        )
+        self.assertEqual(config["EnvironmentVariables"]["HOME"], "/Users/tjmaynes")
+        self.assertIs(config["RunAtLoad"], False)
+        self.assertIs(config["KeepAlive"], False)
+        for key, filename in (
+            ("StandardOutPath", "stdout.log"),
+            ("StandardErrorPath", "stderr.log"),
+        ):
+            with self.subTest(key=key):
+                self.assertEqual(
+                    config[key], f"/Users/tjmaynes/workspace/mailbox/logs/{filename}"
+                )
+
+    def test_mail_log_directory_exists_before_agent_setup(self):
+        activation = eval_json(f"{HOME}.home.activation.ensureICloudMailLogDirectory")
+        self.assertIn("writeBoundary", activation["after"])
+        self.assertIn("setupLaunchAgents", activation["before"])
+        self.assertIn(
+            'run mkdir -p -- "/Users/tjmaynes/workspace/mailbox/logs"',
+            activation["data"],
+        )
+
     def test_atuin_uses_homebrew_without_a_conflicting_nix_package(self):
         brews = eval_json(f"{CONFIG}.homebrew.brews")
         self.assertIn("atuin", [brew["name"] for brew in brews])
@@ -94,6 +127,7 @@ class GaiaTests(unittest.TestCase):
             [
                 "chatgpt",
                 "docker-desktop",
+                "google-chrome",
                 "signal",
                 "vcv-rack",
                 "tailscale-app",

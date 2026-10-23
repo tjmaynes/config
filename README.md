@@ -177,10 +177,23 @@ sync-icloud-mail
 notmuch search 'tag:inbox'
 ```
 
-In Emacs, run `M-x notmuch` to browse and search the index. Syncing is manual;
-activation does not sync or index mail. Run `notmuch new` to reindex without
-syncing. Notmuch initially tags newly indexed messages as `inbox` and `unread`,
-independently of their iCloud folder or flags.
+In Emacs, run `M-x notmuch` to browse and search the index. Run `notmuch new`
+to reindex without syncing. Notmuch initially tags newly indexed messages as
+`inbox` and `unread`, independently of their iCloud folder or flags.
+
+After `make switch`, Gaia's Home Manager launch agent runs `sync-icloud-mail`
+every night at 2:00 a.m. in the Mac's local timezone while you are logged in.
+If the Mac is asleep then, launchd runs it on wake. Activation itself does not
+sync or index mail. Manual syncing remains available.
+
+The job needs `pass` to decrypt the stored app-specific password without an
+interactive GPG prompt. Run a manual sync first to verify credentials; if GPG
+needs unlocking later, the scheduled sync may fail. Logs are stored in
+`$HOME/workspace/mailbox/logs/stdout.log` and `stderr.log`. Inspect the agent with:
+
+```sh
+launchctl print gui/$(id -u)/org.nix-community.home.sync-icloud-mail
+```
 
 ## Syncthing
 
@@ -222,8 +235,9 @@ Runtime downloads are never performed by activation hooks or CI.
 ## Applications
 
 Gaia installs its nixpkgs graphical application bundles in `/Applications/Nix Apps`
-during activation. Other applications, including Zen Browser (the `zen` cask),
-use its declarative Homebrew configuration.
+during activation. Other applications, including Google Chrome (the
+`google-chrome` cask) and Zen Browser (the `zen` cask), use its declarative
+Homebrew configuration.
 
 Gaia does not change its default browser automatically.
 
