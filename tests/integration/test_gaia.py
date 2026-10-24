@@ -125,6 +125,7 @@ class GaiaTests(unittest.TestCase):
         self.assertEqual(
             [cask["name"] for cask in casks],
             [
+                "blender",
                 "chatgpt",
                 "docker-desktop",
                 "google-chrome",

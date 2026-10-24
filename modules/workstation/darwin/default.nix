@@ -23,6 +23,7 @@
     enable = true;
     brews = [ "atuin" ];
     casks = [
+      "blender"
       "chatgpt"
       "docker-desktop"
       "google-chrome"
