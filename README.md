@@ -141,6 +141,67 @@ reboot or rollback activation.
 Keep tokens, SSH private keys, credentials, decrypted values, and private keys
 outside this repository and outside the Nix store.
 
+## Codex and MCP connections
+
+Codex comes from the locked `nixpkgs-unstable` input. Home Manager's native
+`programs.codex.mutableSettings = true` merges declared settings into a writable
+`~/.codex/config.toml` during explicit activation. Existing settings remain unless
+overridden by a Nix declaration. `programs.codex.enableMcpIntegration = true`
+imports the shared `programs.mcp.servers` registry. Edit
+`modules/workstation/common/home/mcp.nix` to change global MCP connections and
+`codex.nix` for Codex preferences.
+
+Nix declares `gpt-5.6-terra` as the default model, `medium` reasoning effort,
+`pragmatic` personality, and `features.js_repl = false`. Other existing settings
+remain mutable and are preserved by Home Manager's merge.
+
+| Context | n8n endpoint |
+| --- | --- |
+| Default | `https://n8n.tjmaynes.com/mcp-server/http` |
+| `~/workspace/notebook/development/consulting/sproutup` | `https://sproutupdigital.n8n.io/mcp-server/http` |
+
+Sproutup owns its native `.codex/config.toml` independently of this repository:
+
+```toml
+[mcp_servers.n8n]
+url = "https://sproutupdigital.n8n.io/mcp-server/http"
+```
+
+Add this block alongside existing project settings. Codex layers it over the
+global configuration, preserving other inherited MCP connections. Codex must
+trust the project to load it. Start a new task there to select the override;
+`cd` within an existing task does not switch its MCP connection. Home Manager
+does not create, update, or require the Sproutup folder, and no named profile or
+project activation script is needed.
+
+After you explicitly choose to activate with `make switch`, complete OAuth from
+the corresponding directory. Run these commands yourself, selecting the matching
+n8n account in the browser:
+
+```sh
+cd ~/workspace/config
+codex mcp login n8n
+codex mcp list
+
+cd ~/workspace/notebook/development/consulting/sproutup
+codex mcp login n8n
+codex mcp list
+```
+
+Activation does not log in, contact n8n, or change project trust. Keep credentials
+in Codex's local credential storage; never declare token values or secret headers
+in Nix. The two hostnames have not been connection-tested by repository checks.
+
+The upstream merger preserves settings rather than TOML comments or formatting.
+Removing a declaration stops enforcing its value; remove obsolete keys from the
+writable file yourself. New files use mode `0600`. Close Codex during activation
+to avoid concurrent writes. Validation and builds do not modify live Codex files.
+
+This option requires newer Home Manager than `release-26.05`, so its input now
+tracks `master`, pinned in `flake.lock`. Nixpkgs and nix-darwin remain on 26.05.
+Home Manager currently reports the resulting 26.11/26.05 version mismatch; the
+warning is retained rather than suppressed.
+
 ## Read-only iCloud Mail
 
 Gaia includes a read-only iCloud Mail mirror for `tj@tjmaynes.com`.

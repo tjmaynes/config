@@ -54,6 +54,14 @@ the host-level impact.
 
 ## Working rules
 
+Before designing an app or service integration, check Home Manager's existing
+modules and options in both the pinned version and current upstream source and
+documentation. Prefer upstream support over custom wrappers, activation scripts,
+configuration mergers, or services. If support requires a newer version, explain
+the dependency update and compatibility tradeoffs before choosing an approach.
+Create custom integration code only after identifying and documenting a gap in
+upstream support.
+
 Keep portable workstation packages and user configuration in
 `modules/workstation/common/`; put macOS-specific behavior in the Darwin
 subtree; keep host modules focused on composition and host facts. Do not put
