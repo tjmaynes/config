@@ -1,8 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, pkgsUnstable, ... }:
 {
   home.packages = with pkgs; [
     aspell
     bat
+    pkgsUnstable.codex
     curl
     ffmpeg
     gh

@@ -13,7 +13,7 @@ class SharedSourceTests(unittest.TestCase):
             'nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";',
             (ROOT / "flake.nix").read_text(),
         )
-        self.assertIn("package = pkgsUnstable.codex;", (HOME / "codex.nix").read_text())
+        self.assertIn("pkgsUnstable.codex", (HOME / "packages.nix").read_text())
 
     def test_emacs_configures_portable_note_taking(self):
         source = (HOME / "emacs.nix").read_text()
