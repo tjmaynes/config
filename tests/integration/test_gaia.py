@@ -54,6 +54,15 @@ class GaiaTests(unittest.TestCase):
             eval_json(f"{HOME}.programs.zsh.initContent"),
         )
 
+    def test_homebrew_commands_are_on_the_system_path(self):
+        paths = eval_json(f"{CONFIG}.environment.systemPath").split(":")
+        for path in ("/opt/homebrew/bin", "/opt/homebrew/sbin"):
+            with self.subTest(path=path):
+                self.assertIn(path, paths)
+                self.assertLess(
+                    paths.index("/run/current-system/sw/bin"), paths.index(path)
+                )
+
     def test_syncthing_runs_as_a_background_launch_agent(self):
         agent = f"{HOME}.launchd.agents.syncthing"
         self.assertIs(eval_json(f"{agent}.enable"), True)

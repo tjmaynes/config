@@ -248,3 +248,8 @@ Atuin is installed through the Homebrew `atuin` formula. Gaia's Zsh integration
 uses `/opt/homebrew/bin/atuin` so its history database is opened by the Homebrew
 version. Update it with `brew upgrade atuin`; Homebrew upgrades are disabled
 during Nix activation.
+
+Gaia includes `/opt/homebrew/bin` and `/opt/homebrew/sbin` in its system PATH,
+after the Nix profile paths, so Homebrew commands are available in both login
+and non-login shells. If an existing terminal cannot find `atuin`, restore it
+for that session with `export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"`.

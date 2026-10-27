@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   user,
   ...
@@ -10,6 +11,10 @@
 
   environment = {
     shells = with pkgs; [ zsh ];
+    systemPath = lib.mkOrder 1100 [
+      "/opt/homebrew/bin"
+      "/opt/homebrew/sbin"
+    ];
     systemPackages = with pkgs; [
       ghostty-bin
       obsidian
