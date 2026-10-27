@@ -62,6 +62,13 @@ Update only Codex from its `nixos-unstable` package source:
 make update-unstable
 ```
 
+Update Home Manager's pre-release Codex support without changing nixpkgs or
+nix-darwin:
+
+```sh
+make update-home-manager
+```
+
 ## Check
 
 Run formatting, static checks, Python unittest suites, and all host evaluations:
@@ -142,8 +149,22 @@ reboot or rollback activation.
 Keep tokens, SSH private keys, credentials, decrypted values, and private keys
 outside this repository and outside the Nix store.
 
-Home Manager, Nixpkgs, and nix-darwin are all pinned to their 26.05 release
-branches in `flake.lock`.
+## Codex and MCP connections
+
+Codex comes from the locked `nixpkgs-unstable` input, while Home Manager tracks
+its pre-release 26.11 development line for native Codex support. Nixpkgs and
+nix-darwin remain pinned to their 26.05 release branches. Home Manager may emit
+a version-mismatch warning for this deliberate boundary; do not suppress it.
+
+Home Manager merges the declared Codex settings into the writable
+`~/.codex/config.toml` only during explicit activation. It preserves other
+setting values, but may normalize comments and formatting. The shared MCP
+registry supplies n8n at `https://n8n.tjmaynes.com/mcp-server/http`.
+
+This repository does not manage Codex credentials, authentication, project
+trust, or project-specific configuration. Keep those values in Codex's local
+credential storage. Close Codex before an explicit activation to avoid
+concurrent writes. Validation never updates live Codex files or contacts n8n.
 
 ## Read-only iCloud Mail
 

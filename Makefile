@@ -46,4 +46,7 @@ update:
 update-unstable:
 	$(NIX) flake update nixpkgs-unstable
 
-.PHONY: format format-check lint test test-unit test-smoke test-integration check update update-unstable bootstrap switch build eval
+update-home-manager:
+	$(NIX) flake update home-manager
+
+.PHONY: format format-check lint test test-unit test-smoke test-integration check update update-unstable update-home-manager bootstrap switch build eval

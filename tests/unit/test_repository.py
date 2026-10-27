@@ -15,6 +15,9 @@ class RepositoryTests(unittest.TestCase):
         self.assertRegex(makefile, r"(?m)^\t\$\(NIX\) flake update$")
         self.assertRegex(makefile, r"(?m)^update-unstable:")
         self.assertIn("make update-unstable", (ROOT / "README.md").read_text())
+        self.assertRegex(makefile, r"(?m)^update-home-manager:")
+        self.assertRegex(makefile, r"(?m)^\t\$\(NIX\) flake update home-manager$")
+        self.assertIn("make update-home-manager", (ROOT / "README.md").read_text())
 
     def test_legacy_files_are_absent(self):
         for path in (

@@ -9,11 +9,28 @@ HOME = ROOT / "modules/common/home"
 
 class SharedSourceTests(unittest.TestCase):
     def test_codex_uses_unstable_packages(self):
+        flake = (ROOT / "flake.nix").read_text()
         self.assertIn(
             'nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";',
-            (ROOT / "flake.nix").read_text(),
+            flake,
         )
-        self.assertIn("pkgsUnstable.codex", (HOME / "packages.nix").read_text())
+        self.assertIn(
+            'nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";',
+            flake,
+        )
+        self.assertIn(
+            'url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";',
+            flake,
+        )
+        self.assertIn(
+            'url = "github:nix-community/home-manager/master";',
+            flake,
+        )
+        self.assertIn(
+            'inputs.nixpkgs.follows = "nixpkgs";',
+            flake,
+        )
+        self.assertIn("package = pkgsUnstable.codex;", (HOME / "codex.nix").read_text())
 
     def test_emacs_configures_portable_note_taking(self):
         source = (HOME / "emacs.nix").read_text()
