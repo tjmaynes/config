@@ -4,7 +4,7 @@ import unittest
 
 from tests.support import ROOT
 
-HOME = ROOT / "modules/workstation/common/home"
+HOME = ROOT / "modules/common/home"
 
 
 class SharedSourceTests(unittest.TestCase):
@@ -129,7 +129,7 @@ class SharedSourceTests(unittest.TestCase):
         self.assertNotIn("nix-vscode-extensions", (ROOT / "flake.nix").read_text())
         self.assertNotRegex((HOME / "packages.nix").read_text(), r"(?m)^\s+vscode$")
         self.assertNotRegex(
-            (ROOT / "modules/workstation/darwin/default.nix").read_text(),
+            (ROOT / "modules/darwin/default.nix").read_text(),
             r"(?m)^\s+vscode$",
         )
 

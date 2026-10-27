@@ -22,9 +22,9 @@ to make a task easier.
   development shell.
 - `hosts/<host>/` composes modules and contains host-specific identity,
   platform, and hardware configuration.
-- `modules/workstation/common/` contains portable workstation and Home Manager
+- `modules/common/` contains portable workstation and Home Manager
   configuration used by Gaia.
-- `modules/workstation/darwin/` contains macOS-only system, Homebrew,
+- `modules/darwin/` contains macOS-only system, Homebrew,
   preference, and Home Manager configuration.
 - `tests/` contains Python `unittest` checks, organized into file-only `unit/`,
   flake `smoke/`, and real Nix evaluation `integration/` suites. Shared process
@@ -62,8 +62,8 @@ the dependency update and compatibility tradeoffs before choosing an approach.
 Create custom integration code only after identifying and documenting a gap in
 upstream support.
 
-Keep portable workstation packages and user configuration in
-`modules/workstation/common/`; put macOS-specific behavior in the Darwin
+Keep portable workstation packages and user configuration in `modules/common/`;
+put macOS-specific behavior in the Darwin
 subtree; keep host modules focused on composition and host facts. Do not put
 credentials, private keys, tokens, production environment files, or machine
 secrets in the repository or Nix store.

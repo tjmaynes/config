@@ -6,7 +6,7 @@
   ...
 }:
 {
-  imports = [ ../../modules/workstation/darwin ];
+  imports = [ ../../modules/darwin ];
 
   networking.hostName = "gaia";
   networking.computerName = "gaia";
@@ -31,8 +31,8 @@
     };
     users.${identity.username} = {
       imports = [
-        ../../modules/workstation/common/home
-        ../../modules/workstation/darwin/home.nix
+        ../../modules/common/home
+        ../../modules/darwin/home.nix
       ];
 
       home.stateVersion = "22.05";

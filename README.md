@@ -20,7 +20,8 @@ flake.nix
 hosts/
   gaia/       # Apple Silicon workstation
 modules/
-  workstation/{common,darwin}
+  common/     # Portable workstation and Home Manager modules
+  darwin/     # macOS-only system and Home Manager modules
 tests/
   pyproject.toml  # Python metadata and Ruff settings
   .mise.toml      # Optional local Python runtime
