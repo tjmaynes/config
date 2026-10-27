@@ -153,9 +153,7 @@ class GaiaTests(unittest.TestCase):
         self.assertEqual(
             eval_json(f"{CONFIG}.fonts.packages", apply=PACKAGE_PNAMES),
             [
-                "nerd-fonts-iosevka",
                 "nerd-fonts-inconsolata",
-                "nerd-fonts-blex-mono",
                 "linux-libertine",
                 "libre-baskerville",
             ],

@@ -19,7 +19,6 @@
       ghostty-bin
       obsidian
       bitwarden-desktop
-      vscode
     ];
     pathsToLink = [ "/Applications" ];
   };
@@ -49,9 +48,7 @@
   };
 
   fonts.packages = with pkgs; [
-    nerd-fonts.iosevka
     nerd-fonts.inconsolata
-    nerd-fonts.blex-mono
     libertine
     libre-baskerville
   ];

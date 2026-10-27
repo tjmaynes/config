@@ -14,7 +14,6 @@
       ];
     };
     shellAliases = {
-      workspace = "cd $WORKSPACE_DIRECTORY";
       k = "kubectl";
       cat = "bat";
       ps = "procs";

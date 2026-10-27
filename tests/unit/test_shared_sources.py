@@ -43,8 +43,8 @@ class SharedSourceTests(unittest.TestCase):
 
     def test_shell_helpers(self):
         source = (HOME / "zsh.nix").read_text()
-        self.assertIn('workspace = "cd $WORKSPACE_DIRECTORY"', source)
         self.assertIn("kill-process-on-port()", source)
+        self.assertNotIn('workspace = "cd $WORKSPACE_DIRECTORY"', source)
         self.assertNotIn("convert-m4a-to-mp3", source)
 
     def test_tmux_navigation(self):
@@ -68,6 +68,70 @@ class SharedSourceTests(unittest.TestCase):
             with self.subTest(tool=tool):
                 self.assertIn(f'{tool} = "{version}"', source)
         self.assertNotIn("bun", source)
+
+    def test_vscode_configuration(self):
+        self.assertIn("./vscode.nix", (HOME / "default.nix").read_text())
+
+        source = (HOME / "vscode.nix").read_text()
+        for text in (
+            "programs.vscode",
+            "enable = true",
+            "profiles.default =",
+            "userSettings =",
+            '"files.autoSave" = "afterDelay"',
+            '"editor.fontFamily" = "Inconsolata Nerd Font"',
+            '"terminal.integrated.tabs.location" = "left"',
+            '"git.openRepositoryInParentFolders" = "never"',
+            '"workbench.colorTheme" = "Dark Modern"',
+            '"chat.disableAIFeatures" = true',
+            '"update.mode" = "none"',
+            '"docker.extension.enableComposeLanguageServer" = false',
+            '"go.alternateTools"',
+            "config.xdg.dataHome",
+            "/mise/installs/go/1.27.0/bin/go",
+            '"python.terminal.activateEnvironment" = false',
+            '"python.terminal.activateEnvInCurrentTerminal" = false',
+            "extensions =",
+            "astro-build.astro-vscode",
+            "bradlc.vscode-tailwindcss",
+            "cameron.vscode-pytest",
+            "christian-kohler.npm-intellisense",
+            "davidanson.vscode-markdownlint",
+            "docker.docker",
+            "github.vscode-github-actions",
+            "golang.go",
+            "hashicorp.terraform",
+            "jnoortheen.nix-ide",
+            "ms-azuretools.vscode-containers",
+            "ms-azuretools.vscode-docker",
+            "ms-kubernetes-tools.vscode-kubernetes-tools",
+            "ms-python.debugpy",
+            "ms-python.isort",
+            "ms-python.python",
+            "ms-python.vscode-pylance",
+            "ms-python.vscode-python-envs",
+            "ms-toolsai.jupyter-renderers",
+            "ms-vscode-remote.remote-containers",
+            "ms-vscode.makefile-tools",
+            "nefrob.vscode-just-syntax",
+            "redhat.vscode-yaml",
+            "rust-lang.rust-analyzer",
+            "tamasfe.even-better-toml",
+            "tauri-apps.tauri-vscode",
+            "timonwong.shellcheck",
+            "tomoki1207.pdf",
+            "vitest.explorer",
+        ):
+            with self.subTest(text=text):
+                self.assertIn(text, source)
+        self.assertNotIn("latest", source)
+        self.assertNotIn("yaml.disableSchemaDetection", source)
+        self.assertNotIn("nix-vscode-extensions", (ROOT / "flake.nix").read_text())
+        self.assertNotRegex((HOME / "packages.nix").read_text(), r"(?m)^\s+vscode$")
+        self.assertNotRegex(
+            (ROOT / "modules/workstation/darwin/default.nix").read_text(),
+            r"(?m)^\s+vscode$",
+        )
 
     def test_vim_plugins_and_editing_options(self):
         source = (HOME / "vim.nix").read_text()

@@ -9,6 +9,7 @@
     ./mise.nix
     ./mail.nix
     ./packages.nix
+    ./vscode.nix
     ./zsh.nix
     ./tmux.nix
     ./vim.nix
@@ -19,9 +20,7 @@
     inherit (user) homeDirectory;
     stateVersion = "22.05";
     sessionVariables = {
-      WORKSPACE_DIRECTORY = "${user.homeDirectory}/workspace";
-      CODE_DIRECTORY = "${user.homeDirectory}/workspace/code";
-      EDITOR = "vi";
+      EDITOR = "code";
     };
   };
 

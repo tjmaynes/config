@@ -15,6 +15,5 @@
     shfmt
     tree
     vagrant
-    vscode
   ];
 }
