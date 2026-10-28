@@ -37,7 +37,7 @@ build:
 bootstrap:
 	sudo nix --extra-experimental-features 'nix-command flakes' run nix-darwin/nix-darwin-26.05#darwin-rebuild -- switch --flake .#gaia
 
-switch:
+deploy:
 	sudo darwin-rebuild switch --flake .#gaia
 
 update:
@@ -49,4 +49,4 @@ update-unstable:
 update-home-manager:
 	$(NIX) flake update home-manager
 
-.PHONY: format format-check lint test test-unit test-smoke test-integration check update update-unstable update-home-manager bootstrap switch build eval
+.PHONY: format format-check lint test test-unit test-smoke test-integration check update update-unstable update-home-manager bootstrap deploy build eval

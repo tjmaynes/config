@@ -49,7 +49,7 @@ checks. Tests use the standard library; Python and Ruff are provided by the Nix
 development shell. Unit tests do not invoke Nix.
 
 Activation is not normal validation. Run `make bootstrap` or `make
-switch` only when the user explicitly requests activation and has accepted
+deploy` only when the user explicitly requests activation and has accepted
 the host-level impact.
 
 ## Working rules

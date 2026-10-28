@@ -132,10 +132,10 @@ Gaia activation is explicit and requires macOS administrator approval:
 
 ```sh
 make bootstrap   # first activation only
-make switch      # subsequent activations
+make deploy      # subsequent activations
 ```
 
-`bootstrap` installs nix-darwin through `nix run`; use `switch` after
+`bootstrap` installs nix-darwin through `nix run`; use `deploy` after
 the first successful activation.
 
 ## Rollback
@@ -206,7 +206,7 @@ In Emacs, run `M-x notmuch` to browse and search the index. Run `notmuch new`
 to reindex without syncing. Notmuch initially tags newly indexed messages as
 `inbox` and `unread`, independently of their iCloud folder or flags.
 
-After `make switch`, Gaia's Home Manager launch agent runs `sync-icloud-mail`
+After `make deploy`, Gaia's Home Manager launch agent runs `sync-icloud-mail`
 every night at 2:00 a.m. in the Mac's local timezone while you are logged in.
 If the Mac is asleep then, launchd runs it on wake. Activation itself does not
 sync or index mail. Manual syncing remains available.
@@ -226,7 +226,7 @@ Syncthing runs as your user in the background. On Gaia, Home Manager manages
 the macOS launch agent `org.nix-community.home.syncthing`, which starts at
 login and restarts after a failure. It does not open a browser automatically.
 
-After explicitly activating the configuration with `make switch`, open
+After explicitly activating the configuration with `make deploy`, open
 [the local Syncthing web interface](http://127.0.0.1:8384) to add devices and
 choose folders to sync. The web interface listens only on loopback; devices
 and folders configured there persist across rebuilds. No peers or sync paths

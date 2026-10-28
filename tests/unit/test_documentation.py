@@ -23,7 +23,7 @@ class DocumentationTests(unittest.TestCase):
         for text in (
             "gaia",
             "make bootstrap",
-            "make switch",
+            "make deploy",
             "/Applications/Nix Apps",
         ):
             with self.subTest(text=text):
