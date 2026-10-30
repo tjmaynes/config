@@ -1,5 +1,6 @@
 {
   identity,
+  llm-agents,
   pkgsUnstable,
   skillRepos,
   user,
@@ -24,6 +25,7 @@
     extraSpecialArgs = {
       inherit
         identity
+        llm-agents
         pkgsUnstable
         skillRepos
         user

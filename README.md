@@ -151,9 +151,9 @@ outside this repository and outside the Nix store.
 
 ## Codex and MCP connections
 
-Codex comes from the locked `nixpkgs-unstable` input, while Home Manager tracks
-its pre-release 26.11 development line for native Codex support. Nixpkgs and
-nix-darwin remain pinned to their 26.05 release branches. Home Manager may emit
+Codex comes from the locked `llm-agents.nix` input, while Home
+Manager tracks its pre-release 26.11 development line for native Codex support.
+Nixpkgs and nix-darwin remain pinned to their 26.05 release branches. Home Manager may emit
 a version-mismatch warning for this deliberate boundary; do not suppress it.
 
 Home Manager merges the declared Codex settings into the writable

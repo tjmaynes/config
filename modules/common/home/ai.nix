@@ -1,8 +1,11 @@
-{ pkgsUnstable, ... }:
+{ llm-agents, pkgs, ... }:
+let
+  aiPackages = llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+in
 {
   programs.codex = {
     enable = true;
-    package = pkgsUnstable.codex;
+    package = aiPackages.codex;
     mutableSettings = true;
     enableMcpIntegration = true;
     settings = {
@@ -11,5 +14,10 @@
       personality = "pragmatic";
       features.js_repl = true;
     };
+  };
+
+  programs.mcp = {
+    enable = true;
+    servers.n8n.url = "https://n8n.tjmaynes.com/mcp-server/http";
   };
 }

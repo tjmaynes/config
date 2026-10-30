@@ -2,11 +2,10 @@
 {
   imports = [
     ./agent-skills.nix
-    ./codex.nix
+    ./ai.nix
     ./git.nix
     ./emacs.nix
     ./gnupg.nix
-    ./mcp.nix
     ./terminal.nix
     ./mise.nix
     ./mail.nix

@@ -8,7 +8,7 @@ HOME = ROOT / "modules/common/home"
 
 
 class SharedSourceTests(unittest.TestCase):
-    def test_codex_uses_unstable_packages(self):
+    def test_ai_tools_use_llm_agents_flake(self):
         flake = (ROOT / "flake.nix").read_text()
         self.assertIn(
             'nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";',
@@ -30,7 +30,9 @@ class SharedSourceTests(unittest.TestCase):
             'inputs.nixpkgs.follows = "nixpkgs";',
             flake,
         )
-        self.assertIn("package = pkgsUnstable.codex;", (HOME / "codex.nix").read_text())
+        self.assertIn('llm-agents.url = "github:numtide/llm-agents.nix";', flake)
+        source = (HOME / "ai.nix").read_text()
+        self.assertIn("package = aiPackages.codex;", source)
 
     def test_emacs_configures_portable_note_taking(self):
         source = (HOME / "emacs.nix").read_text()

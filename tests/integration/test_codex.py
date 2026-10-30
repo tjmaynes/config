@@ -6,7 +6,7 @@ from tests.support import HOSTS, USER, eval_json
 
 
 class CodexHomeTests(unittest.TestCase):
-    def test_codex_uses_native_mutable_settings_and_unstable_package(self):
+    def test_codex_uses_native_mutable_settings_and_llm_agents_package(self):
         for host, config in HOSTS.items():
             home = f"{config}.{USER}"
             with self.subTest(host=host):

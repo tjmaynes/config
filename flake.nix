@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    llm-agents.url = "github:numtide/llm-agents.nix";
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -42,6 +43,7 @@
       nixpkgs-unstable,
       home-manager,
       nix-darwin,
+      llm-agents,
       superpowers,
       tjmaynes-skills,
       mattpocock-skills,
@@ -105,7 +107,7 @@
       darwinConfigurations.gaia = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         specialArgs = {
-          inherit identity skillRepos;
+          inherit identity skillRepos llm-agents;
           user = gaiaUser;
           pkgsUnstable = unstableFor "aarch64-darwin";
         };
