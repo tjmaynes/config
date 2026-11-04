@@ -67,4 +67,4 @@ class DocumentationTests(unittest.TestCase):
         paths.extend(path for path in (ROOT / ".github").rglob("*") if path.is_file())
         for path in paths:
             with self.subTest(path=path.relative_to(ROOT)):
-                self.assertNotRegex(path.read_text().lower(), "atlas|sops-nix")
+                self.assertNotIn("atlas", path.read_text().lower())

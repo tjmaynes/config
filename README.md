@@ -188,9 +188,17 @@ in `modules/nixos/default.nix`. Set a local password with `passwd tjmaynes`
 from an administrative console so `sudo` is usable. Password SSH and root SSH
 are disabled. No initial password or private key is declared by Nix.
 
-After installation, enroll Athena interactively from its console using
-`sudo tailscale up --accept-dns=false --netfilter-mode=nodivert`.
-Approve the node and its tailnet ACLs. Nix reapplies these preferences using
+Prepare a fresh Tailscale enrollment key in SOPS-encrypted
+`secrets/athena.sops.yaml` using the [provisioning guide](secrets/README.md).
+Encrypt it for Athena's persistent SSH host key and optionally an operator
+age recipient. The upstream autoconnect service waits for SOPS decryption and
+reads the root-only key from `/run/secrets/tailscale-auth-key` at boot.
+The actual encrypted file is not created by this preparation work: until it
+exists in the flake source, evaluation emits an explicit warning and automatic
+enrollment stays disabled. Keep console access for initial provisioning.
+Approve the node and its tailnet ACLs as required by the new key's policy.
+Initial enrollment and subsequent boots use `--accept-dns=false` and
+`--netfilter-mode=nodivert`. Nix reapplies these preferences using
 `tailscale set`; `nodivert` prevents Tailscale's default accept-all rule from
 bypassing NixOS's port filtering.
 Athena opens TCP 22 and 8080 only on `tailscale0`; LAN SSH is not opened.
@@ -317,6 +325,13 @@ reboot or rollback activation.
 
 Keep tokens, SSH private keys, credentials, decrypted values, and private keys
 outside this repository and outside the Nix store.
+
+SOPS-encrypted ciphertext is allowed under `secrets/`. Athena uses the locked
+`sops-nix` NixOS module and its Ed25519 SSH host key for decryption. The
+development shell includes `sops`, `age`, and `ssh-to-age`. Follow
+[secrets/README.md](secrets/README.md) to add Athena's new Tailscale auth key;
+never commit a decrypted file or a private decryption key. The code-server
+password and Codex authentication retain their existing runtime-file setup.
 
 ## Codex and MCP connections
 

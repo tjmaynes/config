@@ -5,6 +5,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     llm-agents.url = "github:numtide/llm-agents.nix";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -54,6 +58,7 @@
       home-manager,
       nix-darwin,
       llm-agents,
+      sops-nix,
       superpowers,
       tjmaynes-skills,
       mattpocock-skills,
@@ -139,6 +144,7 @@
           pkgsUnstable = unstableFor "x86_64-linux";
         };
         modules = [
+          sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
           ./hosts/athena/default.nix
         ];
@@ -168,11 +174,14 @@
           default = pkgs.mkShell {
             packages = with pkgs; [
               actionlint
+              age
               deadnix
               nixfmt
               python314
               ripgrep
               ruff
+              sops
+              ssh-to-age
               statix
             ];
           };

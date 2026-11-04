@@ -54,6 +54,10 @@ Athena's code-server is proxied by the separate home-server Caddy configuration
 at `https://coding.bewoogie.local`. Its runtime password file and Codex login
 must stay outside Nix. Codex runs as a system service under `tjmaynes` at boot
 and listens on a private Unix socket; do not expose it directly to the network.
+Athena's Tailscale enrollment uses sops-nix when `secrets/athena.sops.yaml` is
+provisioned. Only encrypted ciphertext belongs in `secrets/`; follow its
+README for recipients and host-key provisioning. Missing ciphertext leaves
+automatic enrollment disabled with an explicit evaluation warning.
 
 Use `make test-unit`, `make test-smoke`, or `make test-integration` for focused
 checks. Tests use the standard library; Python and Ruff are provided by the Nix

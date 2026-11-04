@@ -9,6 +9,7 @@
 {
   imports = [
     ./hardware.nix
+    ./secrets.nix
     ../../modules/nixos
   ];
 
