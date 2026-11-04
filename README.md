@@ -23,7 +23,7 @@ hosts/
   gaia/       # Apple Silicon workstation
   athena/     # Headless Linux development server and hardware template
 modules/
-  common/     # Portable workstation and Home Manager modules
+  common/     # Portable workstation and Home Manager modules; config.nix shares system settings
   darwin/     # macOS-only system and Home Manager modules
   nixos/      # NixOS system services and headless Home Manager composition
 tests/

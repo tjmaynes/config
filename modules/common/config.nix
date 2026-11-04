@@ -1,3 +1,4 @@
+# System settings shared by nix-darwin and NixOS.
 _: {
   nix.settings.experimental-features = [
     "nix-command"
