@@ -54,11 +54,9 @@ class SharedSourceTests(unittest.TestCase):
             r"password|<home-manager|config/dotfiles",
         )
 
-    def test_shared_cli_packages_include_github_and_vagrant(self):
+    def test_shared_cli_packages_include_github(self):
         source = (HOME / "packages.nix").read_text()
-        for package in ("gh", "vagrant"):
-            with self.subTest(package=package):
-                self.assertRegex(source, rf"(?m)^\s+{package}$")
+        self.assertRegex(source, r"(?m)^\s+gh$")
 
     def test_shell_helpers(self):
         source = (HOME / "zsh.nix").read_text()

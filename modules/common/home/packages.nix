@@ -13,6 +13,5 @@
     pandoc
     shfmt
     tree
-    vagrant
   ];
 }

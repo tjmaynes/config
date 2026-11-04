@@ -64,6 +64,8 @@ class CommonHomeTests(unittest.TestCase):
         for host, config in HOSTS.items():
             attribute = f"{config}.{USER}.home.packages"
             packages = eval_json(attribute, apply=PACKAGE_PNAMES)
+            with self.subTest(host=host, package="vagrant"):
+                self.assertNotIn("vagrant", packages)
             for package in (
                 "vscode",
                 "offlineimap",
