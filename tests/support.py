@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HOSTS = {
     "gaia": ".#darwinConfigurations.gaia.config",
 }
+DEVELOPMENT_HOSTS = HOSTS | {"athena": ".#nixosConfigurations.athena.config"}
 USER = "home-manager.users.tjmaynes"
 PACKAGE_PNAMES = 'packages: map (package: package.pname or "") packages'
 PACKAGE_NAMES = 'packages: map (package: package.name or "") packages'

@@ -26,13 +26,23 @@ test-smoke:
 test-integration:
 	$(NIX) develop --command python -m unittest discover -s tests/integration -t . -v
 
-eval:
+eval: eval-gaia eval-athena
+
+eval-gaia:
 	$(NIX) eval --raw .#darwinConfigurations.gaia.config.system.build.toplevel.drvPath
+
+eval-athena:
+	$(NIX) eval --raw .#nixosConfigurations.athena.config.system.build.toplevel.drvPath
 
 check: format-check lint test eval
 
-build:
+build: build-gaia
+
+build-gaia:
 	$(NIX) build .#darwinConfigurations.gaia.system --no-link
+
+build-athena:
+	$(NIX) build .#nixosConfigurations.athena.config.system.build.toplevel --no-link
 
 bootstrap:
 	sudo nix --extra-experimental-features 'nix-command flakes' run nix-darwin/nix-darwin-26.05#darwin-rebuild -- switch --flake .#gaia
@@ -49,4 +59,4 @@ update-unstable:
 update-home-manager:
 	$(NIX) flake update home-manager
 
-.PHONY: format format-check lint test test-unit test-smoke test-integration check update update-unstable update-home-manager bootstrap deploy build eval
+.PHONY: format format-check lint test test-unit test-smoke test-integration check update update-unstable update-home-manager bootstrap deploy build build-gaia build-athena eval eval-gaia eval-athena

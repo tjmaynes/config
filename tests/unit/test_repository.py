@@ -29,7 +29,7 @@ class RepositoryTests(unittest.TestCase):
             "hosts/gaia.nix",
             "hosts/athena.nix",
             "hosts/kratos.sh",
-            "modules/common/default.nix",
+            "modules/common/nix.nix",
             "modules/common/nixpkgs.nix",
             "modules/common/settings.nix",
             "modules/home-manager/default.nix",
@@ -68,7 +68,7 @@ class RepositoryTests(unittest.TestCase):
                 self.assertIs(nodes[name]["flake"], False)
 
     def test_hosts_receive_skill_repositories(self):
-        for host in ("gaia",):
+        for host in ("gaia", "athena"):
             with self.subTest(host=host):
                 self.assertRegex(
                     (ROOT / f"hosts/{host}/default.nix").read_text(),

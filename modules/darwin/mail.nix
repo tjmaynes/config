@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   user,
@@ -28,10 +29,18 @@ in
       syncICloudMail
     ];
 
-    activation.createICloudMailbox = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      run mkdir -p -- "${mailboxDirectory}"
-      run chmod 700 -- "${mailboxDirectory}"
-    '';
+    activation = {
+      createICloudMailbox = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        run mkdir -p -- "${mailboxDirectory}"
+        run chmod 700 -- "${mailboxDirectory}"
+      '';
+      ensureICloudMailLogDirectory =
+        lib.hm.dag.entryBetween [ "setupLaunchAgents" ] [ "writeBoundary" ]
+          ''
+            run mkdir -p -- "${mailboxDirectory}/logs"
+            run chmod 700 -- "${mailboxDirectory}/logs"
+          '';
+    };
 
     file = {
       ".notmuch-config".text = ''
@@ -131,6 +140,23 @@ in
         color signature color212 default
       '';
 
+    };
+  };
+
+  launchd.agents.sync-icloud-mail = {
+    enable = true;
+    config = {
+      ProgramArguments = [ "${config.home.profileDirectory}/bin/sync-icloud-mail" ];
+      EnvironmentVariables.HOME = user.homeDirectory;
+      StartCalendarInterval = {
+        Hour = 2;
+        Minute = 0;
+      };
+      RunAtLoad = false;
+      KeepAlive = false;
+      ProcessType = "Background";
+      StandardOutPath = "${mailboxDirectory}/logs/stdout.log";
+      StandardErrorPath = "${mailboxDirectory}/logs/stderr.log";
     };
   };
 }

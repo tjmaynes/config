@@ -3,7 +3,7 @@
 import json
 import unittest
 
-from tests.support import HOSTS, ROOT, USER, eval_json, run_nix
+from tests.support import DEVELOPMENT_HOSTS, ROOT, USER, eval_json, run_nix
 
 
 class AgentSkillsTests(unittest.TestCase):
@@ -48,7 +48,7 @@ class AgentSkillsTests(unittest.TestCase):
                 "--expr",
                 f"(builtins.getFlake {json.dumps(str(ROOT))}).inputs.{repository}.outPath",
             )
-            for host, config in HOSTS.items():
+            for host, config in DEVELOPMENT_HOSTS.items():
                 for skill in skills:
                     with self.subTest(host=host, repository=repository, skill=skill):
                         self.assertEqual(

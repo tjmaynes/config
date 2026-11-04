@@ -126,8 +126,24 @@
       gaiaUser = identity // {
         homeDirectory = "/Users/${identity.username}";
       };
+      athenaUser = identity // {
+        homeDirectory = "/home/${identity.username}";
+      };
     in
     {
+      nixosConfigurations.athena = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {
+          inherit identity skillRepos llm-agents;
+          user = athenaUser;
+          pkgsUnstable = unstableFor "x86_64-linux";
+        };
+        modules = [
+          home-manager.nixosModules.home-manager
+          ./hosts/athena/default.nix
+        ];
+      };
+
       darwinConfigurations.gaia = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         specialArgs = {

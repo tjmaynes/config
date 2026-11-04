@@ -1,8 +1,17 @@
-{ llm-agents, pkgs, ... }:
+{
+  lib,
+  llm-agents,
+  pkgs,
+  skillRepos,
+  ...
+}:
 let
+  agentSkills = import ../../../lib/agent-skills.nix { inherit lib; };
   aiPackages = llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
 in
 {
+  home.file = agentSkills.buildHomeFiles skillRepos;
+
   programs.codex = {
     enable = true;
     package = aiPackages.codex;

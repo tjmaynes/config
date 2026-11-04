@@ -1,3 +1,4 @@
+# Portable editor settings; host profiles select the Emacs package.
 {
   home.file = {
     ".local/state/emacs/auto-save/.keep".text = "";

@@ -28,7 +28,8 @@ class DocumentationTests(unittest.TestCase):
         ):
             with self.subTest(text=text):
                 self.assertIn(text, readme)
-        self.assertNotRegex(readme, "apollo|demeter|kratos|athena")
+        self.assertIn("athena", readme)
+        self.assertNotRegex(readme, "apollo|demeter|kratos")
 
     def test_ci_installs_nix_without_activation(self):
         workflow = (ROOT / ".github/workflows/check.yml").read_text()

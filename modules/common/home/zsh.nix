@@ -1,3 +1,4 @@
+{ lib, pkgs, ... }:
 {
   programs.zsh = {
     enable = true;
@@ -10,8 +11,8 @@
       plugins = [
         "git"
         "kubectl"
-        "macos"
-      ];
+      ]
+      ++ lib.optional pkgs.stdenv.hostPlatform.isDarwin "macos";
     };
     shellAliases = {
       k = "kubectl";

@@ -11,6 +11,8 @@ to make a task easier.
 
 - The repository uses Nix flakes, nix-darwin, and Home Manager.
 - `gaia` is an Apple Silicon macOS workstation managed by nix-darwin.
+- `athena` is a headless `x86_64-linux` NixOS development server (MS-A2).
+  Its hardware module is an installation template until replaced on the machine.
 - Gaia uses `aarch64-darwin`; `x86_64-linux` remains supported for development
   tooling. CI runs on macOS.
 - The Makefile is the canonical interface for formatting, linting, testing,
@@ -26,6 +28,8 @@ to make a task easier.
   configuration used by Gaia.
 - `modules/darwin/` contains macOS-only system, Homebrew,
   preference, and Home Manager configuration.
+- `modules/nixos/` contains Athena's NixOS system services and headless home
+  composition. Portable development configuration stays in `modules/common/`.
 - `tests/` contains Python `unittest` checks, organized into file-only `unit/`,
   flake `smoke/`, and real Nix evaluation `integration/` suites. Shared process
   helpers live in `tests/support.py`; Nix fixture expressions and data live in
@@ -43,6 +47,13 @@ make test
 make check
 make eval
 ```
+
+`make eval` evaluates Gaia and Athena; `make build` still builds Gaia.
+Use `make build-athena` on Linux or with a configured Linux builder.
+Athena's code-server is proxied by the separate home-server Caddy configuration
+at `https://coding.bewoogie.local`. Its runtime password file and Codex login
+must stay outside Nix. Codex runs as a system service under `tjmaynes` at boot
+and listens on a private Unix socket; do not expose it directly to the network.
 
 Use `make test-unit`, `make test-smoke`, or `make test-integration` for focused
 checks. Tests use the standard library; Python and Ruff are provided by the Nix

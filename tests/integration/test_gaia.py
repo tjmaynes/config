@@ -9,6 +9,9 @@ HOME = f"{CONFIG}.{USER}"
 
 
 class GaiaTests(unittest.TestCase):
+    def test_mpv_is_enabled_for_the_workstation(self):
+        self.assertIs(eval_json(f"{HOME}.programs.mpv.enable"), True)
+
     def test_mail_sync_runs_nightly_in_the_user_environment(self):
         agent = eval_json(f"{HOME}.launchd.agents.sync-icloud-mail")
         self.assertIs(agent["enable"], True)

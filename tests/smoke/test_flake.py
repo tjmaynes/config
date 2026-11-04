@@ -16,5 +16,5 @@ class FlakeSmokeTests(unittest.TestCase):
 
     def test_flake_outputs_exclude_retired_hosts(self):
         outputs = run_nix("flake", "show", "--all-systems", "--json")
-        self.assertNotRegex(outputs, "apollo|demeter|kratos|athena")
-        self.assertIsInstance(json.loads(outputs), dict)
+        self.assertNotRegex(outputs, "apollo|demeter|kratos")
+        self.assertIn("athena", json.loads(outputs)["nixosConfigurations"])
