@@ -120,8 +120,9 @@ make format
 ```
 
 Checks never activate a system or mutate Homebrew. CI runs lint, tests, both
-host evaluations, and the Gaia build on macOS. Athena's services are checked
-through Nix evaluation; boot and hardware checks require the actual machine.
+host evaluations, and the Gaia build on macOS. A separate Ubuntu job runs
+formatting checks, lint, tests, Athena evaluation, and `make build-athena`.
+Boot and hardware checks still require the actual machine.
 
 ## Build
 
@@ -332,6 +333,10 @@ development shell includes `sops`, `age`, and `ssh-to-age`. Follow
 [secrets/README.md](secrets/README.md) to add Athena's new Tailscale auth key;
 never commit a decrypted file or a private decryption key. The code-server
 password and Codex authentication retain their existing runtime-file setup.
+
+Use `make sops-edit` to edit the encrypted file or `make sops-view` to print its
+decrypted contents locally. Both default to `secrets/athena.sops.yaml`; override
+the path with `SOPS_FILE=secrets/another.sops.yaml`.
 
 ## Codex and MCP connections
 

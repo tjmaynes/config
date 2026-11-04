@@ -14,7 +14,7 @@ to make a task easier.
 - `athena` is a headless `x86_64-linux` NixOS development server (MS-A2).
   Its hardware module is an installation template until replaced on the machine.
 - Gaia uses `aarch64-darwin`; `x86_64-linux` remains supported for development
-  tooling. CI runs on macOS.
+  tooling. CI validates/builds Gaia on macOS and Athena on Ubuntu.
 - The Makefile is the canonical interface for formatting, linting, testing,
   evaluating, building, updating, and explicitly approved activation work.
 

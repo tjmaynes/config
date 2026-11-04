@@ -17,3 +17,13 @@ jobs:
       - run: make test
       - run: make eval
       - run: make build
+  nixos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: NixOS/nix-installer-action@main
+      - run: make format-check
+      - run: make lint
+      - run: make test
+      - run: make eval-athena
+      - run: make build-athena

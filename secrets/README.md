@@ -26,8 +26,7 @@ installed root-owned with mode 0400 at `/run/secrets/tailscale-auth-key`.
    with Athena's host recipient and, optionally, your operator recipient:
 
    ```sh
-   nix develop
-   sops --age 'age1ATHENA,age1OPERATOR' secrets/athena.sops.yaml
+   SOPS_AGE_RECIPIENTS='age1ATHENA,age1OPERATOR' make sops-edit
    ```
 
    In SOPS's local editor, enter `TAILSCALE_AUTHKEY: <the-new-auth-key>`.
@@ -44,6 +43,27 @@ installed root-owned with mode 0400 at `/run/secrets/tailscale-auth-key`.
    Review only encrypted diffs. The host must be among the recipients, and
    its private host key must exist before the first SOPS-enabled activation.
    Nix evaluation checks wiring; it does not prove host-side decryption.
+
+## Edit and view
+
+Run these commands from the repository root with your local SOPS decryption
+identity available:
+
+```sh
+make sops-edit
+make sops-view
+```
+
+Both use the pinned development shell and default to `secrets/athena.sops.yaml`.
+`sops-edit` opens the SOPS editor and saves encrypted changes. `sops-view`
+prints decrypted YAML to your terminal. To select another encrypted file:
+
+```sh
+make sops-edit SOPS_FILE=secrets/another.sops.yaml
+make sops-view SOPS_FILE=secrets/another.sops.yaml
+```
+
+These are explicit operator commands; validation does not invoke them.
 
 After an explicitly approved installation/activation, the upstream
 `tailscaled-autoconnect.service` waits for `sops-install-secrets.service` and
