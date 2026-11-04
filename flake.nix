@@ -35,6 +35,16 @@
       url = "github:addyosmani/agent-skills/main";
       flake = false;
     };
+
+    last30days-skill = {
+      url = "github:mvanhorn/last30days-skill/main";
+      flake = false;
+    };
+
+    archify = {
+      url = "github:tt-a1i/archify/main";
+      flake = false;
+    };
   };
 
   outputs =
@@ -48,6 +58,8 @@
       tjmaynes-skills,
       mattpocock-skills,
       addyosmani-agent-skills,
+      last30days-skill,
+      archify,
       ...
     }:
     let
@@ -97,6 +109,18 @@
           source = addyosmani-agent-skills;
           subdir = "skills";
           include = [ "interview-me" ];
+        }
+        {
+          name = "last30days-skill";
+          source = last30days-skill;
+          subdir = "skills";
+          include = [ "last30days" ];
+        }
+        {
+          name = "archify";
+          source = archify;
+          subdir = ".";
+          include = [ "archify" ];
         }
       ];
       gaiaUser = identity // {

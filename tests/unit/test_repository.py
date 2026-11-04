@@ -60,6 +60,8 @@ class RepositoryTests(unittest.TestCase):
             "tjmaynes-skills": "github:tjmaynes/skills/main",
             "mattpocock-skills": "github:mattpocock/skills/main",
             "addyosmani-agent-skills": "github:addyosmani/agent-skills/main",
+            "last30days-skill": "github:mvanhorn/last30days-skill/main",
+            "archify": "github:tt-a1i/archify/main",
         }.items():
             with self.subTest(repository=name):
                 self.assertIn(f'url = "{url}";', flake)

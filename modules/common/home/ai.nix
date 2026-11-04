@@ -19,5 +19,6 @@ in
   programs.mcp = {
     enable = true;
     servers.n8n.url = "https://n8n.tjmaynes.com/mcp-server/http";
+    servers.playwright.command = "${pkgs.playwright-mcp}/bin/playwright-mcp";
   };
 }

@@ -159,12 +159,51 @@ a version-mismatch warning for this deliberate boundary; do not suppress it.
 Home Manager merges the declared Codex settings into the writable
 `~/.codex/config.toml` only during explicit activation. It preserves other
 setting values, but may normalize comments and formatting. The shared MCP
-registry supplies n8n at `https://n8n.tjmaynes.com/mcp-server/http`.
+registry supplies n8n at `https://n8n.tjmaynes.com/mcp-server/http` and the
+local [Playwright MCP server](https://github.com/microsoft/playwright-mcp) for
+browser automation. Playwright MCP uses the version pinned by Nixpkgs.
 
 This repository does not manage Codex credentials, authentication, project
 trust, or project-specific configuration. Keep those values in Codex's local
 credential storage. Close Codex before an explicit activation to avoid
 concurrent writes. Validation never updates live Codex files or contacts n8n.
+
+## Codex skills
+
+Home Manager links the following repository-managed skills into
+`~/.agents/skills` during activation. Codex can select applicable skills from
+their descriptions; to request one explicitly, include `$skill-name` in your
+prompt. For example, ask `$last30days research recent Nix developments` or
+`$grill-me review this plan`. Some workflow skills are intended to be invoked
+automatically when their conditions apply. The list reflects the sources pinned
+in `flake.lock`; it excludes Codex built-in skills and separately installed
+plugins.
+
+| Skill | Purpose and usage | Source |
+| --- | --- | --- |
+| `agent-context-generator` | Generate an `AGENTS.md` guide for a repository. | [tjmaynes/skills](https://github.com/tjmaynes/skills) |
+| `resume-generator` | Assess a job fit and create a tailored RenderCV resume from career history. | [tjmaynes/skills](https://github.com/tjmaynes/skills) |
+| `superblog` | Draft a blog post and accompanying social media copy. | [tjmaynes/skills](https://github.com/tjmaynes/skills) |
+| `grill-me` | Explicitly request a rigorous interview about a plan or design. | [mattpocock/skills](https://github.com/mattpocock/skills) |
+| `grilling` | Stress-test a plan or idea through questions. | [mattpocock/skills](https://github.com/mattpocock/skills) |
+| `interview-me` | Clarify an underspecified request one question at a time. | [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) |
+| `last30days` | Research recent discussion and developments on a topic; provide the topic in your prompt. | [mvanhorn/last30days-skill](https://github.com/mvanhorn/last30days-skill) |
+| `archify` | Create interactive HTML diagrams and explainers; describe the system or topic to visualize. | [tt-a1i/archify](https://github.com/tt-a1i/archify) |
+| `brainstorming` | Explore requirements and design before creative work. | [obra/superpowers](https://github.com/obra/superpowers) |
+| `diagnosing-superpowers` | Investigate a problematic Superpowers session or prepare a bug report. | [obra/superpowers](https://github.com/obra/superpowers) |
+| `dispatching-parallel-agents` | Coordinate independent tasks using multiple agents when delegation is allowed. | [obra/superpowers](https://github.com/obra/superpowers) |
+| `executing-plans` | Execute an implementation plan in the current session. | [obra/superpowers](https://github.com/obra/superpowers) |
+| `finishing-a-development-branch` | Decide how to integrate a completed, tested branch. | [obra/superpowers](https://github.com/obra/superpowers) |
+| `receiving-code-review` | Evaluate and address review feedback. | [obra/superpowers](https://github.com/obra/superpowers) |
+| `requesting-code-review` | Request a review of completed implementation work. | [obra/superpowers](https://github.com/obra/superpowers) |
+| `subagent-driven-development` | Execute independent implementation tasks with subagents when delegation is allowed. | [obra/superpowers](https://github.com/obra/superpowers) |
+| `systematic-debugging` | Investigate bugs and test failures before fixing them. | [obra/superpowers](https://github.com/obra/superpowers) |
+| `test-driven-development` | Develop features and fixes using a failing test first. | [obra/superpowers](https://github.com/obra/superpowers) |
+| `using-git-worktrees` | Set up an isolated worktree for development when needed. | [obra/superpowers](https://github.com/obra/superpowers) |
+| `using-superpowers` | Identify applicable skills at the start of a conversation. | [obra/superpowers](https://github.com/obra/superpowers) |
+| `verification-before-completion` | Verify results before reporting work complete. | [obra/superpowers](https://github.com/obra/superpowers) |
+| `writing-plans` | Write an implementation plan from requirements or a specification. | [obra/superpowers](https://github.com/obra/superpowers) |
+| `writing-skills` | Create, edit, or verify skills. | [obra/superpowers](https://github.com/obra/superpowers) |
 
 ## Read-only iCloud Mail
 

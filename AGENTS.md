@@ -75,3 +75,6 @@ skip failed evaluations. Run focused checks while iterating. Before handoff,
 inspect the scoped diff, run `make format-check`, `make lint`, `make test`, and the relevant host
 evaluations. Update this README and tests whenever supported hosts or commands
 change.
+
+When adding a repository-managed Codex skill, update the Codex skills table in
+`README.md` with its purpose, usage, and source repository URL.

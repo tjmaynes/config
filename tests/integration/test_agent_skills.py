@@ -38,6 +38,8 @@ class AgentSkillsTests(unittest.TestCase):
             ("tjmaynes-skills", "skills", ("agent-context-generator",)),
             ("mattpocock-skills", "skills/productivity", ("grill-me", "grilling")),
             ("addyosmani-agent-skills", "skills", ("interview-me",)),
+            ("last30days-skill", "skills", ("last30days",)),
+            ("archify", ".", ("archify",)),
         ):
             source = run_nix(
                 "eval",
