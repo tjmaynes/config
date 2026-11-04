@@ -9,6 +9,9 @@
     profiles.default = {
       userSettings = {
         "files.autoSave" = "afterDelay";
+        "files.exclude" = {
+          "**/.git" = false;
+        };
         "explorer.confirmDelete" = false;
         "explorer.confirmDragAndDrop" = false;
 
