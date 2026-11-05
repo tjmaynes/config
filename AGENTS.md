@@ -11,7 +11,7 @@ to make a task easier.
 
 - The repository uses Nix flakes, nix-darwin, and Home Manager.
 - `gaia` is an Apple Silicon macOS workstation managed by nix-darwin.
-- `athena` is a headless `x86_64-linux` NixOS development server (MS-A2).
+- `athena` is a headless `x86_64-linux` NixOS development server.
   Its hardware module is an installation template until replaced on the machine.
 - Gaia uses `aarch64-darwin`; `x86_64-linux` remains supported for development
   tooling. CI validates/builds Gaia on macOS and Athena on Ubuntu.

@@ -1,6 +1,6 @@
 # Athena development server
 
-Approved in chat on 2026-11-04: prepare a headless NixOS MS-A2 named `athena`,
+Approved in chat on 2026-11-04: prepare a headless NixOS server named `athena`,
 with SSH, code-server behind the home server's Tailscale/Caddy proxy at
 `https://coding.bewoogie.local`, and a persistent Codex service at boot.
 

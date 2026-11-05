@@ -1,4 +1,4 @@
-# Installation template, not hardware discovered from the MS-A2.
+# Installation template, not hardware discovered from the host.
 # Replace with nixos-generate-config output before installation; see README.
 { lib, ... }:
 {

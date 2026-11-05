@@ -6,8 +6,8 @@ Nix flakes, nix-darwin, and Home Manager.
 ## Supported hosts
 
 - `gaia`: Apple Silicon macOS managed by nix-darwin.
-- `athena`: headless x86_64 NixOS development server, prepared for a Minisforum
-  MS-A2. Hardware and access credentials must be completed during installation.
+- `athena`: headless x86_64 NixOS development server.
+  Hardware and access credentials must be completed during installation.
 
 ## Requirements
 
@@ -169,7 +169,7 @@ selects `emacs-nox`, while Gaia retains its default Emacs package.
 
 ### Installation prerequisites
 
-`hosts/athena/hardware.nix` is a **template**, not detected MS-A2 hardware.
+`hosts/athena/hardware.nix` is a **template**, not detected host hardware.
 It describes an ext4 root labeled `nixos` and a FAT EFI partition labeled
 `BOOT`. Before installation, boot the NixOS installer in UEFI mode, choose and
 mount the intended filesystems, and replace this file with hardware generated
