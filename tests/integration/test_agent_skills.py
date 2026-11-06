@@ -19,6 +19,8 @@ class AgentSkillsTests(unittest.TestCase):
         )
         expected = {
             "discovers-valid-skills",
+            "discovers-root-skill",
+            "rejects-invalid-root-skill",
             "filters-included-skills",
             "rejects-duplicate-repositories",
             "rejects-duplicate-targets",
@@ -57,3 +59,29 @@ class AgentSkillsTests(unittest.TestCase):
                             ),
                             f"{source}/{subdir}/{skill}",
                         )
+
+    def test_hosts_link_root_skill_from_locked_source(self):
+        source = run_nix(
+            "eval",
+            "--impure",
+            "--raw",
+            "--expr",
+            f"(builtins.getFlake {json.dumps(str(ROOT))}).inputs.humanizer.outPath",
+        )
+        for host, config in DEVELOPMENT_HOSTS.items():
+            with self.subTest(host=host):
+                self.assertEqual(
+                    eval_json(
+                        f'{config}.{USER}.home.file.".agents/skills/humanizer".source'
+                    ),
+                    source,
+                )
+
+    def test_managed_skills_report_changes_during_activation(self):
+        for host, config in DEVELOPMENT_HOSTS.items():
+            for skill in ("brainstorming", "humanizer"):
+                with self.subTest(host=host, skill=skill):
+                    hook = eval_json(
+                        f'{config}.{USER}.home.file.".agents/skills/{skill}".onChange'
+                    )
+                    self.assertIn(f"Installed or updated agent skill: {skill}", hook)

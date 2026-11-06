@@ -10,7 +10,13 @@ let
   aiPackages = llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
 in
 {
-  home.file = agentSkills.buildHomeFiles skillRepos;
+  home.file = lib.mapAttrs (
+    name: file:
+    file
+    // {
+      onChange = "echo ${lib.escapeShellArg "Installed or updated agent skill: ${baseNameOf name}"}";
+    }
+  ) (agentSkills.buildHomeFiles skillRepos);
 
   programs.codex = {
     enable = true;

@@ -110,6 +110,23 @@
         "type": "github"
       }
     },
+    "humanizer": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793171853,
+        "narHash": "sha256-KaAcA2rxlkae3DID4w3GFQbyXrnararlHVrL32C5jeE=",
+        "owner": "blader",
+        "repo": "humanizer",
+        "rev": "0ef9fe5bc3572734fd3ae6c448fe00a30cd5dcf0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "blader",
+        "ref": "main",
+        "repo": "humanizer",
+        "type": "github"
+      }
+    },
     "last30days-skill": {
       "flake": false,
       "locked": {
@@ -240,6 +257,7 @@
         "addyosmani-agent-skills": "addyosmani-agent-skills",
         "archify": "archify",
         "home-manager": "home-manager",
+        "humanizer": "humanizer",
         "last30days-skill": "last30days-skill",
         "llm-agents": "llm-agents",
         "mattpocock-skills": "mattpocock-skills",

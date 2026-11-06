@@ -152,7 +152,8 @@ make deploy      # subsequent activations
 ```
 
 `bootstrap` installs nix-darwin through `nix run`; use `deploy` after
-the first successful activation.
+the first successful activation. Home Manager reports each managed agent skill
+that is installed or updated during activation.
 
 Athena installation and activation are separate, explicitly approved actions;
 `make bootstrap` and `make deploy` continue to target Gaia only.
@@ -376,6 +377,7 @@ plugins.
 | `grill-me` | Explicitly request a rigorous interview about a plan or design. | [mattpocock/skills](https://github.com/mattpocock/skills) |
 | `grilling` | Stress-test a plan or idea through questions. | [mattpocock/skills](https://github.com/mattpocock/skills) |
 | `interview-me` | Clarify an underspecified request one question at a time. | [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) |
+| `humanizer` | Rewrite prose to remove common AI writing patterns; invoke with `$humanizer`. | [blader/humanizer](https://github.com/blader/humanizer) |
 | `last30days` | Research recent discussion and developments on a topic; provide the topic in your prompt. | [mvanhorn/last30days-skill](https://github.com/mvanhorn/last30days-skill) |
 | `archify` | Create interactive HTML diagrams and explainers; describe the system or topic to visualize. | [tt-a1i/archify](https://github.com/tt-a1i/archify) |
 | `brainstorming` | Explore requirements and design before creative work. | [obra/superpowers](https://github.com/obra/superpowers) |

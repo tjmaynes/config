@@ -21,6 +21,23 @@ in
   discovers-valid-skills = targets [ repoA ] == [ ".agents/skills/alpha" ];
   filters-included-skills =
     targets [ (repoB // { include = [ "beta" ]; }) ] == [ ".agents/skills/beta" ];
+  discovers-root-skill =
+    targets [
+      {
+        name = "alpha";
+        source = ./agent-skills/repo-a/skills/alpha;
+        rootSkill = true;
+      }
+    ] == [ ".agents/skills/alpha" ];
+  rejects-invalid-root-skill = fails (
+    agentSkills.buildHomeFiles [
+      {
+        name = "invalid";
+        source = ./agent-skills/repo-a;
+        rootSkill = true;
+      }
+    ]
+  );
   rejects-duplicate-repositories = fails (
     agentSkills.buildHomeFiles [
       repoA

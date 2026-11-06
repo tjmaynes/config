@@ -49,6 +49,11 @@
       url = "github:tt-a1i/archify/main";
       flake = false;
     };
+
+    humanizer = {
+      url = "github:blader/humanizer/main";
+      flake = false;
+    };
   };
 
   outputs =
@@ -65,6 +70,7 @@
       addyosmani-agent-skills,
       last30days-skill,
       archify,
+      humanizer,
       ...
     }:
     let
@@ -90,6 +96,11 @@
         timezone = "America/Chicago";
       };
       skillRepos = [
+        {
+          name = "humanizer";
+          source = humanizer;
+          rootSkill = true;
+        }
         {
           name = "superpowers";
           source = superpowers;

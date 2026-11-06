@@ -45,33 +45,48 @@ let
 
   entriesForRepo =
     repo:
-    let
-      repoData = readRepo repo;
-      include = repo.include or null;
-      validSkills = lib.filterAttrs (
-        name: _: isValidSkill repoData.root repoData.entries name
-      ) repoData.entries;
-      duplicateIncludes = if include == null then [ ] else duplicates include;
-      invalidIncludes =
-        if include == null then
-          [ ]
-        else
-          builtins.filter (name: !(isValidSkill repoData.root repoData.entries name)) include;
-      selectedSkills =
-        if include == null then
-          builtins.attrNames validSkills
-        else if duplicateIncludes != [ ] then
-          throw "Agent skill repository `${repo.name}` has duplicate include names: ${formatNames duplicateIncludes}."
-        else if invalidIncludes != [ ] then
-          throw "Agent skill repository `${repo.name}` includes unknown or invalid skills: ${formatNames invalidIncludes}."
-        else
-          include;
-    in
-    map (skillName: {
-      name = ".agents/skills/${skillName}";
-      repoName = repo.name;
-      value.source = "${repoData.root}/${skillName}";
-    }) selectedSkills;
+    if repo.rootSkill or false then
+      let
+        root = repo.source.outPath or repo.source;
+      in
+      if !(builtins.pathExists "${root}/SKILL.md") then
+        throw "Agent skill repository `${repo.name}` is missing its root SKILL.md."
+      else
+        [
+          {
+            name = ".agents/skills/${repo.name}";
+            repoName = repo.name;
+            value.source = root;
+          }
+        ]
+    else
+      let
+        repoData = readRepo repo;
+        include = repo.include or null;
+        validSkills = lib.filterAttrs (
+          name: _: isValidSkill repoData.root repoData.entries name
+        ) repoData.entries;
+        duplicateIncludes = if include == null then [ ] else duplicates include;
+        invalidIncludes =
+          if include == null then
+            [ ]
+          else
+            builtins.filter (name: !(isValidSkill repoData.root repoData.entries name)) include;
+        selectedSkills =
+          if include == null then
+            builtins.attrNames validSkills
+          else if duplicateIncludes != [ ] then
+            throw "Agent skill repository `${repo.name}` has duplicate include names: ${formatNames duplicateIncludes}."
+          else if invalidIncludes != [ ] then
+            throw "Agent skill repository `${repo.name}` includes unknown or invalid skills: ${formatNames invalidIncludes}."
+          else
+            include;
+      in
+      map (skillName: {
+        name = ".agents/skills/${skillName}";
+        repoName = repo.name;
+        value.source = "${repoData.root}/${skillName}";
+      }) selectedSkills;
 in
 {
   buildHomeFiles =
