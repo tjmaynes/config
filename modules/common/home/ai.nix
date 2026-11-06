@@ -10,6 +10,8 @@ let
   aiPackages = llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
 in
 {
+  home.packages = [ aiPackages.orca ];
+
   home.file = lib.mapAttrs (
     name: file:
     file

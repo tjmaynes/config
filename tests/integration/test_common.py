@@ -2,10 +2,25 @@
 
 import unittest
 
-from tests.support import HOSTS, PACKAGE_NAMES, PACKAGE_PNAMES, USER, eval_json
+from tests.support import (
+    DEVELOPMENT_HOSTS,
+    HOSTS,
+    PACKAGE_NAMES,
+    PACKAGE_PNAMES,
+    USER,
+    eval_json,
+)
 
 
 class CommonHomeTests(unittest.TestCase):
+    def test_orca_is_installed_on_both_hosts(self):
+        for host, config in DEVELOPMENT_HOSTS.items():
+            with self.subTest(host=host):
+                packages = eval_json(
+                    f"{config}.{USER}.home.packages", apply=PACKAGE_PNAMES
+                )
+                self.assertIn("orca", packages)
+
     def test_syncthing_preserves_web_managed_devices_and_folders(self):
         for host, config in HOSTS.items():
             service = f"{config}.{USER}.services.syncthing"
