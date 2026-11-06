@@ -3,13 +3,24 @@
 import json
 import unittest
 
-from tests.support import USER, eval_json, run_nix
+from tests.support import ROOT, USER, eval_json, eval_raw, run_nix
 
 GAIA = f".#darwinConfigurations.gaia.config.{USER}"
 ATHENA = ".#nixosConfigurations.athena.config"
 
 
 class SharedVscodeTests(unittest.TestCase):
+    def test_gaia_uses_vscode_from_the_unstable_input(self):
+        expected = run_nix(
+            "eval",
+            "--impure",
+            "--raw",
+            "--expr",
+            f"(import (builtins.getFlake {json.dumps(str(ROOT))}).inputs.nixpkgs-unstable "
+            '{ system = "aarch64-darwin"; config.allowUnfree = true; }).vscode.drvPath',
+        ).strip()
+        self.assertEqual(eval_raw(f"{GAIA}.programs.vscode.package.drvPath"), expected)
+
     def test_code_server_receives_shared_settings_with_linux_runtime_paths(self):
         desktop = eval_json(f"{GAIA}.programs.vscode.profiles.default.userSettings")
         browser = json.loads(
