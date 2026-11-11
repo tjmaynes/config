@@ -9,20 +9,6 @@ HOME = f"{CONFIG}.{USER}"
 
 
 class AthenaTests(unittest.TestCase):
-    def test_orca_runs_as_the_user_and_accepts_tailnet_connections(self):
-        unit = eval_json(
-            f"{CONFIG}.systemd.services.orca",
-            apply="service: { inherit (service) wantedBy after requires serviceConfig environment; }",
-        )
-        self.assertIn("multi-user.target", unit["wantedBy"])
-        self.assertIn("home-manager-tjmaynes.service", unit["requires"])
-        self.assertEqual(unit["serviceConfig"]["User"], "tjmaynes")
-        self.assertIn(
-            "serve --port 6768 --pairing-address athena",
-            unit["serviceConfig"]["ExecStart"],
-        )
-        self.assertEqual(unit["environment"]["HOME"], "/home/tjmaynes")
-
     def test_emacs_is_available_as_a_terminal_editor_without_a_service(self):
         self.assertIs(eval_json(f"{HOME}.programs.emacs.enable"), True)
         self.assertIs(eval_json(f"{HOME}.services.emacs.enable"), False)
@@ -102,7 +88,7 @@ class AthenaTests(unittest.TestCase):
             eval_json(
                 f"{CONFIG}.networking.firewall.interfaces.tailscale0.allowedTCPPorts"
             ),
-            [22, 6768, 8080],
+            [22, 8080],
         )
         self.assertNotIn(
             "tailscale0", eval_json(f"{CONFIG}.networking.firewall.trustedInterfaces")
