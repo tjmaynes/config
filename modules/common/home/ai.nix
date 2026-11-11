@@ -10,8 +10,6 @@ let
   aiPackages = llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
 in
 {
-  home.packages = [ aiPackages.orca ];
-
   home.file = lib.mapAttrs (
     name: file:
     file
@@ -23,6 +21,7 @@ in
   programs.codex = {
     enable = true;
     package = aiPackages.codex;
+    context = ./files/context.md;
     mutableSettings = true;
     enableMcpIntegration = true;
     settings = {
@@ -35,7 +34,6 @@ in
 
   programs.mcp = {
     enable = true;
-    servers.n8n.url = "https://n8n.tjmaynes.com/mcp-server/http";
     servers.playwright.command = "${pkgs.playwright-mcp}/bin/playwright-mcp";
   };
 }

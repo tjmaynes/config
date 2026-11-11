@@ -77,6 +77,11 @@ the dependency update and compatibility tradeoffs before choosing an approach.
 Create custom integration code only after identifying and documenting a gap in
 upstream support.
 
+Prefer Nixpkgs and native Nix or Home Manager integrations when suitable; explain
+platform limitations and tradeoffs when another package source is needed. When
+migrating a package or configuration, identify and remove redundant management
+so it has a clear owner.
+
 Keep portable workstation packages and user configuration in `modules/common/`;
 put macOS-specific behavior in the Darwin
 subtree; keep host modules focused on composition and host facts. Do not put

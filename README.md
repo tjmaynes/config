@@ -370,14 +370,20 @@ a version-mismatch warning for this deliberate boundary; do not suppress it.
 Home Manager merges the declared Codex settings into the writable
 `~/.codex/config.toml` only during explicit activation. It preserves other
 setting values, but may normalize comments and formatting. The shared MCP
-registry supplies n8n at `https://n8n.tjmaynes.com/mcp-server/http` and the
-local [Playwright MCP server](https://github.com/microsoft/playwright-mcp) for
+registry supplies the local [Playwright MCP server](https://github.com/microsoft/playwright-mcp) for
 browser automation. Playwright MCP uses the version pinned by Nixpkgs.
+
+Home Manager also links the global Codex instructions from
+[`modules/common/home/files/context.md`](modules/common/home/files/context.md)
+to `~/.codex/AGENTS.md` on Gaia and Athena. Edit the repository file to update
+them. A pre-existing unmanaged file at that destination can block activation;
+review and move it aside before activating. A `~/.codex/AGENTS.override.md`
+file takes precedence over these instructions.
 
 This repository does not manage Codex credentials, authentication, project
 trust, or project-specific configuration. Keep those values in Codex's local
 credential storage. Close Codex before an explicit activation to avoid
-concurrent writes. Validation never updates live Codex files or contacts n8n.
+concurrent writes. Validation never updates live Codex files.
 
 ## Codex skills
 

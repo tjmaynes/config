@@ -1,11 +1,27 @@
 """Verify native Home Manager Codex and MCP configuration."""
 
 import unittest
+from pathlib import Path
 
 from tests.support import DEVELOPMENT_HOSTS, USER, eval_json
 
 
 class CodexHomeTests(unittest.TestCase):
+    def test_global_instructions_are_installed_for_each_host(self):
+        expected = (
+            Path(__file__).resolve().parents[2] / "modules/common/home/files/context.md"
+        ).read_text()
+        for host, config in DEVELOPMENT_HOSTS.items():
+            home = f"{config}.{USER}"
+            with self.subTest(host=host):
+                self.assertEqual(
+                    eval_json(
+                        f'{home}.home.file.".codex/AGENTS.md".source',
+                        apply="builtins.readFile",
+                    ),
+                    expected,
+                )
+
     def test_playwright_mcp_uses_the_pinned_package(self):
         for host, config in DEVELOPMENT_HOSTS.items():
             home = f"{config}.{USER}"
@@ -42,10 +58,6 @@ class CodexHomeTests(unittest.TestCase):
                 self.assertIs(
                     eval_json(f"{home}.programs.codex.settings.features.js_repl"),
                     True,
-                )
-                self.assertEqual(
-                    eval_json(f"{home}.programs.mcp.servers.n8n.url"),
-                    "https://n8n.tjmaynes.com/mcp-server/http",
                 )
 
     def test_user_config_is_merged_without_an_immutable_home_file(self):

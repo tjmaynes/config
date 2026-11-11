@@ -37,6 +37,7 @@ in
 {
   home-manager.users.${identity.username} = {
     home.packages = with pkgs; [
+      orca
       gcc
       gnumake
       pkg-config
