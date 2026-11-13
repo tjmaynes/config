@@ -139,6 +139,7 @@ class GaiaTests(unittest.TestCase):
             [
                 "blender",
                 "chatgpt",
+                "display-pilot",
                 "docker-desktop",
                 "google-chrome",
                 "signal",

@@ -31,6 +31,7 @@
     casks = [
       "blender"
       "chatgpt"
+      "display-pilot"
       "docker-desktop"
       "google-chrome"
       "signal"
