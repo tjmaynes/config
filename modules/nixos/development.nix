@@ -3,11 +3,13 @@
   identity,
   lib,
   pkgs,
+  llm-agents,
   user,
   ...
 }:
 let
   codex = config.home-manager.users.${identity.username}.programs.codex.package;
+  orca = llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.orca;
   vscode = import ../common/vscode.nix {
     inherit pkgs;
     dataHome = config.home-manager.users.${identity.username}.xdg.dataHome;
@@ -35,6 +37,7 @@ in
 {
   home-manager.users.${identity.username} = {
     home.packages = with pkgs; [
+      orca
       gcc
       gnumake
       pkg-config
@@ -68,6 +71,28 @@ in
         RuntimeDirectoryMode = "0700";
         UMask = "0077";
         ExecStart = "${lib.getExe codex} app-server --listen unix:///run/codex/app-server.sock";
+        Restart = "on-failure";
+        RestartSec = 5;
+      };
+    };
+
+    # Home Manager has no Orca module; use upstream's headless serve command.
+    orca = {
+      description = "Orca headless runtime";
+      wantedBy = [ "multi-user.target" ];
+      wants = [ "network-online.target" ];
+      after = [
+        "network-online.target"
+        "home-manager-${identity.username}.service"
+      ];
+      requires = [ "home-manager-${identity.username}.service" ];
+      environment = builtins.removeAttrs serviceEnvironment [ "CODEX_HOME" ];
+      serviceConfig = {
+        User = identity.username;
+        Group = "users";
+        WorkingDirectory = user.homeDirectory;
+        UMask = "0077";
+        ExecStart = "${lib.getExe orca} serve --port 6768 --pairing-address athena";
         Restart = "on-failure";
         RestartSec = 5;
       };

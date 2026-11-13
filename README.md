@@ -160,7 +160,8 @@ Athena installation and activation are separate, explicitly approved actions;
 
 ## Athena preparation and access
 
-Athena runs SSH, Tailscale, code-server, and a persistent Codex app-server.
+Athena runs SSH, Tailscale, code-server, a persistent Codex app-server, and a
+headless Orca runtime. Gaia installs the Orca desktop application.
 Both development services run as `tjmaynes` and share `/home/tjmaynes/workspace`.
 The headless profile reuses shell, Git, Vim, terminal Emacs, tmux, mise, Codex,
 MCP, and skills without installing Gaia's graphical editors or mail configuration. Install
@@ -203,7 +204,7 @@ Initial enrollment and subsequent boots use `--accept-dns=false` and
 `--netfilter-mode=nodivert`. Nix reapplies these preferences using
 `tailscale set`; `nodivert` prevents Tailscale's default accept-all rule from
 bypassing NixOS's port filtering.
-Athena opens TCP 22 and 8080 only on `tailscale0`; LAN SSH is not opened.
+Athena opens TCP 22, 6768, and 8080 only on `tailscale0`; LAN SSH is not opened.
 Keep console access until `ssh tjmaynes@<athena-tailscale-ip>` works.
 DNS acceptance is disabled to avoid assuming Gaia's home DNS setup during
 enrollment; configuring split DNS for other home services is separate.
@@ -304,6 +305,25 @@ and [Codex app-server documentation](https://learn.chatgpt.com/docs/app-server).
 
 After login, restart Codex if needed with `sudo systemctl restart codex`.
 
+### Orca remote runtime
+
+The pinned `llm-agents.nix` package installs Orca on both hosts. Athena's
+`orca.service` starts the headless runtime as `tjmaynes` at boot and advertises
+`athena:6768`; Gaia must be able to resolve `athena` over Tailscale (MagicDNS).
+The port is only opened on the Tailscale interface. After activating Athena's
+configuration, retrieve the pairing URL on Athena:
+
+```sh
+sudo journalctl -u orca -b
+```
+
+In Orca on Gaia, open Settings → Remote Orca Servers → Add Server and paste
+the URL. The pairing URL grants access to the runtime; keep it private. If
+MagicDNS is unavailable, use Athena's Tailscale IP in the URL or configure a
+reachable tailnet hostname. Authenticate provider CLIs on Athena separately;
+the desktop's credentials do not transfer. For a managed Codex account, run
+`orca account add --agent codex` on Athena as `tjmaynes`. See the
+[Orca remote server guide](https://github.com/stablyai/orca/blob/main/docs/site/content/docs/remote-servers.mdx).
 Inspect boot services and logs:
 
 ```sh

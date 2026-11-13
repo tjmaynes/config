@@ -1,5 +1,6 @@
 {
   lib,
+  llm-agents,
   pkgs,
   user,
   ...
@@ -16,6 +17,7 @@
       "/opt/homebrew/sbin"
     ];
     systemPackages = with pkgs; [
+      llm-agents.packages.${stdenv.hostPlatform.system}.orca
       ghostty-bin
       obsidian
       bitwarden-desktop
