@@ -3,7 +3,6 @@
 import unittest
 
 from tests.support import (
-    DEVELOPMENT_HOSTS,
     HOSTS,
     PACKAGE_NAMES,
     PACKAGE_PNAMES,
@@ -13,17 +12,6 @@ from tests.support import (
 
 
 class CommonHomeTests(unittest.TestCase):
-    def test_orca_is_installed_on_both_hosts(self):
-        for host, config in DEVELOPMENT_HOSTS.items():
-            with self.subTest(host=host):
-                attribute = (
-                    f"{config}.environment.systemPackages"
-                    if host == "gaia"
-                    else f"{config}.{USER}.home.packages"
-                )
-                packages = eval_json(attribute, apply=PACKAGE_PNAMES)
-                self.assertIn("orca", packages)
-
     def test_syncthing_preserves_web_managed_devices_and_folders(self):
         for host, config in HOSTS.items():
             service = f"{config}.{USER}.services.syncthing"

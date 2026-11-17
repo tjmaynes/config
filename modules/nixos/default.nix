@@ -44,6 +44,5 @@
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
     22
     8080
-    6768
   ];
 }
