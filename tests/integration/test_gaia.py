@@ -12,6 +12,21 @@ class GaiaTests(unittest.TestCase):
     def test_mpv_is_enabled_for_the_workstation(self):
         self.assertIs(eval_json(f"{HOME}.programs.mpv.enable"), True)
 
+    def test_chatgpt_opens_at_graphical_login(self):
+        agent = eval_json(
+            f"{HOME}.launchd.agents", apply="agents: agents.open-chatgpt or null"
+        )
+        self.assertIsNotNone(agent)
+        self.assertIs(agent["enable"], True)
+        self.assertEqual(agent["domain"], "gui")
+        config = agent["config"]
+        self.assertEqual(
+            config["ProgramArguments"], ["/usr/bin/open", "/Applications/ChatGPT.app"]
+        )
+        self.assertEqual(config["LimitLoadToSessionType"], "Aqua")
+        self.assertIs(config["RunAtLoad"], True)
+        self.assertIs(config["KeepAlive"], False)
+
     def test_mail_sync_runs_nightly_in_the_user_environment(self):
         agent = eval_json(f"{HOME}.launchd.agents.sync-icloud-mail")
         self.assertIs(agent["enable"], True)
@@ -66,24 +81,10 @@ class GaiaTests(unittest.TestCase):
                     paths.index("/run/current-system/sw/bin"), paths.index(path)
                 )
 
-    def test_syncthing_runs_as_a_background_launch_agent(self):
-        agent = f"{HOME}.launchd.agents.syncthing"
-        self.assertIs(eval_json(f"{agent}.enable"), True)
-        config = eval_json(f"{agent}.config")
-        self.assertEqual(config["Label"], "org.nix-community.home.syncthing")
-        self.assertEqual(config["ProcessType"], "Background")
-        self.assertIs(config["KeepAlive"]["Crashed"], True)
-        # SuccessfulExit implies RunAtLoad in launchd, including when false.
-        self.assertIs(config["KeepAlive"]["SuccessfulExit"], False)
-
-    def test_syncthing_log_directory_exists_before_agent_setup(self):
-        activation = eval_json(f"{HOME}.home.activation.ensureSyncthingLogDirectory")
-        self.assertIn("writeBoundary", activation["after"])
-        self.assertIn("setupLaunchAgents", activation["before"])
-        self.assertIn(
-            'run mkdir -p -- "/Users/tjmaynes/Library/Logs/Syncthing"',
-            activation["data"],
-        )
+    def test_syncthing_launch_agents_are_absent(self):
+        agents = eval_json(f"{HOME}.launchd.agents", apply="builtins.attrNames")
+        self.assertNotIn("syncthing", agents)
+        self.assertNotIn("syncthing-init", agents)
 
     def test_host_identity_and_state_version(self):
         self.assertEqual(eval_json(f"{CONFIG}.networking.hostName"), "gaia")

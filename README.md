@@ -3,11 +3,9 @@
 This repository defines reproducible workstation and user configuration with
 Nix flakes, nix-darwin, and Home Manager.
 
-## Supported hosts
+## Supported host
 
-- `gaia`: Apple Silicon macOS managed by nix-darwin.
-- `athena`: headless x86_64 NixOS development server.
-  Hardware and access credentials must be completed during installation.
+`gaia` is an Apple Silicon macOS workstation managed by nix-darwin.
 
 ## Requirements
 
@@ -21,17 +19,15 @@ Nix flakes, nix-darwin, and Home Manager.
 flake.nix
 hosts/
   gaia/       # Apple Silicon workstation
-  athena/     # Headless Linux development server and hardware template
 modules/
   common/     # Portable workstation and Home Manager modules; config.nix shares system settings
   darwin/     # macOS-only system and Home Manager modules
-  nixos/      # NixOS system services and headless Home Manager composition
 tests/
   pyproject.toml  # Python metadata and Ruff settings
   .mise.toml      # Optional local Python runtime
   unit/          # Source, documentation, and test-helper checks
   smoke/         # Flake metadata, checks, and output discovery
-  integration/   # Real shared and per-host Nix evaluations
+  integration/   # Nix evaluations for Gaia and module fixtures
   fixtures/      # Nix fixture expressions and test repositories
   support.py     # Shared Nix subprocess and JSON helpers
 ```
@@ -75,7 +71,7 @@ make update-home-manager
 
 ## Check
 
-Run formatting, static checks, Python unittest suites, and all host evaluations:
+Run formatting, static checks, Python unittest suites, and Gaia's system evaluation:
 
 ```sh
 make check
@@ -119,10 +115,8 @@ Format Nix and Python with the flake formatter and Ruff:
 make format
 ```
 
-Checks never activate a system or mutate Homebrew. CI runs lint, tests, both
-host evaluations, and the Gaia build on macOS. A separate Ubuntu job runs
-formatting checks, lint, tests, Athena evaluation, and `make build-athena`.
-Boot and hardware checks still require the actual machine.
+Checks never activate Gaia or mutate Homebrew. GitHub Actions runs formatting
+checks, lint, tests, and the Gaia evaluation and build on macOS.
 
 ## Build
 
@@ -132,15 +126,8 @@ Build without switching the active generation:
 make build
 ```
 
-`make build` (or `make build-gaia`) builds Gaia. Build Athena on x86_64 Linux
-or using a configured Linux remote builder:
-
-```sh
-make eval-athena     # evaluation only; also works on Gaia
-make build-athena    # Linux build; does not activate
-```
-
-`make eval` evaluates both hosts; `make eval-gaia` evaluates Gaia alone.
+`make build` and `make build-gaia` both build Gaia. Use `make eval` or
+`make eval-gaia` to evaluate its system derivation without building.
 
 ## Activate
 
@@ -155,169 +142,6 @@ make deploy      # subsequent activations
 the first successful activation. Home Manager reports each managed agent skill
 that is installed or updated during activation.
 
-Athena installation and activation are separate, explicitly approved actions;
-`make bootstrap` and `make deploy` continue to target Gaia only.
-
-## Athena preparation and access
-
-Athena runs SSH, Tailscale, code-server, and a persistent Codex app-server.
-Both development services run as `tjmaynes` and share `/home/tjmaynes/workspace`.
-The headless profile reuses shell, Git, Vim, terminal Emacs, tmux, mise, Codex,
-MCP, and skills without installing Gaia's graphical editors or mail configuration. Install
-project runtimes using `mise install` or project Nix shells after provisioning.
-Emacs settings live in `modules/common/home/emacs.nix` for both hosts; Athena
-selects `emacs-nox`, while Gaia retains its default Emacs package.
-
-### Installation prerequisites
-
-`hosts/athena/hardware.nix` is a **template**, not detected host hardware.
-It describes an ext4 root labeled `nixos` and a FAT EFI partition labeled
-`BOOT`. Before installation, boot the NixOS installer in UEFI mode, choose and
-mount the intended filesystems, and replace this file with hardware generated
-for those mounts:
-
-```sh
-nixos-generate-config --root /mnt --show-hardware-config > hosts/athena/hardware.nix
-```
-
-This command only generates configuration; partitioning/mounting and
-`nixos-install --flake .#athena` remain manual installation steps. Review the
-generated file, including any swap configuration, and stage it so flakes see
-it. Bootloader settings live separately in `hosts/athena/default.nix`.
-
-Add your SSH **public** key to `users.users.tjmaynes.openssh.authorizedKeys.keys`
-in `modules/nixos/default.nix`. Set a local password with `passwd tjmaynes`
-from an administrative console so `sudo` is usable. Password SSH and root SSH
-are disabled. No initial password or private key is declared by Nix.
-
-Prepare a fresh Tailscale enrollment key in SOPS-encrypted
-`secrets/athena.sops.yaml` using the [provisioning guide](secrets/README.md).
-Encrypt it for Athena's persistent SSH host key and optionally an operator
-age recipient. The upstream autoconnect service waits for SOPS decryption and
-reads the root-only key from `/run/secrets/tailscale-auth-key` at boot.
-The actual encrypted file is not created by this preparation work: until it
-exists in the flake source, evaluation emits an explicit warning and automatic
-enrollment stays disabled. Keep console access for initial provisioning.
-Approve the node and its tailnet ACLs as required by the new key's policy.
-Initial enrollment and subsequent boots use `--accept-dns=false` and
-`--netfilter-mode=nodivert`. Nix reapplies these preferences using
-`tailscale set`; `nodivert` prevents Tailscale's default accept-all rule from
-bypassing NixOS's port filtering.
-Athena opens TCP 22 and 8080 only on `tailscale0`; LAN SSH is not opened.
-Keep console access until `ssh tjmaynes@<athena-tailscale-ip>` works.
-DNS acceptance is disabled to avoid assuming Gaia's home DNS setup during
-enrollment; configuring split DNS for other home services is separate.
-
-### Browser development through Caddy
-
-The intended URL is `https://coding.bewoogie.local`. The existing home-server
-Caddy instance terminates TLS; Athena serves HTTP on port 8080 over Tailscale.
-code-server retains password authentication. On Athena, create the runtime
-environment file locally before starting code-server:
-
-```sh
-sudo install -d -m 0700 /var/lib/athena
-sudo install -m 0600 /dev/null /var/lib/athena/code-server.env
-sudoedit /var/lib/athena/code-server.env
-```
-
-Put `PASSWORD=<a-unique-password>` in that root-owned file. It is required by
-the unit and is never generated by Nix. code-server intentionally fails to
-start while the file is missing; after creating it, run
-`sudo systemctl restart code-server`. On an existing installation, edit the
-file instead of recreating it with `install`, which would empty it.
-
-The separate home-server configuration does **not yet contain this route**.
-Add its DNS/proxy entry there, pointing `coding.bewoogie.local` at the home
-server and proxying to Athena's stable Tailscale IPv4 address on port 8080.
-The resulting Caddy route should be equivalent to:
-
-```caddyfile
-coding.bewoogie.local {
-    tls internal
-    reverse_proxy http://<athena-tailscale-ip>:8080
-}
-```
-
-Use the home-server repository's route registry rather than duplicating its
-generated Caddy configuration. Preserve its internal CA; browsers must trust
-that CA. Caddy supports WebSocket upgrades through `reverse_proxy`. Tailnet
-ACLs must permit the home server to reach Athena:8080; limit access to that
-backend to the proxy and administrators. This repository does not change
-home-server routes, DNS, certificates, or tailnet ACLs.
-
-### Shared editor extensions and settings
-
-`modules/common/vscode.nix` owns the pinned extension list and editor settings
-for Darwin VS Code and Athena's code-server. Both consumers use their own
-platform's packages and home paths. Add shared extensions there once.
-
-Darwin retains Pylance and Microsoft's Dev Containers extension. code-server
-omits those desktop-only extensions and uses the open-source Pyright extension
-for Python language support instead. Other extensions use the same pinned
-versions on both platforms. Runtime compatibility still needs confirmation
-when Athena is installed.
-
-The upstream NixOS `services.code-server.package` option supports
-`pkgs.vscode-with-extensions` with `vscode = pkgs.code-server`; this repository
-uses that integration rather than an extension-installation script. The bundle
-uses an immutable extension directory, so manage its extensions through Nix.
-Home Manager's pinned/current VS Code module writes desktop-specific paths;
-it has no code-server profile. Shared settings are therefore written using
-`xdg.dataFile` to `code-server/User/settings.json` under the user's data home.
-That file is declaratively managed; edit the shared Nix settings instead of
-editing it through the browser. Existing files may need moving aside before
-the first explicit activation; preserve any user settings you want to merge.
-
-code-server uses Open VSX for additional extension discovery; it cannot use
-the Microsoft Marketplace directly. See the
-[code-server extension FAQ](https://coder.com/docs/code-server/FAQ#why-cant-code-server-use-microsofts-extension-marketplace)
-and [Pyright](https://github.com/microsoft/pyright).
-
-### Persistent Codex
-
-`codex.service` starts at boot after Home Manager activation, without an
-interactive login. It restarts on failure and keeps auth/history/configuration
-in `/home/tjmaynes/.codex`. Authentication uses local files rather than a
-desktop keyring. Sign in once as `tjmaynes` on Athena with `codex login`
-(use `codex login --device-auth` when available for a headless sign-in).
-Never put the login state or API keys in the repository or Nix store.
-
-Connect from an SSH session or the code-server terminal:
-
-```sh
-codex --remote unix:///run/codex/app-server.sock
-```
-
-The socket lives in a private directory owned by `tjmaynes`; no Codex TCP
-port is opened. A plain `codex` command starts its normal CLI workflow;
-use `--remote` to connect to this persistent instance. The desktop app's SSH
-integration may launch its own server; it does not automatically attach to
-this systemd socket. This configuration does not enable mobile pairing.
-
-Home Manager's pinned Codex module and current upstream options manage the
-package, settings, MCP and skills, but provide no persistent service option.
-`modules/nixos/development.nix` supplies only that missing systemd lifecycle,
-using the same locked Codex package as the CLI. No input update is needed.
-See the [upstream options](https://nix-community.github.io/home-manager/options/home-manager/programs/codex.html)
-and [Codex app-server documentation](https://learn.chatgpt.com/docs/app-server).
-
-After login, restart Codex if needed with `sudo systemctl restart codex`.
-
-Inspect boot services and logs:
-
-```sh
-systemctl status codex code-server tailscaled sshd
-journalctl -u codex -u code-server -b
-```
-
-Before treating Athena as ready, reboot it, verify both services start without
-a user login, connect to the Codex socket, open the browser URL, and run a real
-project build/test. Check that TCP 8080 is unreachable through the LAN address.
-Also verify a temporary listener on another port (for example 9000) is
-unreachable from a tailnet peer. Those acceptance checks cannot be performed
-by macOS evaluation tests.
-
 ## Rollback
 
 Use the native system manager rollback and generation selection tools. Review
@@ -328,17 +152,6 @@ reboot or rollback activation.
 
 Keep tokens, SSH private keys, credentials, decrypted values, and private keys
 outside this repository and outside the Nix store.
-
-SOPS-encrypted ciphertext is allowed under `secrets/`. Athena uses the locked
-`sops-nix` NixOS module and its Ed25519 SSH host key for decryption. The
-development shell includes `sops`, `age`, and `ssh-to-age`. Follow
-[secrets/README.md](secrets/README.md) to add Athena's new Tailscale auth key;
-never commit a decrypted file or a private decryption key. The code-server
-password and Codex authentication retain their existing runtime-file setup.
-
-Use `make sops-edit` to edit the encrypted file or `make sops-view` to print its
-decrypted contents locally. Both default to `secrets/athena.sops.yaml`; override
-the path with `SOPS_FILE=secrets/another.sops.yaml`.
 
 ## Codex and MCP connections
 
@@ -355,7 +168,7 @@ browser automation. Playwright MCP uses the version pinned by Nixpkgs.
 
 Home Manager also links the global Codex instructions from
 [`modules/common/home/files/context.md`](modules/common/home/files/context.md)
-to `~/.codex/AGENTS.md` on Gaia and Athena. Edit the repository file to update
+to `~/.codex/AGENTS.md` on Gaia. Edit the repository file to update
 them. A pre-existing unmanaged file at that destination can block activation;
 review and move it aside before activating. A `~/.codex/AGENTS.override.md`
 file takes precedence over these instructions.
@@ -460,34 +273,6 @@ needs unlocking later, the scheduled sync may fail. Logs are stored in
 launchctl print gui/$(id -u)/org.nix-community.home.sync-icloud-mail
 ```
 
-## Syncthing
-
-Darwin-only Syncthing configuration lives in `modules/darwin/syncthing.nix`.
-
-Syncthing runs as your user in the background. On Gaia, Home Manager manages
-the macOS launch agent `org.nix-community.home.syncthing`, which starts at
-login and restarts after a failure. It does not open a browser automatically.
-
-After explicitly activating the configuration with `make deploy`, open
-[the local Syncthing web interface](http://127.0.0.1:8384) to add devices and
-choose folders to sync. The web interface listens only on loopback; devices
-and folders configured there persist across rebuilds. No peers or sync paths
-are declared by this repository.
-
-Syncthing keeps its configuration, database, and generated identity keys in
-`~/Library/Application Support/Syncthing` on Gaia. Keep identity keys and API
-credentials outside the repository and Nix store. Logs are written to
-`~/Library/Logs/Syncthing/syncthing-stdout.log` and
-`~/Library/Logs/Syncthing/syncthing-stderr.log`.
-
-Inspect the user agent after activation:
-
-```sh
-launchctl print "gui/$(id -u)/org.nix-community.home.syncthing"
-```
-
-Validation does not start Syncthing or activate the configuration.
-
 ## Mise
 
 Home Manager declares the approved mise tool versions. After an explicit
@@ -505,6 +290,10 @@ Gaia installs its nixpkgs graphical application bundles in `/Applications/Nix Ap
 during activation. Other applications, including Google Chrome (the
 `google-chrome` cask) and Zen Browser (the `zen` cask), use its declarative
 Homebrew configuration.
+
+Home Manager opens ChatGPT at graphical login through the
+`org.nix-community.home.open-chatgpt` LaunchAgent. The first activation can
+also open ChatGPT when it loads the agent.
 
 Gaia does not change its default browser automatically.
 

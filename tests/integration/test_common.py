@@ -12,18 +12,6 @@ from tests.support import (
 
 
 class CommonHomeTests(unittest.TestCase):
-    def test_syncthing_preserves_web_managed_devices_and_folders(self):
-        for host, config in HOSTS.items():
-            service = f"{config}.{USER}.services.syncthing"
-            for option, expected in {
-                "enable": True,
-                "guiAddress": "127.0.0.1:8384",
-                "overrideDevices": False,
-                "overrideFolders": False,
-            }.items():
-                with self.subTest(host=host, option=option):
-                    self.assertEqual(eval_json(f"{service}.{option}"), expected)
-
     def test_editors_and_platform_ghostty_packages(self):
         for host, config in HOSTS.items():
             home = f"{config}.{USER}"

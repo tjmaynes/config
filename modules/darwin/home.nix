@@ -6,7 +6,6 @@
 {
   imports = [
     ./mail.nix
-    ./syncthing.nix
     ./terminal.nix
     ./vscode.nix
   ];
@@ -14,6 +13,19 @@
   home.sessionVariables.EDITOR = lib.mkDefault "code";
 
   programs.mpv.enable = true;
+
+  launchd.agents.open-chatgpt = {
+    enable = true;
+    config = {
+      ProgramArguments = [
+        "/usr/bin/open"
+        "/Applications/ChatGPT.app"
+      ];
+      LimitLoadToSessionType = "Aqua";
+      RunAtLoad = true;
+      KeepAlive = false;
+    };
+  };
 
   targets.darwin = {
     copyApps.enable = true;

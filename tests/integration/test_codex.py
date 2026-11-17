@@ -3,7 +3,7 @@
 import unittest
 from pathlib import Path
 
-from tests.support import DEVELOPMENT_HOSTS, USER, eval_json
+from tests.support import HOSTS, USER, eval_json
 
 
 class CodexHomeTests(unittest.TestCase):
@@ -11,7 +11,7 @@ class CodexHomeTests(unittest.TestCase):
         expected = (
             Path(__file__).resolve().parents[2] / "modules/common/home/files/context.md"
         ).read_text()
-        for host, config in DEVELOPMENT_HOSTS.items():
+        for host, config in HOSTS.items():
             home = f"{config}.{USER}"
             with self.subTest(host=host):
                 self.assertEqual(
@@ -23,7 +23,7 @@ class CodexHomeTests(unittest.TestCase):
                 )
 
     def test_playwright_mcp_uses_the_pinned_package(self):
-        for host, config in DEVELOPMENT_HOSTS.items():
+        for host, config in HOSTS.items():
             home = f"{config}.{USER}"
             with self.subTest(host=host):
                 command = eval_json(f"{home}.programs.mcp.servers.playwright.command")
@@ -39,7 +39,7 @@ class CodexHomeTests(unittest.TestCase):
                 )
 
     def test_codex_uses_native_mutable_settings_and_llm_agents_package(self):
-        for host, config in DEVELOPMENT_HOSTS.items():
+        for host, config in HOSTS.items():
             home = f"{config}.{USER}"
             with self.subTest(host=host):
                 self.assertIs(eval_json(f"{home}.programs.codex.enable"), True)
@@ -61,7 +61,7 @@ class CodexHomeTests(unittest.TestCase):
                 )
 
     def test_user_config_is_merged_without_an_immutable_home_file(self):
-        for host, config in DEVELOPMENT_HOSTS.items():
+        for host, config in HOSTS.items():
             home = f"{config}.{USER}"
             with self.subTest(host=host):
                 activation = eval_json(f"{home}.home.activation.codexMutableSettings")
@@ -75,7 +75,7 @@ class CodexHomeTests(unittest.TestCase):
                 self.assertNotIn(".config/codex-nix/managed.json", files)
 
     def test_home_manager_does_not_manage_project_overrides(self):
-        for host, config in DEVELOPMENT_HOSTS.items():
+        for host, config in HOSTS.items():
             home = f"{config}.{USER}"
             with self.subTest(host=host):
                 self.assertEqual(eval_json(f"{home}.programs.codex.profiles"), {})

@@ -68,10 +68,8 @@ class RepositoryTests(unittest.TestCase):
                 self.assertIn(f'url = "{url}";', flake)
                 self.assertIs(nodes[name]["flake"], False)
 
-    def test_hosts_receive_skill_repositories(self):
-        for host in ("gaia", "athena"):
-            with self.subTest(host=host):
-                self.assertRegex(
-                    (ROOT / f"hosts/{host}/default.nix").read_text(),
-                    r"extraSpecialArgs = \{[^}]*skillRepos",
-                )
+    def test_gaia_receives_skill_repositories(self):
+        self.assertRegex(
+            (ROOT / "hosts/gaia/default.nix").read_text(),
+            r"extraSpecialArgs = \{[^}]*skillRepos",
+        )

@@ -1,5 +1,4 @@
 NIX := nix --extra-experimental-features 'nix-command flakes'
-SOPS_FILE ?= secrets/athena.sops.yaml
 
 format:
 	$(NIX) fmt -- $$(find . -type f -name '*.nix' -not -path './.git/*' -print | sort)
@@ -27,13 +26,10 @@ test-smoke:
 test-integration:
 	$(NIX) develop --command python -m unittest discover -s tests/integration -t . -v
 
-eval: eval-gaia eval-athena
+eval: eval-gaia
 
 eval-gaia:
 	$(NIX) eval --raw .#darwinConfigurations.gaia.config.system.build.toplevel.drvPath
-
-eval-athena:
-	$(NIX) eval --raw .#nixosConfigurations.athena.config.system.build.toplevel.drvPath
 
 check: format-check lint test eval
 
@@ -41,9 +37,6 @@ build: build-gaia
 
 build-gaia:
 	$(NIX) build .#darwinConfigurations.gaia.system --no-link
-
-build-athena:
-	$(NIX) build .#nixosConfigurations.athena.config.system.build.toplevel --no-link
 
 bootstrap:
 	sudo nix --extra-experimental-features 'nix-command flakes' run nix-darwin/nix-darwin-26.05#darwin-rebuild -- switch --flake .#gaia
@@ -60,10 +53,4 @@ update-unstable:
 update-home-manager:
 	$(NIX) flake update home-manager
 
-sops-edit:
-	$(NIX) develop --command sops "$(SOPS_FILE)"
-
-sops-view:
-	$(NIX) develop --command sops --decrypt "$(SOPS_FILE)"
-
-.PHONY: format format-check lint test test-unit test-smoke test-integration check update update-unstable update-home-manager bootstrap deploy build build-gaia build-athena eval eval-gaia eval-athena sops-edit sops-view
+.PHONY: format format-check lint test test-unit test-smoke test-integration check update update-unstable update-home-manager bootstrap deploy build build-gaia eval eval-gaia

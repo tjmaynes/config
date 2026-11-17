@@ -28,7 +28,6 @@ class DocumentationTests(unittest.TestCase):
         ):
             with self.subTest(text=text):
                 self.assertIn(text, readme)
-        self.assertIn("athena", readme)
         self.assertNotRegex(readme, "apollo|demeter|kratos")
 
     def test_ci_installs_nix_without_activation(self):

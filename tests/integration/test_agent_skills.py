@@ -3,7 +3,7 @@
 import json
 import unittest
 
-from tests.support import DEVELOPMENT_HOSTS, ROOT, USER, eval_json, run_nix
+from tests.support import HOSTS, ROOT, USER, eval_json, run_nix
 
 
 class AgentSkillsTests(unittest.TestCase):
@@ -50,7 +50,7 @@ class AgentSkillsTests(unittest.TestCase):
                 "--expr",
                 f"(builtins.getFlake {json.dumps(str(ROOT))}).inputs.{repository}.outPath",
             )
-            for host, config in DEVELOPMENT_HOSTS.items():
+            for host, config in HOSTS.items():
                 for skill in skills:
                     with self.subTest(host=host, repository=repository, skill=skill):
                         self.assertEqual(
@@ -68,7 +68,7 @@ class AgentSkillsTests(unittest.TestCase):
             "--expr",
             f"(builtins.getFlake {json.dumps(str(ROOT))}).inputs.humanizer.outPath",
         )
-        for host, config in DEVELOPMENT_HOSTS.items():
+        for host, config in HOSTS.items():
             with self.subTest(host=host):
                 self.assertEqual(
                     eval_json(
@@ -78,7 +78,7 @@ class AgentSkillsTests(unittest.TestCase):
                 )
 
     def test_managed_skills_report_changes_during_activation(self):
-        for host, config in DEVELOPMENT_HOSTS.items():
+        for host, config in HOSTS.items():
             for skill in ("brainstorming", "humanizer"):
                 with self.subTest(host=host, skill=skill):
                     hook = eval_json(

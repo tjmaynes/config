@@ -89,9 +89,7 @@ class SharedSourceTests(unittest.TestCase):
     def test_vscode_configuration(self):
         self.assertIn("./vscode.nix", (ROOT / "modules/darwin/home.nix").read_text())
 
-        source = (ROOT / "modules/darwin/vscode.nix").read_text() + (
-            ROOT / "modules/common/vscode.nix"
-        ).read_text()
+        source = (ROOT / "modules/darwin/vscode.nix").read_text()
         for text in (
             "programs.vscode",
             "enable = true",
