@@ -36,7 +36,6 @@
       "vcv-rack"
       "tailscale-app"
       "imageoptim"
-      "zen"
     ];
     onActivation = {
       autoUpdate = false;

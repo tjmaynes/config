@@ -288,8 +288,7 @@ Runtime downloads are never performed by activation hooks or CI.
 
 Gaia installs its nixpkgs graphical application bundles in `/Applications/Nix Apps`
 during activation. Other applications, including Google Chrome (the
-`google-chrome` cask) and Zen Browser (the `zen` cask), use its declarative
-Homebrew configuration.
+`google-chrome` cask), use its declarative Homebrew configuration.
 
 Home Manager opens ChatGPT at graphical login through the
 `org.nix-community.home.open-chatgpt` LaunchAgent. The first activation can

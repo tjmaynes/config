@@ -147,7 +147,6 @@ class GaiaTests(unittest.TestCase):
                 "vcv-rack",
                 "tailscale-app",
                 "imageoptim",
-                "zen",
             ],
         )
 
