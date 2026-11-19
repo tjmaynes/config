@@ -144,6 +144,7 @@ class GaiaTests(unittest.TestCase):
                 "docker-desktop",
                 "google-chrome",
                 "signal",
+                "steam",
                 "vcv-rack",
                 "tailscale-app",
                 "imageoptim",
