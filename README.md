@@ -164,7 +164,14 @@ Home Manager merges the declared Codex settings into the writable
 `~/.codex/config.toml` only during explicit activation. It preserves other
 setting values, but may normalize comments and formatting. The shared MCP
 registry supplies the local [Playwright MCP server](https://github.com/microsoft/playwright-mcp) for
-browser automation. Playwright MCP uses the version pinned by Nixpkgs.
+browser automation. Playwright MCP uses the version pinned by Nixpkgs. The
+[REA](https://github.com/morluto/rea) MCP server and CLI use the same pinned npm
+release as its agent skill. Its Frida Node binding uses a pinned upstream native
+binary. The standalone Frida CLI comes from pinned Nixpkgs, so its version may
+differ from REA's binding. Native analysis engines such as Ghidra are separate
+prerequisites.
+After changing the REA package, activate the configuration explicitly and restart
+Codex to load the server and skill.
 
 Home Manager also links the global Codex instructions from
 [`modules/common/home/files/context.md`](modules/common/home/files/context.md)
@@ -191,6 +198,7 @@ plugins.
 
 | Skill | Purpose and usage | Source |
 | --- | --- | --- |
+| `reverse-engineer-anything` | Investigate applications and binaries with REA. | [morluto/rea](https://github.com/morluto/rea) |
 | `agent-context-generator` | Generate an `AGENTS.md` guide for a repository. | [tjmaynes/skills](https://github.com/tjmaynes/skills) |
 | `resume-generator` | Assess a job fit and create a tailored RenderCV resume from career history. | [tjmaynes/skills](https://github.com/tjmaynes/skills) |
 | `superblog` | Draft a blog post and accompanying social media copy. | [tjmaynes/skills](https://github.com/tjmaynes/skills) |

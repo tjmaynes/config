@@ -38,6 +38,24 @@ class CodexHomeTests(unittest.TestCase):
                     eval_json(f"{home}.programs.mcp.servers.playwright.args"), []
                 )
 
+    def test_rea_mcp_and_skill_share_the_pinned_package(self):
+        for host, config in HOSTS.items():
+            home = f"{config}.{USER}"
+            with self.subTest(host=host):
+                command = eval_json(f"{home}.programs.mcp.servers.rea.command")
+                self.assertTrue(command.endswith("/bin/rea"))
+                self.assertEqual(
+                    eval_json(f"{home}.programs.mcp.servers.rea.args"), ["mcp"]
+                )
+                skill = eval_json(
+                    f'{home}.home.file.".agents/skills/reverse-engineer-anything".source'
+                )
+                self.assertEqual(
+                    skill,
+                    command.removesuffix("/bin/rea")
+                    + "/lib/node_modules/rea-agents/skills/reverse-engineer-anything",
+                )
+
     def test_codex_uses_native_mutable_settings_and_llm_agents_package(self):
         for host, config in HOSTS.items():
             home = f"{config}.{USER}"
