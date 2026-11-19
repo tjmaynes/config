@@ -12,7 +12,15 @@
 
   home.sessionVariables.EDITOR = lib.mkDefault "code";
 
-  programs.mpv.enable = true;
+  programs = {
+    cursor.enable = true;
+    mpv.enable = true;
+    zsh.initContent = lib.mkAfter ''
+      if [[ $options[zle] = on ]] && [[ -x /opt/homebrew/bin/atuin ]]; then
+        eval "$(/opt/homebrew/bin/atuin init zsh)"
+      fi
+    '';
+  };
 
   launchd.agents.open-chatgpt = {
     enable = true;
@@ -31,12 +39,6 @@
     copyApps.enable = true;
     linkApps.enable = false;
   };
-
-  programs.zsh.initContent = lib.mkAfter ''
-    if [[ $options[zle] = on ]] && [[ -x /opt/homebrew/bin/atuin ]]; then
-      eval "$(/opt/homebrew/bin/atuin init zsh)"
-    fi
-  '';
 
   home.activation = {
     ensureScreencaptureDirectory = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

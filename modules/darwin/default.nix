@@ -19,6 +19,7 @@
       ghostty-bin
       obsidian
       bitwarden-desktop
+      code-cursor
     ];
     pathsToLink = [ "/Applications" ];
   };
